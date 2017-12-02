@@ -187,3 +187,77 @@ TEST(Responses, Login)
         EXPECT_EQ(login2.home_server, "matrix.org");
         EXPECT_EQ(login2.device_id, "");
 }
+
+TEST(Responses, Messages)
+{
+        json data = R"({
+	"start": "t47429-4392820_219380_26003_2265",
+	"end": "t47409-4357353_219380_26003_2265",
+	"chunk": [{
+	  "origin_server_ts": 1444812213737,
+	  "sender": "@alice:example.com",
+	  "event_id": "$1444812213350496Caaaa:example.com",
+	  "content": {
+	    "body": "hello world",
+	    "msgtype": "m.text"
+	  },
+	  "room_id": "!Xq3620DUiqCaoxq:example.com",
+	  "type": "m.room.message",
+	  "age": 1042
+	}, {
+	  "origin_server_ts": 1444812194656,
+	  "sender": "@bob:example.com",
+	  "event_id": "$1444812213350496Cbbbb:example.com",
+	  "content": {
+	    "body": "the world is big",
+	    "msgtype": "m.text"
+	  },
+	  "room_id": "!Xq3620DUiqCaoxq:example.com",
+	  "type": "m.room.message",
+	  "age": 20123
+	}, {
+	  "origin_server_ts": 1444812163990,
+	  "sender": "@bob:example.com",
+	  "event_id": "$1444812213350496Ccccc:example.com",
+	  "content": {
+	    "name": "New room name"
+	  },
+	  "prev_content": {
+	    "name": "Old room name"
+	  },
+	  "state_key": "",
+	  "room_id": "!Xq3620DUiqCaoxq:example.com",
+	  "type": "m.room.name",
+	  "age": 50789
+	 }
+	]})"_json;
+
+        ns::Messages messages = data;
+        EXPECT_EQ(messages.start, "t47429-4392820_219380_26003_2265");
+        EXPECT_EQ(messages.end, "t47409-4357353_219380_26003_2265");
+        EXPECT_EQ(messages.chunk.size(), 3);
+
+        using mtx::events::msg::Text;
+        using mtx::events::state::Name;
+        using mtx::events::RoomEvent;
+        using mtx::events::StateEvent;
+
+        auto first_event = mpark::get<RoomEvent<Text>>(messages.chunk[0]);
+        EXPECT_EQ(first_event.content.body, "hello world");
+        EXPECT_EQ(first_event.content.msgtype, "m.text");
+        EXPECT_EQ(first_event.type, mtx::events::EventType::RoomMessage);
+        EXPECT_EQ(first_event.event_id, "$1444812213350496Caaaa:example.com");
+
+        auto second_event = mpark::get<RoomEvent<Text>>(messages.chunk[1]);
+        EXPECT_EQ(second_event.content.body, "the world is big");
+        EXPECT_EQ(second_event.content.msgtype, "m.text");
+        EXPECT_EQ(second_event.type, mtx::events::EventType::RoomMessage);
+        EXPECT_EQ(second_event.event_id, "$1444812213350496Cbbbb:example.com");
+
+        auto third_event = mpark::get<StateEvent<Name>>(messages.chunk[2]);
+        EXPECT_EQ(third_event.content.name, "New room name");
+        EXPECT_EQ(third_event.prev_content.name, "Old room name");
+        EXPECT_EQ(third_event.type, mtx::events::EventType::RoomName);
+        EXPECT_EQ(third_event.event_id, "$1444812213350496Ccccc:example.com");
+        EXPECT_EQ(third_event.sender, "@bob:example.com");
+}
