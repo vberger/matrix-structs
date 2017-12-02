@@ -4,15 +4,6 @@
 #include <iostream>
 #include <regex>
 
-namespace mtx {
-namespace identifiers {
-
-static unsigned short MIN_SIZE = 4;
-static std::regex LOCALPART_REGEX("[A-za-z0-9._%+-]{1,}");
-static std::regex DOMAIN_NAME_REGEX("(?!\\-)(?:[a-zA-Z\\d\\-]{0,62}[a-zA-Z\\d]\\.){1,"
-                                    "126}(?!\\d+)[a-zA-Z\\d]{1,63}(:\\d{0,5})?");
-
-// Local class.
 namespace {
 class ID
 {
@@ -29,6 +20,14 @@ protected:
         int port_;
 };
 }
+
+namespace mtx {
+namespace identifiers {
+
+static unsigned short MIN_SIZE = 4;
+static std::regex LOCALPART_REGEX("[A-za-z0-9._%+-]{1,}");
+static std::regex DOMAIN_NAME_REGEX("(?!\\-)(?:[a-zA-Z\\d\\-]{0,62}[a-zA-Z\\d]\\.){1,"
+                                    "126}(?!\\d+)[a-zA-Z\\d]{1,63}(:\\d{0,5})?");
 
 class Event : public ID
 {
