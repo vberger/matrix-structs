@@ -37,6 +37,6 @@ before_install:
 install:
     - if [ $TRAVIS_OS_NAME == osx ]; then brew update && brew install clang-format; fi
 script:
-    - make
+    - make-release
     - if [ $TRAVIS_OS_NAME == osx ]; then make lint; fi
     - if [ $RUN_TESTS == 1 ]; then make test; fi
