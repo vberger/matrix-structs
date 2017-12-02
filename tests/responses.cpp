@@ -237,10 +237,10 @@ TEST(Responses, Messages)
         EXPECT_EQ(messages.end, "t47409-4357353_219380_26003_2265");
         EXPECT_EQ(messages.chunk.size(), 3);
 
-        using mtx::events::msg::Text;
-        using mtx::events::state::Name;
         using mtx::events::RoomEvent;
         using mtx::events::StateEvent;
+        using mtx::events::msg::Text;
+        using mtx::events::state::Name;
 
         auto first_event = mpark::get<RoomEvent<Text>>(messages.chunk[0]);
         EXPECT_EQ(first_event.content.body, "hello world");
