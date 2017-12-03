@@ -14,13 +14,13 @@ struct PinnedEvents
         std::vector<std::string> pinned;
 };
 
-void
+inline void
 from_json(const json &obj, PinnedEvents &event)
 {
         event.pinned = obj.at("pinned").get<std::vector<std::string>>();
 }
 
-void
+inline void
 to_json(json &obj, const PinnedEvents &event)
 {
         obj["pinned"] = event.pinned;

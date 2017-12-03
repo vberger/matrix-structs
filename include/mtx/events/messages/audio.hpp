@@ -26,7 +26,7 @@ struct Audio
         common::AudioInfo info;
 };
 
-void
+inline void
 from_json(const json &obj, Audio &content)
 {
         content.body    = obj.at("body").get<std::string>();
@@ -39,7 +39,7 @@ from_json(const json &obj, Audio &content)
                 content.info = obj.at("info").get<common::AudioInfo>();
 }
 
-void
+inline void
 to_json(json &obj, const Audio &content)
 {
         obj["msgtype"] = "m.audio";

@@ -18,7 +18,7 @@ struct State
         std::vector<events::collections::StateEvents> events;
 };
 
-void
+inline void
 from_json(const json &obj, State &state)
 {
         utils::parse_state_events(obj.at("events"), state.events);
@@ -31,7 +31,7 @@ struct Timeline
         bool limited = false;
 };
 
-void
+inline void
 from_json(const json &obj, Timeline &timeline)
 {
         timeline.prev_batch = obj.at("prev_batch").get<std::string>();
@@ -46,7 +46,7 @@ struct UnreadNotifications
         uint16_t notification_count = 0;
 };
 
-void
+inline void
 from_json(const json &obj, UnreadNotifications &notifications)
 {
         if (obj.find("highlight_count") != obj.end())
@@ -65,7 +65,7 @@ struct JoinedRoom
         /* Ephemeral ephemeral; */
 };
 
-void
+inline void
 from_json(const json &obj, JoinedRoom &room)
 {
         room.state    = obj.at("state").get<State>();
@@ -82,7 +82,7 @@ struct LeftRoom
         Timeline timeline;
 };
 
-void
+inline void
 from_json(const json &obj, LeftRoom &room)
 {
         room.state    = obj.at("state").get<State>();
@@ -95,7 +95,7 @@ struct InvitedRoom
         Timeline timeline;
 };
 
-void
+inline void
 from_json(const json &obj, InvitedRoom &room)
 {
         room.state    = obj.at("state").get<State>();
@@ -109,7 +109,7 @@ struct Rooms
         std::map<std::string, InvitedRoom> invite;
 };
 
-void
+inline void
 from_json(const json &obj, Rooms &rooms)
 {
         auto joined = obj.at("join");
@@ -137,7 +137,7 @@ struct Sync
         /* AccountData account_data; */
 };
 
-void
+inline void
 from_json(const json &obj, Sync &response)
 {
         response.rooms      = obj.at("rooms").get<Rooms>();

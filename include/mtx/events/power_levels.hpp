@@ -35,7 +35,7 @@ struct PowerLevels
         std::map<std::string, uint16_t> users;
 };
 
-void
+inline void
 from_json(const json &obj, PowerLevels &power_levels)
 {
         power_levels.ban    = obj.at("ban").get<uint16_t>();
@@ -51,7 +51,7 @@ from_json(const json &obj, PowerLevels &power_levels)
         power_levels.state_default  = obj.at("state_default").get<uint16_t>();
 }
 
-void
+inline void
 to_json(json &obj, const PowerLevels &power_levels)
 {
         obj["ban"]    = power_levels.ban;

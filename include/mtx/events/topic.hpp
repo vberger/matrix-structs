@@ -14,13 +14,13 @@ struct Topic
         std::string topic;
 };
 
-void
+inline void
 from_json(const json &obj, Topic &event)
 {
         event.topic = obj.at("topic").get<std::string>();
 }
 
-void
+inline void
 to_json(json &obj, const Topic &event)
 {
         obj["topic"] = event.topic;

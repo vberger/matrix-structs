@@ -15,7 +15,7 @@ struct Create
         bool federate;
 };
 
-void
+inline void
 from_json(const json &obj, Create &create)
 {
         using namespace mtx::identifiers;
@@ -25,7 +25,7 @@ from_json(const json &obj, Create &create)
                 create.federate = obj.at("m.federate").get<bool>();
 }
 
-void
+inline void
 to_json(json &obj, const Create &create)
 {
         obj["creator"]    = create.creator.toString();

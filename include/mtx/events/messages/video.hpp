@@ -26,7 +26,7 @@ struct Video
         common::VideoInfo info;
 };
 
-void
+inline void
 from_json(const json &obj, Video &content)
 {
         content.body    = obj.at("body").get<std::string>();
@@ -39,7 +39,7 @@ from_json(const json &obj, Video &content)
                 content.info = obj.at("info").get<common::VideoInfo>();
 }
 
-void
+inline void
 to_json(json &obj, const Video &content)
 {
         obj["msgtype"] = "m.video";

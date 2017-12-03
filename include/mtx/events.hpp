@@ -41,7 +41,7 @@ enum class EventType
         Unsupported,
 };
 
-EventType
+inline EventType
 getEventType(const std::string &type)
 {
         if (type == "m.room.aliases")
@@ -76,7 +76,7 @@ getEventType(const std::string &type)
         return EventType::Unsupported;
 }
 
-EventType
+inline EventType
 getEventType(const json &obj)
 {
         if (obj.find("type") != obj.end())
@@ -300,7 +300,7 @@ enum class MessageType
         Unknown,
 };
 
-MessageType
+inline MessageType
 getMessageType(const std::string &type)
 {
         if (type == "m.audio")
@@ -323,7 +323,7 @@ getMessageType(const std::string &type)
         return MessageType::Unknown;
 }
 
-MessageType
+inline MessageType
 getMessageType(const json &obj)
 {
         if (obj.is_null())

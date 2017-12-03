@@ -16,7 +16,7 @@ struct Versions
         std::vector<std::string> versions;
 };
 
-void
+inline void
 from_json(const json &obj, Versions &response)
 {
         response.versions = obj.at("versions").get<std::vector<std::string>>();

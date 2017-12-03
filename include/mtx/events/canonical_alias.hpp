@@ -14,13 +14,13 @@ struct CanonicalAlias
         std::string alias;
 };
 
-void
+inline void
 from_json(const json &obj, CanonicalAlias &canonical_alias)
 {
         canonical_alias.alias = obj.at("alias").get<std::string>();
 }
 
-void
+inline void
 to_json(json &obj, const CanonicalAlias &canonical_alias)
 {
         obj["alias"] = canonical_alias.alias;

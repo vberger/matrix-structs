@@ -14,7 +14,7 @@ struct Messages
         std::vector<events::collections::TimelineEvents> chunk;
 };
 
-void
+inline void
 from_json(const json &obj, Messages &messages)
 {
         messages.start = obj.at("start").get<std::string>();

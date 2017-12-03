@@ -14,13 +14,13 @@ struct Redaction
         std::string reason;
 };
 
-void
+inline void
 from_json(const json &obj, Redaction &event)
 {
         event.reason = obj.at("reason").get<std::string>();
 }
 
-void
+inline void
 to_json(json &obj, const Redaction &event)
 {
         obj["reason"] = event.reason;

@@ -16,7 +16,7 @@ struct ThumbnailInfo
         std::string mimetype;
 };
 
-void
+inline void
 from_json(const json &obj, ThumbnailInfo &info)
 {
         info.h        = obj.at("h").get<uint64_t>();
@@ -25,7 +25,7 @@ from_json(const json &obj, ThumbnailInfo &info)
         info.mimetype = obj.at("mimetype").get<std::string>();
 }
 
-void
+inline void
 to_json(json &obj, const ThumbnailInfo &info)
 {
         obj["h"]        = info.h;
@@ -46,7 +46,7 @@ struct ImageInfo
         std::string mimetype;
 };
 
-void
+inline void
 from_json(const json &obj, ImageInfo &info)
 {
         info.h              = obj.at("h").get<uint64_t>();
@@ -57,7 +57,7 @@ from_json(const json &obj, ImageInfo &info)
         info.thumbnail_info = obj.at("thumbnail_info").get<ThumbnailInfo>();
 }
 
-void
+inline void
 to_json(json &obj, const ImageInfo &info)
 {
         obj["h"]              = info.h;
@@ -80,7 +80,7 @@ struct FileInfo
         std::string mimetype;
 };
 
-void
+inline void
 from_json(const json &obj, FileInfo &info)
 {
         if (obj.find("size") != obj.end())
@@ -96,7 +96,7 @@ from_json(const json &obj, FileInfo &info)
                 info.thumbnail_info = obj.at("thumbnail_info").get<ThumbnailInfo>();
 }
 
-void
+inline void
 to_json(json &obj, const FileInfo &info)
 {
         obj["size"]           = info.size;
@@ -112,7 +112,7 @@ struct AudioInfo
         std::string mimetype;
 };
 
-void
+inline void
 from_json(const json &obj, AudioInfo &info)
 {
         info.duration = obj.at("duration").get<uint64_t>();
@@ -120,7 +120,7 @@ from_json(const json &obj, AudioInfo &info)
         info.mimetype = obj.at("mimetype").get<std::string>();
 }
 
-void
+inline void
 to_json(json &obj, const AudioInfo &info)
 {
         obj["size"]     = info.size;
@@ -146,7 +146,7 @@ struct VideoInfo
         ThumbnailInfo thumbnail_info;
 };
 
-void
+inline void
 from_json(const json &obj, VideoInfo &info)
 {
         if (obj.find("w") != obj.end())
@@ -171,7 +171,7 @@ from_json(const json &obj, VideoInfo &info)
                 info.thumbnail_info = obj.at("thumbnail_info").get<ThumbnailInfo>();
 }
 
-void
+inline void
 to_json(json &obj, const VideoInfo &info)
 {
         obj["size"]           = info.size;

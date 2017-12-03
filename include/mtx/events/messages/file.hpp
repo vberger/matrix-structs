@@ -29,7 +29,7 @@ struct File
         common::FileInfo info;
 };
 
-void
+inline void
 from_json(const json &obj, File &content)
 {
         content.body    = obj.at("body").get<std::string>();
@@ -45,7 +45,7 @@ from_json(const json &obj, File &content)
                 content.info = obj.at("info").get<common::FileInfo>();
 }
 
-void
+inline void
 to_json(json &obj, const File &content)
 {
         obj["msgtype"]  = "m.file";

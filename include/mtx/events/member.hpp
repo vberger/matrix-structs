@@ -23,7 +23,7 @@ enum class Membership
         Knock,
 };
 
-std::string
+inline std::string
 membershipToString(const Membership &membership)
 {
         switch (membership) {
@@ -42,7 +42,7 @@ membershipToString(const Membership &membership)
         return "";
 }
 
-Membership
+inline Membership
 stringToMembership(const std::string &membership)
 {
         if (membership == "join")
@@ -67,7 +67,7 @@ struct Member
         bool is_direct = false;
 };
 
-void
+inline void
 from_json(const json &obj, Member &member)
 {
         member.membership = stringToMembership(obj.at("membership").get<std::string>());
@@ -82,7 +82,7 @@ from_json(const json &obj, Member &member)
                 member.is_direct = obj.at("is_direct").get<bool>();
 }
 
-void
+inline void
 to_json(json &obj, const Member &member)
 {
         obj["membership"]  = membershipToString(member.membership);

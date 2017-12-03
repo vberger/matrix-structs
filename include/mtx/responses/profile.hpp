@@ -14,7 +14,7 @@ struct Profile
         std::string display_name;
 };
 
-void
+inline void
 from_json(const json &obj, Profile &profile)
 {
         if (obj.count("avatar_url") != 0 && !obj.at("avatar_url").is_null())

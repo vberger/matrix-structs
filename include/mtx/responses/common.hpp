@@ -9,7 +9,7 @@ namespace mtx {
 namespace responses {
 namespace utils {
 
-void
+inline void
 parse_timeline_events(const json &events,
                       std::vector<mtx::events::collections::TimelineEvents> &container)
 {
@@ -133,7 +133,8 @@ parse_timeline_events(const json &events,
                 }
         }
 }
-void
+
+inline void
 parse_state_events(const json &events,
                    std::vector<mtx::events::collections::StateEvents> &container)
 {

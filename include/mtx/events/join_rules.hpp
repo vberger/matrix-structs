@@ -22,7 +22,7 @@ enum class JoinRule
         Private,
 };
 
-std::string
+inline std::string
 joinRuleToString(const JoinRule &rule)
 {
         switch (rule) {
@@ -39,7 +39,7 @@ joinRuleToString(const JoinRule &rule)
         return "";
 }
 
-JoinRule
+inline JoinRule
 stringToJoinRule(const std::string &rule)
 {
         if (rule == "public")
@@ -57,13 +57,13 @@ struct JoinRules
         JoinRule join_rule;
 };
 
-void
+inline void
 from_json(const json &obj, JoinRules &join_rules)
 {
         join_rules.join_rule = stringToJoinRule(obj.at("join_rule").get<std::string>());
 }
 
-void
+inline void
 to_json(json &obj, const JoinRules &join_rules)
 {
         obj["join_rule"] = joinRuleToString(join_rules.join_rule);

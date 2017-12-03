@@ -17,14 +17,14 @@ struct Text
         std::string msgtype;
 };
 
-void
+inline void
 from_json(const json &obj, Text &content)
 {
         content.body    = obj.at("body").get<std::string>();
         content.msgtype = obj.at("msgtype").get<std::string>();
 }
 
-void
+inline void
 to_json(json &obj, const Text &content)
 {
         obj["msgtype"] = "m.text";

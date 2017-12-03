@@ -29,7 +29,7 @@ enum class Visibility
         Joined,
 };
 
-std::string
+inline std::string
 visibilityToString(const Visibility &rule)
 {
         switch (rule) {
@@ -46,7 +46,7 @@ visibilityToString(const Visibility &rule)
         return "";
 }
 
-Visibility
+inline Visibility
 stringToVisibility(const std::string &rule)
 {
         if (rule == "world_readable")
@@ -64,14 +64,14 @@ struct HistoryVisibility
         Visibility history_visibility;
 };
 
-void
+inline void
 from_json(const json &obj, HistoryVisibility &event)
 {
         event.history_visibility =
           stringToVisibility(obj.at("history_visibility").get<std::string>());
 }
 
-void
+inline void
 to_json(json &obj, const HistoryVisibility &event)
 {
         obj["history_visibility"] = visibilityToString(event.history_visibility);

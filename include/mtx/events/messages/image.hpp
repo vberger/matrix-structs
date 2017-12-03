@@ -27,7 +27,7 @@ struct Image
         common::ImageInfo info;
 };
 
-void
+inline void
 from_json(const json &obj, Image &content)
 {
         content.body    = obj.at("body").get<std::string>();
@@ -40,7 +40,7 @@ from_json(const json &obj, Image &content)
                 content.info = obj.at("info").get<common::ImageInfo>();
 }
 
-void
+inline void
 to_json(json &obj, const Image &content)
 {
         obj["msgtype"] = "m.image";

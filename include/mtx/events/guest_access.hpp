@@ -15,7 +15,7 @@ enum class AccessState
         Forbidden,
 };
 
-std::string
+inline std::string
 accessStateToString(AccessState state)
 {
         if (state == AccessState::CanJoin)
@@ -24,7 +24,7 @@ accessStateToString(AccessState state)
         return "forbidden";
 }
 
-AccessState
+inline AccessState
 stringToAccessState(const std::string &state)
 {
         if (state == "can_join")
@@ -38,13 +38,13 @@ struct GuestAccess
         AccessState guest_access = AccessState::Forbidden;
 };
 
-void
+inline void
 from_json(const json &obj, GuestAccess &guest_access)
 {
         guest_access.guest_access = stringToAccessState(obj.at("guest_access").get<std::string>());
 }
 
-void
+inline void
 to_json(json &obj, const GuestAccess &guest_access)
 {
         obj["guest_access"] = accessStateToString(guest_access.guest_access);

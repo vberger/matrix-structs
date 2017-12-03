@@ -22,7 +22,7 @@ struct Login
         std::string device_id;
 };
 
-void
+inline void
 from_json(const json &obj, Login &response)
 {
         using namespace mtx::identifiers;

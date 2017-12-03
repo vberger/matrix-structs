@@ -13,13 +13,13 @@ struct Aliases
         std::vector<std::string> aliases;
 };
 
-void
+inline void
 from_json(const json &obj, Aliases &content)
 {
         content.aliases = obj.at("aliases").get<std::vector<std::string>>();
 }
 
-void
+inline void
 to_json(json &obj, const Aliases &content)
 {
         obj["aliases"] = content.aliases;

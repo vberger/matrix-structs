@@ -17,7 +17,7 @@ struct Avatar
         std::string url;
 };
 
-void
+inline void
 from_json(const json &obj, Avatar &avatar)
 {
         if (obj.find("info") != obj.end())
@@ -27,7 +27,7 @@ from_json(const json &obj, Avatar &avatar)
                 avatar.url = obj.at("url").get<std::string>();
 }
 
-void
+inline void
 to_json(json &obj, const Avatar &avatar)
 {
         obj["info"] = avatar.image_info;
