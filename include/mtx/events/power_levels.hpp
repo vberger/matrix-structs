@@ -38,10 +38,18 @@ struct PowerLevels
 inline void
 from_json(const json &obj, PowerLevels &power_levels)
 {
-        power_levels.ban    = obj.at("ban").get<uint16_t>();
-        power_levels.invite = obj.at("invite").get<uint16_t>();
-        power_levels.kick   = obj.at("kick").get<uint16_t>();
-        power_levels.redact = obj.at("redact").get<uint16_t>();
+        // SPEC_BUG: Not always present.
+        if (obj.count("ban") != 0)
+                power_levels.ban = obj.at("ban").get<uint16_t>();
+
+        if (obj.count("invite") != 0)
+                power_levels.invite = obj.at("invite").get<uint16_t>();
+
+        if (obj.count("kick") != 0)
+                power_levels.kick = obj.at("kick").get<uint16_t>();
+
+        if (obj.count("redact") != 0)
+                power_levels.redact = obj.at("redact").get<uint16_t>();
 
         power_levels.events = obj.at("events").get<std::map<std::string, uint16_t>>();
         power_levels.users  = obj.at("users").get<std::map<std::string, uint16_t>>();

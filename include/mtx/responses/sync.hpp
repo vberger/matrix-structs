@@ -112,18 +112,26 @@ struct Rooms
 inline void
 from_json(const json &obj, Rooms &rooms)
 {
-        auto joined = obj.at("join");
-        auto leave  = obj.at("leave");
-        auto invite = obj.at("invite");
+        if (obj.count("join") != 0) {
+                auto joined = obj.at("join");
 
-        for (auto it = joined.begin(); it != joined.end(); ++it)
-                rooms.join[it.key()] = it.value().get<JoinedRoom>();
+                for (auto it = joined.begin(); it != joined.end(); ++it)
+                        rooms.join[it.key()] = it.value().get<JoinedRoom>();
+        }
 
-        for (auto it = leave.begin(); it != leave.end(); ++it)
-                rooms.leave[it.key()] = it.value().get<LeftRoom>();
+        if (obj.count("leave") != 0) {
+                auto leave = obj.at("leave");
 
-        for (auto it = invite.begin(); it != invite.end(); ++it)
-                rooms.invite[it.key()] = it.value().get<InvitedRoom>();
+                for (auto it = leave.begin(); it != leave.end(); ++it)
+                        rooms.leave[it.key()] = it.value().get<LeftRoom>();
+        }
+
+        if (obj.count("invite") != 0) {
+                auto invite = obj.at("invite");
+
+                for (auto it = invite.begin(); it != invite.end(); ++it)
+                        rooms.invite[it.key()] = it.value().get<InvitedRoom>();
+        }
 }
 
 struct Sync
