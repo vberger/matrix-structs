@@ -33,8 +33,11 @@ include_directories(deps/json/src)
 include_directories(deps/variant/include/mpark)
 include_directories(include)
 
-add_library(${CMAKE_PROJECT_NAME} SHARED include/mtx.hpp)
-set_target_properties(${CMAKE_PROJECT_NAME} PROPERTIES LINKER_LANGUAGE CXX)
+add_library(matrix_structs INTERFACE)
+target_include_directories(matrix_structs INTERFACE
+    include
+    deps/json/src
+    deps/variant/include/mpark)
 
 if (BUILD_TESTS)
     enable_testing()
