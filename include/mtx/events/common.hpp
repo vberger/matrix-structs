@@ -19,10 +19,17 @@ struct ThumbnailInfo
 inline void
 from_json(const json &obj, ThumbnailInfo &info)
 {
-        info.h        = obj.at("h").get<uint64_t>();
-        info.w        = obj.at("w").get<uint64_t>();
-        info.size     = obj.at("size").get<uint64_t>();
-        info.mimetype = obj.at("mimetype").get<std::string>();
+        if (obj.find("h") != obj.end())
+                info.h = obj.at("h").get<uint64_t>();
+
+        if (obj.find("w") != obj.end())
+                info.w = obj.at("w").get<uint64_t>();
+
+        if (obj.find("size") != obj.end())
+                info.size = obj.at("size").get<uint64_t>();
+
+        if (obj.find("mimetype") != obj.end())
+                info.mimetype = obj.at("mimetype").get<std::string>();
 }
 
 inline void
@@ -49,12 +56,23 @@ struct ImageInfo
 inline void
 from_json(const json &obj, ImageInfo &info)
 {
-        info.h              = obj.at("h").get<uint64_t>();
-        info.w              = obj.at("w").get<uint64_t>();
-        info.size           = obj.at("size").get<uint64_t>();
-        info.mimetype       = obj.at("mimetype").get<std::string>();
-        info.thumbnail_url  = obj.at("thumbnail_url").get<std::string>();
-        info.thumbnail_info = obj.at("thumbnail_info").get<ThumbnailInfo>();
+        if (obj.find("h") != obj.end())
+                info.h = obj.at("h").get<uint64_t>();
+
+        if (obj.find("w") != obj.end())
+                info.w = obj.at("w").get<uint64_t>();
+
+        if (obj.find("size") != obj.end())
+                info.size = obj.at("size").get<uint64_t>();
+
+        if (obj.find("mimetype") != obj.end())
+                info.mimetype = obj.at("mimetype").get<std::string>();
+
+        if (obj.find("thumbnail_url") != obj.end())
+                info.thumbnail_url = obj.at("thumbnail_url").get<std::string>();
+
+        if (obj.find("thumbnail_info") != obj.end())
+                info.thumbnail_info = obj.at("thumbnail_info").get<ThumbnailInfo>();
 }
 
 inline void
@@ -115,9 +133,14 @@ struct AudioInfo
 inline void
 from_json(const json &obj, AudioInfo &info)
 {
-        info.duration = obj.at("duration").get<uint64_t>();
-        info.size     = obj.at("size").get<uint64_t>();
-        info.mimetype = obj.at("mimetype").get<std::string>();
+        if (obj.find("duration") != obj.end())
+                info.duration = obj.at("duration").get<uint64_t>();
+
+        if (obj.find("size") != obj.end())
+                info.size = obj.at("size").get<uint64_t>();
+
+        if (obj.find("mimetype") != obj.end())
+                info.mimetype = obj.at("mimetype").get<std::string>();
 }
 
 inline void

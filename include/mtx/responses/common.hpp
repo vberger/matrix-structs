@@ -122,13 +122,11 @@ parse_timeline_events(const json &events,
                                 break;
                         }
                         default:
-                                std::cout << "unknown m.room.message" << e << std::endl;
                                 continue;
                         }
                         break;
                 }
                 default:
-                        std::cout << "unknown event " << e << std::endl;
                         continue;
                 }
         }
@@ -202,7 +200,6 @@ parse_state_events(const json &events,
                         break;
                 }
                 default:
-                        std::cout << "unknown event " << e << std::endl;
                         continue;
                 }
         }
