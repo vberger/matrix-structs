@@ -96,7 +96,7 @@ template<class Content>
 void
 to_json(json &obj, const Event<Content> &event)
 {
-        obj["content"] = json{event.content};
+        obj["content"] = event.content;
 
         switch (event.type) {
         case EventType::RoomAliases:
@@ -158,7 +158,7 @@ from_json(const json &obj, Event<Content> &event)
 template<class Content>
 struct UnsignedData
 {
-        uint64_t age;
+        uint64_t age = 0;
         std::string transaction_id;
         std::string prev_sender;
         std::string replaces_state;
@@ -190,11 +190,19 @@ template<class Content>
 void
 to_json(json &obj, const UnsignedData<Content> &event)
 {
-        obj["age"]            = event.age;
-        obj["transaction_id"] = event.transaction_id;
-        obj["prev_sender"]    = event.prev_sender;
-        obj["replaces_state"] = event.replaces_state;
-        obj["prev_content"]   = event.prev_content;
+        if (!event.prev_sender.empty())
+                obj["prev_sender"] = event.prev_sender;
+
+        if (!event.transaction_id.empty())
+                obj["transaction_id"] = event.transaction_id;
+
+        if (!event.replaces_state.empty())
+                obj["replaces_state"] = event.replaces_state;
+
+        if (event.age != 0)
+                obj["age"] = event.age;
+
+        obj["prev_content"] = event.prev_content;
 }
 
 template<class Content>
@@ -235,8 +243,13 @@ template<class Content>
 void
 to_json(json &obj, const RoomEvent<Content> &event)
 {
+        Event<Content> base_event = event;
+        to_json(obj, base_event);
+
+        if (!event.room_id.empty())
+                obj["room_id"] = event.room_id;
+
         obj["event_id"]         = event.event_id;
-        obj["room_id"]          = event.room_id;
         obj["sender"]           = event.sender;
         obj["unsigned"]         = event.unsigned_data;
         obj["origin_server_ts"] = event.origin_server_ts;
@@ -253,8 +266,11 @@ template<class Content>
 void
 to_json(json &obj, const StateEvent<Content> &event)
 {
+        RoomEvent<Content> base_event = event;
+        to_json(obj, base_event);
+
         obj["state_key"]    = event.state_key;
-        obj["prev_content"] = json{event.prev_content};
+        obj["prev_content"] = event.prev_content;
 }
 
 template<class Content>

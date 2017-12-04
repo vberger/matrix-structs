@@ -7,7 +7,6 @@
 namespace mtx {
 namespace identifiers {
 
-static unsigned short MIN_SIZE = 4;
 static std::regex LOCALPART_REGEX("[A-za-z0-9._%+-]{1,}");
 static std::regex DOMAIN_NAME_REGEX("(?!\\-)(?:[a-zA-Z\\d\\-]{0,62}[a-zA-Z\\d]\\.){1,"
                                     "126}(?!\\d+)[a-zA-Z\\d]{1,63}(:\\d{0,5})?");
@@ -61,10 +60,14 @@ template<typename Identifier>
 Identifier
 parse(const std::string &id)
 {
-        if (id.size() < MIN_SIZE)
-                throw std::invalid_argument("Minimum id length was not satisfied\n");
-
         Identifier identifier;
+
+        if (id.empty()) {
+                // FIXME: enable logging only in debug mode.
+                /* std::cout << "mtx::identifiers - Empty matrix identifier was given" << std::endl;
+                 */
+                return identifier;
+        }
 
         if (std::string(1, id.at(0)) != identifier.sigil)
                 throw std::invalid_argument(

@@ -55,11 +55,9 @@ TEST(MatrixIdentifiers, IdentifierInvalid)
 {
         ASSERT_THROW(parse<Room>("39fasdsdfsdf:example.com:5000"), std::invalid_argument);
         ASSERT_THROW(parse<Room>("!example.com:5000"), std::invalid_argument);
-        ASSERT_THROW(parse<Room>(""), std::invalid_argument);
         ASSERT_THROW(parse<Room>("!test:matrix"), std::invalid_argument);
 
         ASSERT_THROW(parse<User>("39fasdsdfsdf:example.com:5000"), std::invalid_argument);
         ASSERT_THROW(parse<User>("!example.com:5000"), std::invalid_argument);
-        ASSERT_THROW(parse<User>(""), std::invalid_argument);
         ASSERT_THROW(parse<User>("!test:matrix"), std::invalid_argument);
 }
