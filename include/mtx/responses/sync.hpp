@@ -56,13 +56,36 @@ from_json(const json &obj, UnreadNotifications &notifications)
                 notifications.notification_count = obj.at("notification_count").get<uint16_t>();
 }
 
+struct Ephemeral
+{
+        std::vector<std::string> typing;
+};
+
+inline void
+from_json(const json &obj, Ephemeral &ephemeral)
+{
+        if (obj.count("events") == 0)
+                return;
+
+        auto events = obj.at("events");
+
+        for (auto event : events) {
+                auto type = event.at("type").get<std::string>();
+
+                if (type == "m.typing") {
+                        auto content     = event.at("content");
+                        ephemeral.typing = content.at("user_ids").get<std::vector<std::string>>();
+                }
+        }
+}
+
 struct JoinedRoom
 {
         State state;
         Timeline timeline;
         UnreadNotifications unread_notifications;
         /* AccountData account_data; */
-        /* Ephemeral ephemeral; */
+        Ephemeral ephemeral;
 };
 
 inline void
@@ -74,6 +97,9 @@ from_json(const json &obj, JoinedRoom &room)
         if (obj.find("unread_notifications") != obj.end())
                 room.unread_notifications =
                   obj.at("unread_notifications").get<UnreadNotifications>();
+
+        if (obj.find("ephemeral") != obj.end())
+                room.ephemeral = obj.at("ephemeral").get<Ephemeral>();
 }
 
 struct LeftRoom

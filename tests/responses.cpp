@@ -261,3 +261,24 @@ TEST(Responses, Messages)
         EXPECT_EQ(third_event.event_id, "$1444812213350496Ccccc:example.com");
         EXPECT_EQ(third_event.sender, "@bob:example.com");
 }
+
+TEST(Responses, EphemeralTyping)
+{
+        json data = R"({
+          "events": [{
+            "type": "m.typing",
+            "content": {
+              "user_ids": [
+                "@alice:example.com",
+                "@bob:example.com"
+              ]
+            }
+          }]
+        })"_json;
+
+        mtx::responses::Ephemeral ephemeral = data;
+
+        EXPECT_EQ(ephemeral.typing.size(), 2);
+        EXPECT_EQ(ephemeral.typing[0], "@alice:example.com");
+        EXPECT_EQ(ephemeral.typing[1], "@bob:example.com");
+}
