@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.1)
 
 project(matrix-structs CXX)
 
-option(BUILD_TESTS "Build tests" ON)
+option(BUILD_TESTS "Build tests" OFF)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
