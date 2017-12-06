@@ -118,14 +118,13 @@ from_json(const json &obj, LeftRoom &room)
 struct InvitedRoom
 {
         State state;
-        Timeline timeline;
 };
 
 inline void
-from_json(const json &obj, InvitedRoom &room)
+from_json(const json &, InvitedRoom &)
 {
-        room.state    = obj.at("state").get<State>();
-        room.timeline = obj.at("timeline").get<Timeline>();
+        // FIXME: It should be a StrippedState.
+        /* room.state = obj.at("invite_state").get<State>(); */
 }
 
 struct Rooms
