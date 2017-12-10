@@ -204,6 +204,79 @@ parse_state_events(const json &events,
                 }
         }
 }
+
+inline void
+parse_stripped_events(const json &events,
+                      std::vector<mtx::events::collections::StrippedEvents> &container)
+{
+        container.clear();
+
+        for (const auto &e : events) {
+                events::EventType type = mtx::events::getEventType(e);
+
+                namespace ns = mtx::events::state;
+
+                switch (type) {
+                case events::EventType::RoomAliases: {
+                        events::StrippedEvent<ns::Aliases> alias = e;
+                        container.emplace_back(alias);
+                        break;
+                }
+                case events::EventType::RoomAvatar: {
+                        events::StrippedEvent<ns::Avatar> avatar = e;
+                        container.emplace_back(avatar);
+                        break;
+                }
+                case events::EventType::RoomCanonicalAlias: {
+                        events::StrippedEvent<ns::CanonicalAlias> canonical_alias = e;
+                        container.emplace_back(canonical_alias);
+                        break;
+                }
+                case events::EventType::RoomCreate: {
+                        events::StrippedEvent<ns::Create> create = e;
+                        container.emplace_back(create);
+                        break;
+                }
+                case events::EventType::RoomGuestAccess: {
+                        events::StrippedEvent<ns::GuestAccess> guest_access = e;
+                        container.emplace_back(guest_access);
+                        break;
+                }
+                case events::EventType::RoomHistoryVisibility: {
+                        events::StrippedEvent<ns::HistoryVisibility> history_visibility = e;
+                        container.emplace_back(history_visibility);
+                        break;
+                }
+                case events::EventType::RoomJoinRules: {
+                        events::StrippedEvent<ns::JoinRules> join_rules = e;
+                        container.emplace_back(join_rules);
+                        break;
+                }
+                case events::EventType::RoomMember: {
+                        events::StrippedEvent<ns::Member> member = e;
+                        container.emplace_back(member);
+                        break;
+                }
+                case events::EventType::RoomName: {
+                        events::StrippedEvent<ns::Name> name = e;
+                        container.emplace_back(name);
+                        break;
+                }
+                case events::EventType::RoomPowerLevels: {
+                        events::StrippedEvent<ns::PowerLevels> power_levels = e;
+                        container.emplace_back(power_levels);
+                        break;
+                }
+                case events::EventType::RoomTopic: {
+                        events::StrippedEvent<ns::Topic> topic = e;
+                        container.emplace_back(topic);
+                        break;
+                }
+                default:
+                        continue;
+                }
+        }
+}
 }
 }
 }

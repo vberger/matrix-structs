@@ -25,6 +25,20 @@ using StateEvents = mpark::variant<events::StateEvent<states::Aliases>,
                                    // TODO: events::StateEvent<states::Redaction>,
                                    events::StateEvent<states::Topic>>;
 
+using StrippedEvents = mpark::variant<events::StrippedEvent<states::Aliases>,
+                                      events::StrippedEvent<states::Avatar>,
+                                      events::StrippedEvent<states::CanonicalAlias>,
+                                      events::StrippedEvent<states::Create>,
+                                      events::StrippedEvent<states::GuestAccess>,
+                                      events::StrippedEvent<states::HistoryVisibility>,
+                                      events::StrippedEvent<states::JoinRules>,
+                                      events::StrippedEvent<states::Member>,
+                                      events::StrippedEvent<states::Name>,
+                                      events::StrippedEvent<states::PinnedEvents>,
+                                      events::StrippedEvent<states::PowerLevels>,
+                                      // TODO: events::StrippedEvent<states::Redaction>,
+                                      events::StrippedEvent<states::Topic>>;
+
 using TimelineEvents = mpark::variant<events::StateEvent<states::Aliases>,
                                       events::StateEvent<states::Avatar>,
                                       events::StateEvent<states::CanonicalAlias>,

@@ -117,14 +117,13 @@ from_json(const json &obj, LeftRoom &room)
 
 struct InvitedRoom
 {
-        State state;
+        std::vector<events::collections::StrippedEvents> invite_state;
 };
 
 inline void
-from_json(const json &, InvitedRoom &)
+from_json(const json &obj, InvitedRoom &room)
 {
-        // FIXME: It should be a StrippedState.
-        /* room.state = obj.at("invite_state").get<State>(); */
+        utils::parse_stripped_events(obj.at("invite_state"), room.invite_state);
 }
 
 struct Rooms

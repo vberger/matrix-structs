@@ -206,6 +206,37 @@ to_json(json &obj, const UnsignedData<Content> &event)
 }
 
 template<class Content>
+struct StrippedEvent : public Event<Content>
+{
+        std::string sender;
+        std::string state_key;
+};
+
+template<class Content>
+void
+from_json(const json &obj, StrippedEvent<Content> &event)
+{
+        Event<Content> base_event = event;
+        from_json(obj, base_event);
+
+        event.content   = base_event.content;
+        event.type      = base_event.type;
+        event.sender    = obj.at("sender").get<std::string>();
+        event.state_key = obj.at("state_key").get<std::string>();
+}
+
+template<class Content>
+void
+to_json(json &obj, const StrippedEvent<Content> &event)
+{
+        Event<Content> base_event = event;
+        to_json(obj, base_event);
+
+        obj["sender"]    = event.sender;
+        obj["state_key"] = event.state_key;
+}
+
+template<class Content>
 struct RoomEvent : public Event<Content>
 {
         std::string event_id;
