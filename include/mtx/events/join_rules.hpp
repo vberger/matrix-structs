@@ -60,6 +60,9 @@ struct JoinRules
 inline void
 from_json(const json &obj, JoinRules &join_rules)
 {
+        if (is_spec_violation(obj, "join_rule", "m.room.join_rule"))
+                return;
+
         join_rules.join_rule = stringToJoinRule(obj.at("join_rule").get<std::string>());
 }
 

@@ -17,6 +17,9 @@ struct Name
 inline void
 from_json(const json &obj, Name &event)
 {
+        if (is_spec_violation(obj, "name", "m.room.name"))
+                return;
+
         event.name = obj.at("name").get<std::string>();
 }
 

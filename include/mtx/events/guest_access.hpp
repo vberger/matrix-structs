@@ -41,6 +41,9 @@ struct GuestAccess
 inline void
 from_json(const json &obj, GuestAccess &guest_access)
 {
+        if (is_spec_violation(obj, "guest_access", "m.room.guest_access"))
+                return;
+
         guest_access.guest_access = stringToAccessState(obj.at("guest_access").get<std::string>());
 }
 

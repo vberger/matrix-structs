@@ -17,10 +17,10 @@ struct Topic
 inline void
 from_json(const json &obj, Topic &event)
 {
-        if (obj.count("topic") == 0)
-                std::cout << "Invalid m.topic event: missing topic key" << obj << std::endl;
-        else
-                event.topic = obj.at("topic").get<std::string>();
+        if (is_spec_violation(obj, "topic", "m.room.topic"))
+                return;
+
+        event.topic = obj.at("topic").get<std::string>();
 }
 
 inline void

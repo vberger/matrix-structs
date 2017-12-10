@@ -70,6 +70,9 @@ struct Member
 inline void
 from_json(const json &obj, Member &member)
 {
+        if (is_spec_violation(obj, "membership", "m.room.member"))
+                return;
+
         member.membership = stringToMembership(obj.at("membership").get<std::string>());
 
         if (obj.count("displayname") != 0 && !obj.at("displayname").is_null())

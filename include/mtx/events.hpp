@@ -2,6 +2,8 @@
 
 #include <json.hpp>
 
+#include "macros.hpp"
+
 using json = nlohmann::json;
 
 namespace mtx {
@@ -151,6 +153,9 @@ template<class Content>
 void
 from_json(const json &obj, Event<Content> &event)
 {
+        if (is_spec_violation(obj, "content", "Event") || is_spec_violation(obj, "type", "Event"))
+                return;
+
         event.content = obj.at("content").get<Content>();
         event.type    = getEventType(obj.at("type").get<std::string>());
 }
@@ -219,8 +224,13 @@ from_json(const json &obj, StrippedEvent<Content> &event)
         Event<Content> base_event = event;
         from_json(obj, base_event);
 
-        event.content   = base_event.content;
-        event.type      = base_event.type;
+        event.content = base_event.content;
+        event.type    = base_event.type;
+
+        if (is_spec_violation(obj, "sender", "StrippedEvent") ||
+            is_spec_violation(obj, "state_key", "StrippedEvent"))
+                return;
+
         event.sender    = obj.at("sender").get<std::string>();
         event.state_key = obj.at("state_key").get<std::string>();
 }
@@ -256,8 +266,14 @@ from_json(const json &obj, RoomEvent<Content> &event)
         Event<Content> base_event = event;
         from_json(obj, base_event);
 
-        event.content          = base_event.content;
-        event.type             = base_event.type;
+        event.content = base_event.content;
+        event.type    = base_event.type;
+
+        if (is_spec_violation(obj, "event_id", "RoomEvent") ||
+            is_spec_violation(obj, "sender", "RoomEvent") ||
+            is_spec_violation(obj, "origin_server_ts", "RoomEvent"))
+                return;
+
         event.event_id         = obj.at("event_id").get<std::string>();
         event.sender           = obj.at("sender").get<std::string>();
         event.origin_server_ts = obj.at("origin_server_ts").get<double>();
@@ -318,6 +334,9 @@ from_json(const json &obj, StateEvent<Content> &event)
         event.sender           = base_event.sender;
         event.origin_server_ts = base_event.origin_server_ts;
         event.unsigned_data    = base_event.unsigned_data;
+
+        if (is_spec_violation(obj, "state_key", "StateEvent"))
+                return;
 
         event.state_key = obj.at("state_key").get<std::string>();
 

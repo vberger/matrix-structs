@@ -17,6 +17,9 @@ struct CanonicalAlias
 inline void
 from_json(const json &obj, CanonicalAlias &canonical_alias)
 {
+        if (is_spec_violation(obj, "alias", "m.room.canonical_alias"))
+                return;
+
         canonical_alias.alias = obj.at("alias").get<std::string>();
 }
 

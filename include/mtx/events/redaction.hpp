@@ -17,6 +17,9 @@ struct Redaction
 inline void
 from_json(const json &obj, Redaction &event)
 {
+        if (is_spec_violation(obj, "reason", "m.room.redaction"))
+                return;
+
         event.reason = obj.at("reason").get<std::string>();
 }
 
