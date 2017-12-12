@@ -18,6 +18,10 @@ test:
 lint:
 	@clang-format -i ${FILES} && git diff --exit-code
 
+docker-test:
+	docker build -t matrix-structs-build .
+	docker run -v `pwd`:/build -t matrix-structs-build
+
 clean:
 	rm -rf build
 
