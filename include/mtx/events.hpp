@@ -197,8 +197,12 @@ from_json(const json &obj, StrippedEvent<Content> &event)
             is_spec_violation(obj, "state_key", "StrippedEvent"))
                 return;
 
-        event.sender    = obj.at("sender").get<std::string>();
-        event.state_key = obj.at("state_key").get<std::string>();
+        try {
+                event.sender    = obj.at("sender").get<std::string>();
+                event.state_key = obj.at("state_key").get<std::string>();
+        } catch (std::exception &e) {
+                std::cout << "parse error: " << e.what() << obj << std::endl;
+        }
 }
 
 template<class Content>
@@ -240,16 +244,20 @@ from_json(const json &obj, RoomEvent<Content> &event)
             is_spec_violation(obj, "origin_server_ts", "RoomEvent"))
                 return;
 
-        event.event_id         = obj.at("event_id").get<std::string>();
-        event.sender           = obj.at("sender").get<std::string>();
-        event.origin_server_ts = obj.at("origin_server_ts").get<double>();
+        try {
+                event.event_id         = obj.at("event_id").get<std::string>();
+                event.sender           = obj.at("sender").get<std::string>();
+                event.origin_server_ts = obj.at("origin_server_ts").get<double>();
 
-        // SPEC_BUG: Not present in the state array returned by /sync.
-        if (obj.find("room_id") != obj.end())
-                event.room_id = obj.at("room_id").get<std::string>();
+                // SPEC_BUG: Not present in the state array returned by /sync.
+                if (obj.find("room_id") != obj.end())
+                        event.room_id = obj.at("room_id").get<std::string>();
 
-        if (obj.find("unsigned") != obj.end())
-                event.unsigned_data = obj.at("unsigned").get<UnsignedData<Content>>();
+                if (obj.find("unsigned") != obj.end())
+                        event.unsigned_data = obj.at("unsigned").get<UnsignedData<Content>>();
+        } catch (std::exception &e) {
+                std::cout << "parse error: " << e.what() << obj << std::endl;
+        }
 }
 
 template<class Content>
@@ -304,10 +312,14 @@ from_json(const json &obj, StateEvent<Content> &event)
         if (is_spec_violation(obj, "state_key", "StateEvent"))
                 return;
 
-        event.state_key = obj.at("state_key").get<std::string>();
+        try {
+                event.state_key = obj.at("state_key").get<std::string>();
 
-        if (obj.find("prev_content") != obj.end())
-                event.prev_content = obj.at("prev_content").get<Content>();
+                if (obj.find("prev_content") != obj.end())
+                        event.prev_content = obj.at("prev_content").get<Content>();
+        } catch (std::exception &e) {
+                std::cout << "parse error: " << e.what() << obj << std::endl;
+        }
 }
 
 enum class MessageType
