@@ -118,8 +118,12 @@ from_json(const json &obj, Event<Content> &event)
         if (is_spec_violation(obj, "content", "Event") || is_spec_violation(obj, "type", "Event"))
                 return;
 
-        event.content = obj.at("content").get<Content>();
-        event.type    = getEventType(obj.at("type").get<std::string>());
+        try {
+                event.content = obj.at("content").get<Content>();
+                event.type    = getEventType(obj.at("type").get<std::string>());
+        } catch (std::exception &e) {
+                std::cout << "parse error: " << e.what() << obj << std::endl;
+        }
 }
 
 template<class Content>
