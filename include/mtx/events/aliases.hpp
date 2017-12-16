@@ -13,20 +13,11 @@ struct Aliases
         std::vector<std::string> aliases;
 };
 
-inline void
-from_json(const json &obj, Aliases &content)
-{
-        if (is_spec_violation(obj, "aliases", "m.room.aliases"))
-                return;
+void
+from_json(const json &obj, Aliases &content);
 
-        content.aliases = obj.at("aliases").get<std::vector<std::string>>();
-}
-
-inline void
-to_json(json &obj, const Aliases &content)
-{
-        obj["aliases"] = content.aliases;
-}
+void
+to_json(json &obj, const Aliases &content);
 
 } // namespace state
 } // namespace events

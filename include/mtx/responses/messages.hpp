@@ -1,9 +1,10 @@
 #pragma once
 
-#include <json.hpp>
 #include <string>
 
-using json = nlohmann::json;
+#include <json.hpp>
+
+#include "mtx/events/collections.hpp"
 
 namespace mtx {
 namespace responses {
@@ -11,16 +12,10 @@ struct Messages
 {
         std::string start;
         std::string end;
-        std::vector<events::collections::TimelineEvents> chunk;
+        std::vector<mtx::events::collections::TimelineEvents> chunk;
 };
 
-inline void
-from_json(const json &obj, Messages &messages)
-{
-        messages.start = obj.at("start").get<std::string>();
-        messages.end   = obj.at("end").get<std::string>();
-
-        utils::parse_timeline_events(obj.at("chunk"), messages.chunk);
-}
+void
+from_json(const nlohmann::json &obj, Messages &messages);
 }
 }

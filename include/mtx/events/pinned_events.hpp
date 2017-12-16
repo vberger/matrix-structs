@@ -14,20 +14,11 @@ struct PinnedEvents
         std::vector<std::string> pinned;
 };
 
-inline void
-from_json(const json &obj, PinnedEvents &event)
-{
-        if (is_spec_violation(obj, "pinned", "m.room.pinned_events"))
-                return;
+void
+from_json(const json &obj, PinnedEvents &event);
 
-        event.pinned = obj.at("pinned").get<std::vector<std::string>>();
-}
-
-inline void
-to_json(json &obj, const PinnedEvents &event)
-{
-        obj["pinned"] = event.pinned;
-}
+void
+to_json(json &obj, const PinnedEvents &event);
 
 } // namespace state
 } // namespace events

@@ -17,19 +17,11 @@ struct Emote
         std::string msgtype;
 };
 
-inline void
-from_json(const json &obj, Emote &content)
-{
-        content.body    = obj.at("body").get<std::string>();
-        content.msgtype = obj.at("msgtype").get<std::string>();
-}
+void
+from_json(const json &obj, Emote &content);
 
-inline void
-to_json(json &obj, const Emote &content)
-{
-        obj["msgtype"] = "m.emote";
-        obj["body"]    = content.body;
-}
+void
+to_json(json &obj, const Emote &content);
 
 } // namespace msg
 } // namespace events

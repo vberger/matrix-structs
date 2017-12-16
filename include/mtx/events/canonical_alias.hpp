@@ -1,7 +1,6 @@
 #pragma once
 
 #include <json.hpp>
-#include <string>
 
 using json = nlohmann::json;
 
@@ -14,20 +13,11 @@ struct CanonicalAlias
         std::string alias;
 };
 
-inline void
-from_json(const json &obj, CanonicalAlias &canonical_alias)
-{
-        if (is_spec_violation(obj, "alias", "m.room.canonical_alias"))
-                return;
+void
+from_json(const json &obj, CanonicalAlias &canonical_alias);
 
-        canonical_alias.alias = obj.at("alias").get<std::string>();
-}
-
-inline void
-to_json(json &obj, const CanonicalAlias &canonical_alias)
-{
-        obj["alias"] = canonical_alias.alias;
-}
+void
+to_json(json &obj, const CanonicalAlias &canonical_alias);
 
 } // namespace state
 } // namespace events

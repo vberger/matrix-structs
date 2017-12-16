@@ -29,56 +29,22 @@ enum class Visibility
         Joined,
 };
 
-inline std::string
-visibilityToString(const Visibility &rule)
-{
-        switch (rule) {
-        case Visibility::WorldReadable:
-                return "world_readable";
-        case Visibility::Invited:
-                return "invited";
-        case Visibility::Shared:
-                return "shared";
-        case Visibility::Joined:
-                return "joined";
-        }
+std::string
+visibilityToString(const Visibility &rule);
 
-        return "";
-}
-
-inline Visibility
-stringToVisibility(const std::string &rule)
-{
-        if (rule == "world_readable")
-                return Visibility::WorldReadable;
-        else if (rule == "invited")
-                return Visibility::Invited;
-        else if (rule == "shared")
-                return Visibility::Shared;
-
-        return Visibility::Joined;
-}
+Visibility
+stringToVisibility(const std::string &rule);
 
 struct HistoryVisibility
 {
         Visibility history_visibility;
 };
 
-inline void
-from_json(const json &obj, HistoryVisibility &event)
-{
-        if (is_spec_violation(obj, "history_visibility", "m.room.history_visibility"))
-                return;
+void
+from_json(const json &obj, HistoryVisibility &event);
 
-        event.history_visibility =
-          stringToVisibility(obj.at("history_visibility").get<std::string>());
-}
-
-inline void
-to_json(json &obj, const HistoryVisibility &event)
-{
-        obj["history_visibility"] = visibilityToString(event.history_visibility);
-}
+void
+to_json(json &obj, const HistoryVisibility &event);
 
 } // namespace state
 } // namespace events

@@ -1,9 +1,10 @@
 #pragma once
 
 #include <json.hpp>
-#include <string>
 
 using json = nlohmann::json;
+
+#include "mtx/identifiers.hpp"
 
 namespace mtx {
 namespace events {
@@ -15,25 +16,11 @@ struct Create
         bool federate;
 };
 
-inline void
-from_json(const json &obj, Create &create)
-{
-        if (is_spec_violation(obj, "creator", "m.room.create"))
-                return;
+void
+from_json(const json &obj, Create &create);
 
-        using namespace mtx::identifiers;
-        create.creator = parse<User>(obj.at("creator").get<std::string>());
-
-        if (obj.find("m.federate") != obj.end())
-                create.federate = obj.at("m.federate").get<bool>();
-}
-
-inline void
-to_json(json &obj, const Create &create)
-{
-        obj["creator"]    = create.creator.toString();
-        obj["m.federate"] = create.federate;
-}
+void
+to_json(json &obj, const Create &create);
 
 } // namespace state
 } // namespace events

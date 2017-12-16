@@ -14,20 +14,11 @@ struct Name
         std::string name;
 };
 
-inline void
-from_json(const json &obj, Name &event)
-{
-        if (is_spec_violation(obj, "name", "m.room.name"))
-                return;
+void
+from_json(const json &obj, Name &event);
 
-        event.name = obj.at("name").get<std::string>();
-}
-
-inline void
-to_json(json &obj, const Name &event)
-{
-        obj["name"] = event.name;
-}
+void
+to_json(json &obj, const Name &event);
 
 } // namespace state
 } // namespace events

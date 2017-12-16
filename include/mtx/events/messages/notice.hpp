@@ -17,19 +17,11 @@ struct Notice
         std::string msgtype;
 };
 
-inline void
-from_json(const json &obj, Notice &content)
-{
-        content.body    = obj.at("body").get<std::string>();
-        content.msgtype = obj.at("msgtype").get<std::string>();
-}
+void
+from_json(const json &obj, Notice &content);
 
-inline void
-to_json(json &obj, const Notice &content)
-{
-        obj["msgtype"] = "m.notice";
-        obj["body"]    = content.body;
-}
+void
+to_json(json &obj, const Notice &content);
 
 } // namespace msg
 } // namespace events

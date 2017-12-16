@@ -14,20 +14,11 @@ struct Topic
         std::string topic;
 };
 
-inline void
-from_json(const json &obj, Topic &event)
-{
-        if (is_spec_violation(obj, "topic", "m.room.topic"))
-                return;
+void
+from_json(const json &obj, Topic &event);
 
-        event.topic = obj.at("topic").get<std::string>();
-}
-
-inline void
-to_json(json &obj, const Topic &event)
-{
-        obj["topic"] = event.topic;
-}
+void
+to_json(json &obj, const Topic &event);
 
 } // namespace state
 } // namespace events

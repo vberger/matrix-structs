@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include <mtx.hpp>
+#include <mtx/identifiers.hpp>
 
 using namespace mtx::identifiers;
 

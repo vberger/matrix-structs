@@ -32,3 +32,5 @@ compile_commands.json
 
 # Ignore downloaded files.
 deps/*.hpp
+
+tags

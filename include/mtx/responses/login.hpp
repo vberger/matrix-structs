@@ -1,10 +1,10 @@
 #pragma once
 
-#include <json.hpp>
-#include <regex>
 #include <string>
 
-using json = nlohmann::json;
+#include <json.hpp>
+
+#include "mtx/identifiers.hpp"
 
 namespace mtx {
 namespace responses {
@@ -22,17 +22,7 @@ struct Login
         std::string device_id;
 };
 
-inline void
-from_json(const json &obj, Login &response)
-{
-        using namespace mtx::identifiers;
-        response.user_id = parse<User>(obj.at("user_id").get<std::string>());
-
-        response.access_token = obj.at("access_token").get<std::string>();
-        response.home_server  = obj.at("home_server").get<std::string>();
-
-        if (obj.count("device_id") != 0)
-                response.device_id = obj.at("device_id").get<std::string>();
-}
+void
+from_json(const nlohmann::json &obj, Login &response);
 }
 }

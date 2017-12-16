@@ -3,7 +3,7 @@
 #include <json.hpp>
 #include <string>
 
-#include "../common.hpp"
+#include "mtx/events/common.hpp"
 
 using json = nlohmann::json;
 
@@ -26,27 +26,11 @@ struct Video
         common::VideoInfo info;
 };
 
-inline void
-from_json(const json &obj, Video &content)
-{
-        content.body    = obj.at("body").get<std::string>();
-        content.msgtype = obj.at("msgtype").get<std::string>();
+void
+from_json(const json &obj, Video &content);
 
-        if (obj.find("url") != obj.end())
-                content.url = obj.at("url").get<std::string>();
-
-        if (obj.find("info") != obj.end())
-                content.info = obj.at("info").get<common::VideoInfo>();
-}
-
-inline void
-to_json(json &obj, const Video &content)
-{
-        obj["msgtype"] = "m.video";
-        obj["body"]    = content.body;
-        obj["url"]     = content.url;
-        obj["info"]    = content.info;
-}
+void
+to_json(json &obj, const Video &content);
 
 } // namespace msg
 } // namespace events

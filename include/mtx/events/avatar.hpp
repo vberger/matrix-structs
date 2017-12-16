@@ -1,11 +1,10 @@
 #pragma once
 
 #include <json.hpp>
-#include <string>
-
-#include "common.hpp"
 
 using json = nlohmann::json;
+
+#include "mtx/events/common.hpp"
 
 namespace mtx {
 namespace events {
@@ -17,22 +16,11 @@ struct Avatar
         std::string url;
 };
 
-inline void
-from_json(const json &obj, Avatar &avatar)
-{
-        if (obj.find("info") != obj.end())
-                avatar.image_info = obj.at("info").get<mtx::common::ImageInfo>();
+void
+from_json(const json &obj, Avatar &avatar);
 
-        if (obj.find("url") != obj.end())
-                avatar.url = obj.at("url").get<std::string>();
-}
-
-inline void
-to_json(json &obj, const Avatar &avatar)
-{
-        obj["info"] = avatar.image_info;
-        obj["url"]  = avatar.url;
-}
+void
+to_json(json &obj, const Avatar &avatar);
 
 } // namespace state
 } // namespace events
