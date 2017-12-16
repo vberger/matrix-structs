@@ -16,7 +16,8 @@ from_json(const json &obj, Name &event)
         if (is_spec_violation(obj, "name", "m.room.name"))
                 return;
 
-        event.name = obj.at("name").get<std::string>();
+        if (!obj.at("name").is_null())
+                event.name = obj.at("name").get<std::string>();
 }
 
 void

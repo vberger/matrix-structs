@@ -16,7 +16,7 @@ from_json(const json &obj, Avatar &avatar)
         if (obj.find("info") != obj.end())
                 avatar.image_info = obj.at("info").get<mtx::common::ImageInfo>();
 
-        if (obj.find("url") != obj.end())
+        if (obj.find("url") != obj.end() && !obj.at("url").is_null())
                 avatar.url = obj.at("url").get<std::string>();
 }
 
