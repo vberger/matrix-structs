@@ -29,8 +29,15 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID MATCHES "GNU")
     endif()
 endif()
 
-include_directories(deps/json/src)
-include_directories(deps/variant/include/mpark)
+file(DOWNLOAD
+    "https://github.com/nlohmann/json/releases/download/v2.1.1/json.hpp" deps/json.hpp
+    EXPECTED_MD5 "871e326cf493d17bce4578656759283d")
+
+file(DOWNLOAD
+    "https://github.com/mpark/variant/releases/download/v1.3.0/variant.hpp" deps/variant.hpp
+    EXPECTED_MD5 "be0ce322cdd408e1b347b9f1d59ea67a")
+
+include_directories(deps)
 include_directories(include)
 
 add_library(matrix_structs INTERFACE)
