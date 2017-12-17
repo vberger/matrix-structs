@@ -68,6 +68,56 @@ TEST(Responses, State)
         EXPECT_EQ(name.type, me::EventType::RoomName);
         EXPECT_EQ(name.sender, "@example2:localhost");
         EXPECT_EQ(name.content.name, "Random name");
+
+        // The first event is malformed (has null as the user id)
+        // and therefore is should be skipped.
+        json malformed_data = R"({
+	  "events": [
+	    { 
+	      "unsigned": {
+	        "age": 242352,
+	        "transaction_id": "txnid"
+	      },
+	      "content": {
+ 	        "aliases": [
+	          "#somewhere:localhost",
+	          "#another:localhost"
+	        ]
+	      },
+	      "event_id": "$WLGTSEFSEF:localhost",
+	      "origin_server_ts": 1431961217939,
+              "room_id": "!Cuyf34gef24t:localhost",
+	      "sender": null,
+	      "state_key": "localhost",
+	      "type": "m.room.aliases"
+	    },
+	    { 
+	      "unsigned": {
+	        "age": 242352,
+	        "transaction_id": "txnid"
+	      },
+	      "content": {
+ 	        "name": "Random name"
+	      },
+	      "event_id": "$WLGTSEFSEF2:localhost",
+	      "origin_server_ts": 1431961217939,
+              "room_id": "!Cuyf34gef24t:localhost",
+	      "sender": "@example2:localhost",
+	      "state_key": "localhost",
+	      "type": "m.room.name"
+	    }
+	  ]
+	})"_json;
+
+        ns::State malformed_state = malformed_data;
+
+        EXPECT_EQ(malformed_state.events.size(), 1);
+
+        name = mpark::get<me::StateEvent<me::state::Name>>(malformed_state.events[0]);
+        EXPECT_EQ(name.event_id, "$WLGTSEFSEF2:localhost");
+        EXPECT_EQ(name.type, me::EventType::RoomName);
+        EXPECT_EQ(name.sender, "@example2:localhost");
+        EXPECT_EQ(name.content.name, "Random name");
 }
 
 TEST(Responses, Timeline) {}
@@ -255,6 +305,59 @@ TEST(Responses, Messages)
         EXPECT_EQ(second_event.event_id, "$1444812213350496Cbbbb:example.com");
 
         auto third_event = mpark::get<StateEvent<Name>>(messages.chunk[2]);
+        EXPECT_EQ(third_event.content.name, "New room name");
+        EXPECT_EQ(third_event.prev_content.name, "Old room name");
+        EXPECT_EQ(third_event.type, mtx::events::EventType::RoomName);
+        EXPECT_EQ(third_event.event_id, "$1444812213350496Ccccc:example.com");
+        EXPECT_EQ(third_event.sender, "@bob:example.com");
+
+        // Two of the events are malformed and should be dropped.
+        // 1. Missing "type" key.
+        // 2. Content is null.
+        json malformed_data = R"({
+	"start": "t47429-4392820_219380_26003_2265",
+	"end": "t47409-4357353_219380_26003_2265",
+	"chunk": [{
+	  "origin_server_ts": 1444812213737,
+	  "sender": "@alice:example.com",
+	  "event_id": "$1444812213350496Caaaa:example.com",
+	  "content": {
+	    "body": "hello world",
+	    "msgtype": "m.text"
+	  },
+	  "room_id": "!Xq3620DUiqCaoxq:example.com",
+	  "age": 1042
+	}, {
+	  "origin_server_ts": 1444812194656,
+	  "sender": "@bob:example.com",
+	  "event_id": "$1444812213350496Cbbbb:example.com",
+	  "content": null,
+	  "room_id": "!Xq3620DUiqCaoxq:example.com",
+	  "type": "m.room.message",
+	  "age": 20123
+	}, {
+	  "origin_server_ts": 1444812163990,
+	  "sender": "@bob:example.com",
+	  "event_id": "$1444812213350496Ccccc:example.com",
+	  "content": {
+	    "name": "New room name"
+	  },
+	  "prev_content": {
+	    "name": "Old room name"
+	  },
+	  "state_key": "",
+	  "room_id": "!Xq3620DUiqCaoxq:example.com",
+	  "type": "m.room.name",
+	  "age": 50789
+	 }
+	]})"_json;
+
+        messages = malformed_data;
+        EXPECT_EQ(messages.start, "t47429-4392820_219380_26003_2265");
+        EXPECT_EQ(messages.end, "t47409-4357353_219380_26003_2265");
+        EXPECT_EQ(messages.chunk.size(), 1);
+
+        third_event = mpark::get<StateEvent<Name>>(messages.chunk[0]);
         EXPECT_EQ(third_event.content.name, "New room name");
         EXPECT_EQ(third_event.prev_content.name, "Old room name");
         EXPECT_EQ(third_event.type, mtx::events::EventType::RoomName);

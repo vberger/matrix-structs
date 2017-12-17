@@ -2,7 +2,6 @@
 #include <string>
 
 #include "mtx/events/history_visibility.hpp"
-#include "mtx/macros.hpp"
 
 using json = nlohmann::json;
 
@@ -43,9 +42,6 @@ stringToVisibility(const std::string &rule)
 void
 from_json(const json &obj, HistoryVisibility &event)
 {
-        if (is_spec_violation(obj, "history_visibility", "m.room.history_visibility"))
-                return;
-
         event.history_visibility =
           stringToVisibility(obj.at("history_visibility").get<std::string>());
 }

@@ -1,7 +1,6 @@
 #include <string>
 
 #include "mtx/events/create.hpp"
-#include "mtx/macros.hpp"
 
 using json = nlohmann::json;
 
@@ -12,9 +11,6 @@ namespace state {
 void
 from_json(const json &obj, Create &create)
 {
-        if (is_spec_violation(obj, "creator", "m.room.create"))
-                return;
-
         using namespace mtx::identifiers;
         create.creator = parse<User>(obj.at("creator").get<std::string>());
 

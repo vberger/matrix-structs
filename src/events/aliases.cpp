@@ -3,7 +3,6 @@
 using json = nlohmann::json;
 
 #include "mtx/events/aliases.hpp"
-#include "mtx/macros.hpp"
 
 namespace mtx {
 namespace events {
@@ -12,9 +11,6 @@ namespace state {
 void
 from_json(const json &obj, Aliases &content)
 {
-        if (is_spec_violation(obj, "aliases", "m.room.aliases"))
-                return;
-
         content.aliases = obj.at("aliases").get<std::vector<std::string>>();
 }
 

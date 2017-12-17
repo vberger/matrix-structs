@@ -1,5 +1,4 @@
 #include "mtx/events.hpp"
-#include "mtx/macros.hpp"
 
 using json = nlohmann::json;
 

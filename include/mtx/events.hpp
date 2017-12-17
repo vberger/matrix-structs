@@ -2,7 +2,7 @@
 
 #include <json.hpp>
 
-#include "mtx/macros.hpp"
+#include <iostream>
 
 using json = nlohmann::json;
 
@@ -115,15 +115,8 @@ template<class Content>
 void
 from_json(const json &obj, Event<Content> &event)
 {
-        if (is_spec_violation(obj, "content", "Event") || is_spec_violation(obj, "type", "Event"))
-                return;
-
-        try {
-                event.content = obj.at("content").get<Content>();
-                event.type    = getEventType(obj.at("type").get<std::string>());
-        } catch (std::exception &e) {
-                std::cout << "parse error: " << e.what() << obj << std::endl;
-        }
+        event.content = obj.at("content").get<Content>();
+        event.type    = getEventType(obj.at("type").get<std::string>());
 }
 
 template<class Content>
@@ -193,16 +186,8 @@ from_json(const json &obj, StrippedEvent<Content> &event)
         event.content = base_event.content;
         event.type    = base_event.type;
 
-        if (is_spec_violation(obj, "sender", "StrippedEvent") ||
-            is_spec_violation(obj, "state_key", "StrippedEvent"))
-                return;
-
-        try {
-                event.sender    = obj.at("sender").get<std::string>();
-                event.state_key = obj.at("state_key").get<std::string>();
-        } catch (std::exception &e) {
-                std::cout << "parse error: " << e.what() << obj << std::endl;
-        }
+        event.sender    = obj.at("sender").get<std::string>();
+        event.state_key = obj.at("state_key").get<std::string>();
 }
 
 template<class Content>
@@ -239,25 +224,16 @@ from_json(const json &obj, RoomEvent<Content> &event)
         event.content = base_event.content;
         event.type    = base_event.type;
 
-        if (is_spec_violation(obj, "event_id", "RoomEvent") ||
-            is_spec_violation(obj, "sender", "RoomEvent") ||
-            is_spec_violation(obj, "origin_server_ts", "RoomEvent"))
-                return;
+        event.event_id         = obj.at("event_id").get<std::string>();
+        event.sender           = obj.at("sender").get<std::string>();
+        event.origin_server_ts = obj.at("origin_server_ts").get<double>();
 
-        try {
-                event.event_id         = obj.at("event_id").get<std::string>();
-                event.sender           = obj.at("sender").get<std::string>();
-                event.origin_server_ts = obj.at("origin_server_ts").get<double>();
+        // SPEC_BUG: Not present in the state array returned by /sync.
+        if (obj.find("room_id") != obj.end())
+                event.room_id = obj.at("room_id").get<std::string>();
 
-                // SPEC_BUG: Not present in the state array returned by /sync.
-                if (obj.find("room_id") != obj.end())
-                        event.room_id = obj.at("room_id").get<std::string>();
-
-                if (obj.find("unsigned") != obj.end())
-                        event.unsigned_data = obj.at("unsigned").get<UnsignedData<Content>>();
-        } catch (std::exception &e) {
-                std::cout << "parse error: " << e.what() << obj << std::endl;
-        }
+        if (obj.find("unsigned") != obj.end())
+                event.unsigned_data = obj.at("unsigned").get<UnsignedData<Content>>();
 }
 
 template<class Content>
@@ -309,17 +285,10 @@ from_json(const json &obj, StateEvent<Content> &event)
         event.origin_server_ts = base_event.origin_server_ts;
         event.unsigned_data    = base_event.unsigned_data;
 
-        if (is_spec_violation(obj, "state_key", "StateEvent"))
-                return;
+        event.state_key = obj.at("state_key").get<std::string>();
 
-        try {
-                event.state_key = obj.at("state_key").get<std::string>();
-
-                if (obj.find("prev_content") != obj.end())
-                        event.prev_content = obj.at("prev_content").get<Content>();
-        } catch (std::exception &e) {
-                std::cout << "parse error: " << e.what() << obj << std::endl;
-        }
+        if (obj.find("prev_content") != obj.end())
+                event.prev_content = obj.at("prev_content").get<Content>();
 }
 
 enum class MessageType

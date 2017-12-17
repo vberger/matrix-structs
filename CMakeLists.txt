@@ -31,8 +31,8 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID MATCHES "GNU")
 endif()
 
 file(DOWNLOAD
-    "https://github.com/nlohmann/json/releases/download/v2.1.1/json.hpp" ${PROJECT_SOURCE_DIR}/deps/json.hpp
-    EXPECTED_MD5 "871e326cf493d17bce4578656759283d")
+    "https://github.com/nlohmann/json/releases/download/v3.0.0/json.hpp" ${PROJECT_SOURCE_DIR}/deps/json.hpp
+    EXPECTED_MD5 "513357d232a0185a3d8d0f3c665744fb")
 
 file(DOWNLOAD
     "https://github.com/mpark/variant/releases/download/v1.3.0/variant.hpp" ${PROJECT_SOURCE_DIR}/deps/variant.hpp

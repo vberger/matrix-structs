@@ -2,7 +2,6 @@
 #include <string>
 
 #include "mtx/events/guest_access.hpp"
-#include "mtx/macros.hpp"
 
 using json = nlohmann::json;
 
@@ -31,9 +30,6 @@ stringToAccessState(const std::string &state)
 void
 from_json(const json &obj, GuestAccess &guest_access)
 {
-        if (is_spec_violation(obj, "guest_access", "m.room.guest_access"))
-                return;
-
         guest_access.guest_access = stringToAccessState(obj.at("guest_access").get<std::string>());
 }
 

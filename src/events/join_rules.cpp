@@ -2,7 +2,6 @@
 #include <string>
 
 #include "mtx/events/join_rules.hpp"
-#include "mtx/macros.hpp"
 
 using json = nlohmann::json;
 
@@ -43,9 +42,6 @@ stringToJoinRule(const std::string &rule)
 void
 from_json(const json &obj, JoinRules &join_rules)
 {
-        if (is_spec_violation(obj, "join_rule", "m.room.join_rule"))
-                return;
-
         join_rules.join_rule = stringToJoinRule(obj.at("join_rule").get<std::string>());
 }
 

@@ -2,7 +2,6 @@
 #include <string>
 
 #include "mtx/events/redaction.hpp"
-#include "mtx/macros.hpp"
 
 using json = nlohmann::json;
 
@@ -13,9 +12,6 @@ namespace state {
 void
 from_json(const json &obj, Redaction &event)
 {
-        if (is_spec_violation(obj, "reason", "m.room.redaction"))
-                return;
-
         if (!obj.at("reason").is_null())
                 event.reason = obj.at("reason").get<std::string>();
 }
