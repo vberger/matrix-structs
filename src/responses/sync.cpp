@@ -74,7 +74,7 @@ from_json(const json &obj, LeftRoom &room)
 void
 from_json(const json &obj, InvitedRoom &room)
 {
-        utils::parse_stripped_events(obj.at("invite_state"), room.invite_state);
+        utils::parse_stripped_events(obj.at("invite_state").at("events"), room.invite_state);
 }
 
 void

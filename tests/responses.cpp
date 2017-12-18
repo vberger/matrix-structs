@@ -124,6 +124,75 @@ TEST(Responses, Timeline) {}
 TEST(Responses, JoinedRoom) {}
 TEST(Responses, LeftRoom) {}
 
+TEST(Responses, InvitedRoom)
+{
+        json data = R"({
+	"invite_state": {
+	  "events":[{
+	    "content":{
+	      "name":"Testing room"
+	    },
+	    "sender":"@mujx:matrix.org",
+	    "state_key":"",
+	    "type":"m.room.name"
+	  },{
+	    "content":{"url":"mxc://matrix.org/wdjzHdrThpqWyVArfyWmRbBx"},
+	    "sender":"@mujx:matrix.org",
+	    "state_key":"",
+	    "type":"m.room.avatar"
+	  },{
+	    "content":{
+	      "avatar_url":"mxc://matrix.org/JKiSOBDDxCHxmaLAgoQwSAHa",
+	      "displayname":"NhekoTest",
+	      "membership":"join"
+	    },
+	    "sender":"@nheko_test:matrix.org",
+	    "state_key":"@nheko_test:matrix.org",
+	    "type":"m.room.member"
+	  },{
+	    "content":{"alias":"#tessssssst:matrix.org"},
+	    "sender":"@mujx:matrix.org",
+	    "state_key":"",
+	    "type":"m.room.canonical_alias"},
+	  {
+	    "content":{"join_rule":"invite"},
+	    "sender":"@mujx:matrix.org",
+	    "state_key":"",
+	    "type":"m.room.join_rules"
+	  },{
+	    "content":{"avatar_url":"mxc://matrix.org/mGOKULXnAOnyplROyaxQcyoC",
+	    "displayname":"mujx",
+	    "membership":"invite"
+	  },
+	    "event_id":"$1513636848665012cjHwG:matrix.org",
+	    "membership":"invite",
+	    "origin_server_ts":1513636848325,
+	    "sender":"@nheko_test:matrix.org",
+	    "state_key":"@mujx:matrix.org",
+	    "type":"m.room.member",
+	    "unsigned":{
+	      "age":279,
+	      "prev_content":{"membership":"leave"},
+	      "prev_sender":"@mujx:matrix.org",
+	      "replaces_state":"$15068762701126850oGdvT:matrix.org"
+	    }
+	  }
+	]}}
+	)"_json;
+
+        ns::InvitedRoom room = data;
+
+        EXPECT_EQ(room.invite_state.size(), 6);
+
+        auto name = mpark::get<me::StrippedEvent<me::state::Name>>(room.invite_state[0]);
+        EXPECT_EQ(name.type, me::EventType::RoomName);
+        EXPECT_EQ(name.content.name, "Testing room");
+
+        auto avatar = mpark::get<me::StrippedEvent<me::state::Avatar>>(room.invite_state[1]);
+        EXPECT_EQ(avatar.type, me::EventType::RoomAvatar);
+        EXPECT_EQ(avatar.content.url, "mxc://matrix.org/wdjzHdrThpqWyVArfyWmRbBx");
+}
+
 TEST(Responses, Sync)
 {
         std::ifstream file("./fixtures/responses/sync.json");
