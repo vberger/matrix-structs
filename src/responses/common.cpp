@@ -26,14 +26,14 @@ inline void
 log_error(json::exception &err, const json &event)
 {
         std::cout << err.what() << std::endl;
-        std::cout << event << std::endl;
+        std::cout << event.dump(2) << std::endl;
 }
 
 inline void
 log_error(std::string err, const json &event)
 {
         std::cout << err << std::endl;
-        std::cout << event << std::endl;
+        std::cout << event.dump(2) << std::endl;
 }
 
 void
