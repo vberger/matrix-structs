@@ -71,6 +71,58 @@ from_json(const json &obj, LeftRoom &room)
         room.timeline = obj.at("timeline").get<Timeline>();
 }
 
+std::string
+InvitedRoom::name() const
+{
+        using Name   = mtx::events::StrippedEvent<mtx::events::state::Name>;
+        using Member = mtx::events::StrippedEvent<mtx::events::state::Member>;
+
+        std::string room_name;
+        std::string member_name;
+
+        for (const auto &event : invite_state) {
+                if (mpark::holds_alternative<Name>(event)) {
+                        room_name = mpark::get<Name>(event).content.name;
+                } else if (mpark::holds_alternative<Member>(event)) {
+                        if (member_name.empty())
+                                member_name = mpark::get<Member>((event)).content.display_name;
+                }
+        }
+
+        if (room_name.empty())
+                return member_name;
+
+        return room_name;
+}
+
+std::string
+InvitedRoom::avatar() const
+{
+        using Avatar = mtx::events::StrippedEvent<mtx::events::state::Avatar>;
+        using Member = mtx::events::StrippedEvent<mtx::events::state::Member>;
+
+        std::string room_avatar;
+        std::string member_avatar;
+
+        for (const auto &event : invite_state) {
+                if (mpark::holds_alternative<Avatar>(event)) {
+                        auto msg    = mpark::get<Avatar>(event);
+                        room_avatar = msg.content.url;
+                } else if (mpark::holds_alternative<Member>(event)) {
+                        auto msg = mpark::get<Member>(event);
+
+                        // Pick the first avatar.
+                        if (member_avatar.empty())
+                                member_avatar = msg.content.avatar_url;
+                }
+        }
+
+        if (room_avatar.empty())
+                return member_avatar;
+
+        return room_avatar;
+}
+
 void
 from_json(const json &obj, InvitedRoom &room)
 {

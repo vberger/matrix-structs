@@ -70,6 +70,9 @@ from_json(const json &obj, LeftRoom &room);
 struct InvitedRoom
 {
         std::vector<events::collections::StrippedEvents> invite_state;
+
+        std::string name() const;
+        std::string avatar() const;
 };
 
 void
