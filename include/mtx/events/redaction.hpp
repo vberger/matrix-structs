@@ -9,8 +9,10 @@ namespace mtx {
 namespace events {
 namespace state {
 
+//! Content for the `m.room.redaction` state event.
 struct Redaction
 {
+        //! The reason for the redaction, if any.
         std::string reason;
 };
 

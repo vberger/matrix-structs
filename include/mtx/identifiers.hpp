@@ -11,18 +11,30 @@ static std::regex LOCALPART_REGEX("[A-za-z0-9._%+-]{1,}");
 static std::regex DOMAIN_NAME_REGEX("(?!\\-)(?:[a-zA-Z\\d\\-]{0,62}[a-zA-Z\\d]\\.){1,"
                                     "126}(?!\\d+)[a-zA-Z\\d]{1,63}(:\\d{0,5})?");
 
+//! Base class for all the identifiers.
+//
+//! Each identifier has the following format `(sigil)``(localpart)`:`(hostname)`.
 class ID
 {
 public:
+        //! Returns the unique local part of the identifier.
         std::string localpart() const { return localpart_; }
+        //! Returns the name of the originating homeserver.
         std::string hostname() const { return hostname_; }
+        //! Returns the whole identifier (localpart + hostname).
         std::string toString() const { return id_; }
+        //! Returns the port of the originating homeserver.
+        //! It defaults to `-1` if a standard port is selected.
         int port() const { return port_; }
 
 protected:
+        //! Local part of the identifier.
         std::string localpart_;
+        //! The name of the originating homeserver.
         std::string hostname_;
+        //! The whole identifier.
         std::string id_;
+        //! The port of the originating homeserver.
         int port_;
 };
 
@@ -33,6 +45,7 @@ public:
         friend Identifier parse(const std::string &id);
 
 private:
+        //! The `sigil` used to represent an Event.
         std::string sigil = "$";
 };
 
@@ -56,6 +69,10 @@ private:
         std::string sigil = "@";
 };
 
+//! Parses the given string into a @p Identifier.
+//! \param id String to parse.
+//! \returns The parsed @p Identifier.
+//! \throws std::invalid_argument in case of invalid input.
 template<typename Identifier>
 Identifier
 parse(const std::string &id)

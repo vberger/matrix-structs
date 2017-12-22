@@ -15,14 +15,18 @@ enum class AccessState
         Forbidden,
 };
 
+//! Converts @p AccessState to @p std::string for serialization.
 std::string
 accessStateToString(AccessState state);
 
+//! Converts @p std::string to @p AccessState for deserialization.
 AccessState
 stringToAccessState(const std::string &state);
 
+//! Content of the `m.room.guest_access` state event.
 struct GuestAccess
 {
+        //! Whether guests can join the room.
         AccessState guest_access = AccessState::Forbidden;
 };
 

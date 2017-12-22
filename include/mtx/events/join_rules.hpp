@@ -11,14 +11,14 @@ namespace state {
 
 enum class JoinRule
 {
-        /// Anyone can join the room without any prior action.
+        //! Anyone can join the room without any prior action.
         Public,
-        // A user who wishes to join the room must first receive
-        // an invite to the room from someone already inside of the room.
+        //! A user who wishes to join the room must first receive
+        //! an invite to the room from someone already inside of the room.
         Invite,
-        // Reserved but not yet implemented by the Matrix specification.
+        //! Reserved but not yet implemented by the Matrix specification.
         Knock,
-        // Reserved but not yet implemented by the Matrix specification.
+        //! Reserved but not yet implemented by the Matrix specification.
         Private,
 };
 
@@ -28,8 +28,10 @@ joinRuleToString(const JoinRule &rule);
 JoinRule
 stringToJoinRule(const std::string &rule);
 
+//! Content of the `m.room.join_rules` state event.
 struct JoinRules
 {
+        //! The type of rules used for users wishing to join this room.
         JoinRule join_rule;
 };
 

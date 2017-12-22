@@ -11,15 +11,15 @@ namespace state {
 
 enum class Membership
 {
-        // The user has joined.
+        //! The user has joined.
         Join,
-        // The user has been invited.
+        //! The user has been invited.
         Invite,
-        // The user is banned.
+        //! The user is banned.
         Ban,
-        // The user has left.
+        //! The user has left.
         Leave,
-        // The user has requested to join.
+        //! The user has requested to join.
         Knock,
 };
 
@@ -29,14 +29,20 @@ membershipToString(const Membership &membership);
 Membership
 stringToMembership(const std::string &membership);
 
+//! Content of the `m.room.member` state event.
 struct Member
 {
+        //! The membership state of the user.
         Membership membership;
+        //! The avatar URL for this user, if any.
         std::string avatar_url;
+        //! The display name for this user, if any.
         std::string display_name;
+        //! Flag indicating if the room containing this event was created
+        //! with the intention of being a direct chat.
+        bool is_direct = false;
 
         /* ThirdPartyInvite third_party_invite; */
-        bool is_direct = false;
 };
 
 void

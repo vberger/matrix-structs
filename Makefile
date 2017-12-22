@@ -8,6 +8,10 @@ build-release-debug:
 	@cmake -DBUILD_TESTS=ON -H. -Bbuild -DCMAKE_BUILD_TYPE=RelWithDebInfo
 	@cmake --build build
 
+docs:
+	@cmake -DBUILD_DOC=ON -H. -Bbuild
+	@cmake --build build
+
 build-release:
 	@cmake -DBUILD_TESTS=ON -H. -Bbuild -DCMAKE_BUILD_TYPE=Release
 	@cmake --build build

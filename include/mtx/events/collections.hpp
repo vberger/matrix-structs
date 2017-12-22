@@ -26,11 +26,14 @@
 
 namespace mtx {
 namespace events {
+
+//! Contains heterogeneous collections of events using std::variant.
 namespace collections {
 
 namespace states = mtx::events::state;
 namespace msgs   = mtx::events::msg;
 
+//! Collection of @p StateEvent only.
 using StateEvents = mpark::variant<events::StateEvent<states::Aliases>,
                                    events::StateEvent<states::Avatar>,
                                    events::StateEvent<states::CanonicalAlias>,
@@ -45,6 +48,7 @@ using StateEvents = mpark::variant<events::StateEvent<states::Aliases>,
                                    // TODO: events::StateEvent<states::Redaction>,
                                    events::StateEvent<states::Topic>>;
 
+//! Collection of @p StrippedEvent only.
 using StrippedEvents = mpark::variant<events::StrippedEvent<states::Aliases>,
                                       events::StrippedEvent<states::Avatar>,
                                       events::StrippedEvent<states::CanonicalAlias>,
@@ -59,6 +63,8 @@ using StrippedEvents = mpark::variant<events::StrippedEvent<states::Aliases>,
                                       // TODO: events::StrippedEvent<states::Redaction>,
                                       events::StrippedEvent<states::Topic>>;
 
+//! Collection of @p StateEvent and @p RoomEvent. Those events would be
+//! available on the returned timeline.
 using TimelineEvents = mpark::variant<events::StateEvent<states::Aliases>,
                                       events::StateEvent<states::Avatar>,
                                       events::StateEvent<states::CanonicalAlias>,
