@@ -20,7 +20,7 @@ struct Create
         mtx::identifiers::User creator;
         //! Whether users on other servers can join this room.
         //! Defaults to **true** if key does not exist.
-        bool federate;
+        bool federate = true;
 };
 
 void

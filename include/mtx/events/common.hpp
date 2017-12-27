@@ -13,11 +13,11 @@ namespace common {
 struct ThumbnailInfo
 {
         //! The height of the thumbnail in pixels.
-        uint64_t h;
+        uint64_t h = 0;
         //! The width of the thumbnail in pixels.
-        uint64_t w;
+        uint64_t w = 0;
         //! Size of the thumbnail in bytes.
-        uint64_t size;
+        uint64_t size = 0;
         //! The mimetype of the thumbnail, e.g. image/jpeg.
         std::string mimetype;
 };
@@ -34,11 +34,11 @@ to_json(json &obj, const ThumbnailInfo &info);
 struct ImageInfo
 {
         //! The height of the image in pixels.
-        uint64_t h;
+        uint64_t h = 0;
         //! The width of the image in pixels.
-        uint64_t w;
+        uint64_t w = 0;
         //! Size of the image in bytes.
-        uint64_t size;
+        uint64_t size = 0;
         //! Metadata about the image referred to in @p thumbnail_url.
         ThumbnailInfo thumbnail_info;
         //! The URL to a thumbnail of the image.
@@ -59,7 +59,7 @@ to_json(json &obj, const ImageInfo &info);
 struct FileInfo
 {
         //! The size of the file in bytes.
-        uint64_t size;
+        uint64_t size = 0;
         //! Metadata about the image referred to in @p thumbnail_url.
         ThumbnailInfo thumbnail_info;
         //! The URL to the thumbnail of the file.
@@ -80,9 +80,9 @@ to_json(json &obj, const FileInfo &info);
 struct AudioInfo
 {
         //! The size of the audio clip in bytes.
-        uint64_t size;
+        uint64_t size = 0;
         //! The duration of the audio in milliseconds.
-        uint64_t duration;
+        uint64_t duration = 0;
         //! The mimetype of the audio e.g. `audio/aac`.
         std::string mimetype;
 };
@@ -99,13 +99,13 @@ to_json(json &obj, const AudioInfo &info);
 struct VideoInfo
 {
         //! The size of the video in bytes.
-        uint64_t size;
+        uint64_t size = 0;
         //! The duration of the video in milliseconds.
-        uint64_t duration;
+        uint64_t duration = 0;
         //! The height of the video in pixels.
-        uint64_t h;
+        uint64_t h = 0;
         //! The width of the video in pixels.
-        uint64_t w;
+        uint64_t w = 0;
         //! The mimetype of the video e.g. `video/mp4`.
         std::string mimetype;
         //! The URL to an image thumbnail of the video clip.
