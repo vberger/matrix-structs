@@ -7,7 +7,6 @@
 namespace mtx {
 namespace identifiers {
 
-static std::regex LOCALPART_REGEX("[A-za-z0-9._%+-]{1,}");
 static std::regex DOMAIN_NAME_REGEX("(?!\\-)(?:[a-zA-Z\\d\\-]{0,62}[a-zA-Z\\d]\\.){1,"
                                     "126}(?!\\d+)[a-zA-Z\\d]{1,63}(:\\d{0,5})?");
 
@@ -120,9 +119,6 @@ parse(const std::string &id)
 
         if (port == 0 || port > 65536)
                 throw std::invalid_argument(id + ": invalid port number\n");
-
-        if (!std::regex_match(localpart, LOCALPART_REGEX))
-                throw std::invalid_argument(id + ": the local part is not valid\n");
 
         identifier.localpart_ = localpart;
         identifier.hostname_  = hostname;
