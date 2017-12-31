@@ -56,6 +56,8 @@ struct Ephemeral
 {
         //! A list of users that are currently typing.
         std::vector<std::string> typing;
+        //! Map of events and the users that have read them.
+        std::map<std::string, std::map<std::string, uint64_t>> receipts;
 };
 
 void

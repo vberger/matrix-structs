@@ -454,3 +454,65 @@ TEST(Responses, EphemeralTyping)
         EXPECT_EQ(ephemeral.typing[0], "@alice:example.com");
         EXPECT_EQ(ephemeral.typing[1], "@bob:example.com");
 }
+
+TEST(Responses, EphemeralReceipts)
+{
+        json data = R"({
+          "events": [{
+            "type": "m.typing",
+            "content": {
+              "user_ids": [
+                "@alice:example.com",
+                "@bob:example.com"
+              ]
+            }
+          }, {
+	    "type": "m.receipt",
+	    "content": {
+	      "$1493012095444993JeMrW:matrix.org": {
+		"m.read": {
+		  "@trilobite17:matrix.org": { "ts": 1493020945945 }
+		}
+	      },
+	      "$1493135885261887UVyOW:matrix.org": {
+	        "m.read": {
+		  "@aaron:matrix.org": { "ts": 1493161552008 }
+		}
+	      },
+	      "$149339947230ohuCC:krtdex.com": {
+	        "m.read": {
+		  "@walle303:matrix.eastcoast.hosting": { "ts": 1493404654684 }
+		}
+	      },
+	      "$1493556582917fOMpi:vurpo.fi": {
+		"m.read": {
+	  	  "@matthew2:matrix.org": { "ts": 1493557057338 }
+		}
+	      },
+	      "$14935874261161012PaoJD:matrix.org": {
+		"m.read": {
+		  "@frantisek:gajdusek.net": { "ts": 1493623595682 },
+		  "@PhoenixLandPirate:matrix.org": { "ts": 1510630539168 },
+		  "@Tokodomo:matrix.org": { "ts": 1510588032780 },
+		  "@matthew:matrix.org": { "ts": 1510440324233 },
+		  "@memoryruins:matrix.org": { "ts": 1510518443679 },
+		  "@nagua:2hg.org": { "ts": 1510451215569 },
+		  "@nioshd:matrix.org": { "ts": 1510521086750 }
+		}
+	      }
+	    }
+	  }]
+        })"_json;
+
+        mtx::responses::Ephemeral ephemeral = data;
+
+        EXPECT_EQ(ephemeral.typing.size(), 2);
+        EXPECT_EQ(ephemeral.typing[0], "@alice:example.com");
+        EXPECT_EQ(ephemeral.typing[1], "@bob:example.com");
+
+        EXPECT_EQ(ephemeral.receipts.size(), 5);
+        EXPECT_EQ(ephemeral.receipts["$149339947230ohuCC:krtdex.com"].size(), 1);
+        EXPECT_EQ(ephemeral.receipts["$14935874261161012PaoJD:matrix.org"].size(), 7);
+        EXPECT_EQ(ephemeral.receipts["$14935874261161012PaoJD:matrix.org"]["@matthew:matrix.org"],
+                  1510440324233);
+}

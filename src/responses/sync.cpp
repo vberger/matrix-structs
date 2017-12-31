@@ -46,6 +46,28 @@ from_json(const json &obj, Ephemeral &ephemeral)
                 if (type == "m.typing") {
                         auto content     = event.at("content");
                         ephemeral.typing = content.at("user_ids").get<std::vector<std::string>>();
+                } else if (type == "m.receipt") {
+                        std::map<std::string, std::map<std::string, uint64_t>> receipts;
+
+                        const auto content = event.at("content");
+
+                        for (auto it = content.begin(); it != content.end(); ++it) {
+                                std::map<std::string, uint64_t> user_times;
+
+                                if (it.value().count("m.read") == 0)
+                                        continue;
+
+                                auto event_id = it.key();
+                                auto users    = it.value().at("m.read");
+
+                                for (auto uit = users.begin(); uit != users.end(); ++uit)
+                                        user_times.emplace(uit.key(),
+                                                           uit.value().at("ts").get<uint64_t>());
+
+                                receipts.emplace(event_id, user_times);
+                        }
+
+                        ephemeral.receipts = receipts;
                 }
         }
 }
