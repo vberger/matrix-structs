@@ -7,7 +7,7 @@ using json = nlohmann::json;
 
 namespace mtx {
 namespace events {
-namespace state {
+namespace msg {
 
 //! Content for the `m.room.redaction` state event.
 struct Redaction
@@ -22,6 +22,6 @@ from_json(const json &obj, Redaction &event);
 void
 to_json(json &obj, const Redaction &event);
 
-} // namespace state
+} // namespace msg
 } // namespace events
 } // namespace mtx

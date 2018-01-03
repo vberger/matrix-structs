@@ -14,6 +14,7 @@
 #include "mtx/events/name.hpp"
 #include "mtx/events/pinned_events.hpp"
 #include "mtx/events/power_levels.hpp"
+#include "mtx/events/redaction.hpp"
 #include "mtx/events/topic.hpp"
 
 #include "mtx/events/messages/audio.hpp"
@@ -45,7 +46,6 @@ using StateEvents = mpark::variant<events::StateEvent<states::Aliases>,
                                    events::StateEvent<states::Name>,
                                    events::StateEvent<states::PinnedEvents>,
                                    events::StateEvent<states::PowerLevels>,
-                                   // TODO: events::StateEvent<states::Redaction>,
                                    events::StateEvent<states::Topic>>;
 
 //! Collection of @p StrippedEvent only.
@@ -60,7 +60,6 @@ using StrippedEvents = mpark::variant<events::StrippedEvent<states::Aliases>,
                                       events::StrippedEvent<states::Name>,
                                       events::StrippedEvent<states::PinnedEvents>,
                                       events::StrippedEvent<states::PowerLevels>,
-                                      // TODO: events::StrippedEvent<states::Redaction>,
                                       events::StrippedEvent<states::Topic>>;
 
 //! Collection of @p StateEvent and @p RoomEvent. Those events would be
@@ -76,8 +75,8 @@ using TimelineEvents = mpark::variant<events::StateEvent<states::Aliases>,
                                       events::StateEvent<states::Name>,
                                       events::StateEvent<states::PinnedEvents>,
                                       events::StateEvent<states::PowerLevels>,
-                                      // TODO: events::StateEvent<states::Redaction>,
                                       events::StateEvent<states::Topic>,
+                                      events::RoomEvent<msgs::Redaction>,
                                       events::RoomEvent<msgs::Audio>,
                                       events::RoomEvent<msgs::Emote>,
                                       events::RoomEvent<msgs::File>,

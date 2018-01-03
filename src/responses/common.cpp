@@ -12,6 +12,7 @@
 #include "mtx/events/name.hpp"
 #include "mtx/events/pinned_events.hpp"
 #include "mtx/events/power_levels.hpp"
+#include "mtx/events/redaction.hpp"
 #include "mtx/events/topic.hpp"
 
 #include <iostream>
@@ -148,6 +149,16 @@ parse_timeline_events(const json &events,
                         try {
                                 events::StateEvent<ns::PowerLevels> power_levels = e;
                                 container.emplace_back(power_levels);
+                        } catch (json::exception &err) {
+                                log_error(err, e);
+                        }
+
+                        break;
+                }
+                case events::EventType::RoomRedaction: {
+                        try {
+                                events::RoomEvent<mtx::events::msg::Redaction> redaction = e;
+                                container.emplace_back(redaction);
                         } catch (json::exception &err) {
                                 log_error(err, e);
                         }
