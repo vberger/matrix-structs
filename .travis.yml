@@ -1,3 +1,5 @@
+---
+
 language: cpp
 sudo: required
 dist: trusty
@@ -13,29 +15,34 @@ matrix:
         - os: linux
           compiler: gcc
           env:
-            - COMPILER=g++-6
-            - RUN_TESTS=1
+              - CXX_COMPILER=g++-6
+              - C_COMPILER=gcc-6
+              - RUN_TESTS=1
           addons:
-            apt:
-              sources: ['ubuntu-toolchain-r-test']
-              packages: ['g++-6']
+              apt:
+                  sources: ["ubuntu-toolchain-r-test"]
+                  packages: ["g++-6"]
         - os: linux
           compiler: clang
           env:
-            - COMPILER=clang++-5.0
+              - CXX_COMPILER=clang++-5.0
+              - C_COMPILER=clang-5.0
           addons:
-            apt:
-              sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-trusty-5.0']
-              packages: ['clang-5.0']
+              apt:
+                  sources: ["ubuntu-toolchain-r-test", "llvm-toolchain-trusty-5.0"]
+                  packages: ["clang-5.0"]
 
 before_install:
-    - export CXX=${COMPILER}
+    - export CXX=${CXX_COMPILER}
+    - export CC=${C_COMPILER}
+
+install:
+    - if [ $TRAVIS_OS_NAME == osx ]; then brew update && brew install clang-format doxygen; fi
     - if [ $TRAVIS_OS_NAME == linux ]; then ./.ci/gtest.sh; fi
     - if [ $TRAVIS_OS_NAME == linux ]; then sudo add-apt-repository -y ppa:george-edison55/cmake-3.x; fi
     - if [ $TRAVIS_OS_NAME == linux ]; then sudo apt-get update -qq; fi
     - if [ $TRAVIS_OS_NAME == linux ]; then sudo apt-get install -qq -y cmake; fi
-install:
-    - if [ $TRAVIS_OS_NAME == osx ]; then brew update && brew install clang-format doxygen; fi
+
 script:
     - if [ $RUN_TESTS == 1 ]; then cmake -DBUILD_TESTS=ON -H. -Bbuild; fi
     - if [[ -z $RUN_TESTS ]]; then cmake -DBUILD_TESTS=OFF -H. -Bbuild; fi
