@@ -12,29 +12,49 @@ matrix:
         - os: osx
           osx_image: xcode8
           compiler: clang
+          env:
+              - TESTS=OFF
+        - os: osx
+          osx_image: xcode9
+          compiler: clang
+          env:
+              - TESTS=OFF
         - os: linux
           compiler: gcc
           env:
-              - CXX_COMPILER=g++-6
-              - C_COMPILER=gcc-6
-              - RUN_TESTS=1
+              - CXX_VERSION=g++-6
+              - TESTS=ON
           addons:
               apt:
-                  sources: ["ubuntu-toolchain-r-test"]
-                  packages: ["g++-6"]
+                  sources:
+                      - "ubuntu-toolchain-r-test"
+                  packages:
+                      - "g++-6"
+        - os: linux
+          compiler: gcc
+          env:
+              - CXX_VERSION=g++-7
+              - TESTS=ON
+          addons:
+              apt:
+                  sources:
+                      - "ubuntu-toolchain-r-test"
+                  packages:
+                      - "g++-7"
         - os: linux
           compiler: clang
           env:
-              - CXX_COMPILER=clang++-5.0
-              - C_COMPILER=clang-5.0
+              - CXX_VERSION=clang++-5.0
+              - TESTS=ON
           addons:
               apt:
-                  sources: ["ubuntu-toolchain-r-test", "llvm-toolchain-trusty-5.0"]
-                  packages: ["clang-5.0"]
-
-before_install:
-    - export CXX=${CXX_COMPILER}
-    - export CC=${C_COMPILER}
+                  sources:
+                      - "ubuntu-toolchain-r-test"
+                      - "llvm-toolchain-trusty-5.0"
+                  packages:
+                      - "clang++-5.0"
+                      - "clang-5.0"
+                      - "g++-7"
 
 install:
     - if [ $TRAVIS_OS_NAME == osx ]; then brew update && brew install clang-format doxygen; fi
@@ -44,8 +64,13 @@ install:
     - if [ $TRAVIS_OS_NAME == linux ]; then sudo apt-get install -qq -y cmake; fi
 
 script:
-    - if [ $RUN_TESTS == 1 ]; then cmake -DBUILD_TESTS=ON -H. -Bbuild; fi
-    - if [[ -z $RUN_TESTS ]]; then cmake -DBUILD_TESTS=OFF -H. -Bbuild; fi
+    - if [[ "${CXX_VERSION}" != "" ]]; then export CXX=${CXX_VERSION}; fi
+
+    - $CXX --version
+    - cmake --version
+
+    - cmake -DBUILD_TESTS=$TESTS -H. -Bbuild
     - cmake --build build
+
     - if [ $TRAVIS_OS_NAME == osx ]; then make lint; fi
-    - if [ $RUN_TESTS == 1 ]; then make test; fi
+    - if [ $TESTS == "ON" ]; then make test; fi
