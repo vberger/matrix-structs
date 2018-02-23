@@ -114,8 +114,12 @@ if (BUILD_TESTS)
     add_executable(responses tests/responses.cpp)
     target_link_libraries(responses ${LIBRARY_NAME} ${GTEST_BOTH_LIBRARIES})
 
+    add_executable(requests tests/requests.cpp)
+    target_link_libraries(requests ${LIBRARY_NAME} ${GTEST_BOTH_LIBRARIES})
+
     add_test(MatrixIdentifiers identifiers)
     add_test(StateEvents events)
     add_test(RoomEvents messages)
     add_test(Responses responses)
+    add_test(Requests requests)
 endif()

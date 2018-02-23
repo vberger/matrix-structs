@@ -54,5 +54,33 @@ struct CreateRoom
 
 void
 to_json(json &obj, const CreateRoom &request);
+
+//! Request payload for the `POST /_matrix/client/r0/login` endpoint.
+struct Login
+{
+        //! The login type being used. One of ["m.login.password", "m.login.token"]
+        std::string type = "m.login.password";
+        //! The fully qualified user ID or just local part of the user ID, to log in.
+        std::string user;
+        //! When logging in using a third party identifier, the medium of the identifier.
+        //! Must be 'email'.
+        std::string medium;
+        //! Third party identifier for the user.
+        std::string address;
+        //! Required when type is m.login.token. The login token.
+        std::string token;
+        //! Required when type is m.login.password. The user's password.
+        std::string password;
+        //! ID of the client device. If this does not correspond to a known client device,
+        //! a new device will be created.
+        //! The server will auto-generate a device_id if this is not specified.
+        std::string device_id;
+        //! A display name to assign to the newly-created device.
+        //! Ignored if device_id corresponds to a known device.
+        std::string initial_device_display_name;
+};
+
+void
+to_json(json &obj, const Login &request);
 }
 }

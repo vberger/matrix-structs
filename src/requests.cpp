@@ -52,5 +52,30 @@ to_json(json &obj, const CreateRoom &request)
         obj["preset"]     = presetToString(request.preset);
         obj["visibility"] = visibilityToString(request.visibility);
 }
+
+void
+to_json(json &obj, const Login &request)
+{
+        if (!request.medium.empty())
+                obj["medium"] = request.medium;
+
+        if (!request.address.empty())
+                obj["address"] = request.address;
+
+        if (!request.token.empty())
+                obj["token"] = request.token;
+
+        if (!request.password.empty())
+                obj["password"] = request.password;
+
+        if (!request.device_id.empty())
+                obj["device_id"] = request.device_id;
+
+        if (!request.initial_device_display_name.empty())
+                obj["initial_device_display_name"] = request.initial_device_display_name;
+
+        obj["user"] = request.user;
+        obj["type"] = request.type;
+}
 }
 }
