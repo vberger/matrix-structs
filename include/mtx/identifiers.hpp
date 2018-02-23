@@ -1,5 +1,11 @@
 #pragma once
 
+#if defined(_WIN64) || defined(_WIN32)
+#include <winsock2.h>
+#else
+#include <arpa/inet.h>
+#endif
+
 #include <exception>
 #include <iostream>
 #include <regex>
@@ -9,6 +15,14 @@ namespace identifiers {
 
 static std::regex DOMAIN_NAME_REGEX("(?!\\-)(?:[a-zA-Z\\d\\-]{0,62}[a-zA-Z\\d]\\.){1,"
                                     "126}(?!\\d+)[a-zA-Z\\d]{1,63}(:\\d{0,5})?");
+
+//! Check if the given string is a valid ipv4 address.
+inline bool
+is_ipv4_address(const std::string &ip)
+{
+        struct sockaddr_in sa;
+        return inet_pton(AF_INET, ip.c_str(), &(sa.sin_addr)) != 0;
+}
 
 //! Base class for all the identifiers.
 //
@@ -104,9 +118,6 @@ parse(const std::string &id)
                 throw std::invalid_argument(id + ": invalid format\n");
         }
 
-        if (!std::regex_match(server, DOMAIN_NAME_REGEX))
-                throw std::invalid_argument(id + ": the domain name is not valid\n");
-
         // Split into hostname and port (if any).
         const auto server_parts = server.find_first_of(':');
 
@@ -117,7 +128,10 @@ parse(const std::string &id)
                 hostname = server;
         }
 
-        if (port == 0 || port > 65536)
+        if (!std::regex_match(hostname, DOMAIN_NAME_REGEX) && !is_ipv4_address(hostname))
+                throw std::invalid_argument(id + ": the domain name is not valid\n");
+
+        if (port == 0 || port > 65536 || port < -1)
                 throw std::invalid_argument(id + ": invalid port number\n");
 
         identifier.localpart_ = localpart;

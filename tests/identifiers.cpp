@@ -13,6 +13,20 @@ TEST(MatrixIdentifiers, EventValid)
         EXPECT_EQ(eventid.hostname(), "example.com");
 }
 
+TEST(MatrixIdentifiers, InValidIp)
+{
+        ASSERT_THROW(parse<User>("39fasdsdfsdf:333.22.22.22:5000"), std::invalid_argument);
+}
+
+TEST(MatrixIdentifiers, ValidIp)
+{
+        Event eventid = parse<Event>("$39hvsi03hlne:22.23.112.44:8080");
+
+        EXPECT_EQ(eventid.toString(), "$39hvsi03hlne:22.23.112.44:8080");
+        EXPECT_EQ(eventid.localpart(), "39hvsi03hlne");
+        EXPECT_EQ(eventid.hostname(), "22.23.112.44");
+}
+
 TEST(MatrixIdentifiers, EventInValidHostname)
 {
         ASSERT_THROW(parse<Event>("$39hvsi03hlne:com:109999"), std::invalid_argument);
