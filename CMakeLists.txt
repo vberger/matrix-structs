@@ -61,6 +61,7 @@ include_directories(include)
 set(SRC
     src/events.cpp
     src/requests.cpp
+    src/errors.cpp
 
     src/events/aliases.cpp
     src/events/avatar.cpp
@@ -117,7 +118,11 @@ if (BUILD_TESTS)
     add_executable(requests tests/requests.cpp)
     target_link_libraries(requests ${LIBRARY_NAME} ${GTEST_BOTH_LIBRARIES})
 
+    add_executable(errors tests/errors.cpp)
+    target_link_libraries(errors ${LIBRARY_NAME} ${GTEST_BOTH_LIBRARIES})
+
     add_test(MatrixIdentifiers identifiers)
+    add_test(MatrixErrors errors)
     add_test(StateEvents events)
     add_test(RoomEvents messages)
     add_test(Responses responses)
