@@ -420,6 +420,18 @@ TEST(Responses, Versions)
         ASSERT_THROW(ns::Versions versions = error_data, std::invalid_argument);
 }
 
+TEST(Responses, CreateRoom)
+{
+        json data = R"({"room_id" : "!sefiuhWgwghwWgh:example.com"})"_json;
+
+        mtx::responses::CreateRoom create_room = data;
+        EXPECT_EQ(create_room.room_id.toString(), "!sefiuhWgwghwWgh:example.com");
+
+        json error_data = R"({"room_id" : "#akajdkf:example.com"})"_json;
+
+        ASSERT_THROW(ns::CreateRoom create_room = error_data, std::invalid_argument);
+}
+
 TEST(Responses, Login)
 {
         json data = R"({

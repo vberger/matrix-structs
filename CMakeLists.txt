@@ -87,6 +87,7 @@ set(SRC
     src/events/messages/video.cpp
 
     src/responses/common.cpp
+    src/responses/create_room.cpp
     src/responses/login.cpp
     src/responses/messages.cpp
     src/responses/profile.cpp

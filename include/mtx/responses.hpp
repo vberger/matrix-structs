@@ -2,6 +2,7 @@
 
 #include "responses/common.hpp"
 
+#include "responses/create_room.hpp"
 #include "responses/login.hpp"
 #include "responses/messages.hpp"
 #include "responses/profile.hpp"
