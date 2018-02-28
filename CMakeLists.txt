@@ -101,7 +101,13 @@ if (BUILD_TESTS)
 
     file(COPY fixtures DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
-    find_package(GTest REQUIRED)
+    find_package(GTest)
+
+    if (NOT GTest_FOUND)
+        message(STATUS "Fetching and building GTest 1.8")
+        include(${CMAKE_SOURCE_DIR}/cmake/GoogleTest.cmake)
+    endif()
+
     include_directories(${GTEST_INCLUDE_DIRS})
 
     add_executable(identifiers tests/identifiers.cpp)
@@ -121,6 +127,15 @@ if (BUILD_TESTS)
 
     add_executable(errors tests/errors.cpp)
     target_link_libraries(errors ${LIBRARY_NAME} ${GTEST_BOTH_LIBRARIES})
+
+    if (NOT GTest_FOUND)
+        add_dependencies(identifiers GTest)
+        add_dependencies(events GTest)
+        add_dependencies(messages GTest)
+        add_dependencies(responses GTest)
+        add_dependencies(requests GTest)
+        add_dependencies(errors GTest)
+    endif()
 
     add_test(MatrixIdentifiers identifiers)
     add_test(MatrixErrors errors)
