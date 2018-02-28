@@ -47,9 +47,13 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID MATCHES "GNU")
     endif()
 endif()
 
+if(NOT APPLE AND NOT MSVC)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
+endif()
+
 file(DOWNLOAD
-    "https://github.com/nlohmann/json/releases/download/v3.0.0/json.hpp" ${PROJECT_SOURCE_DIR}/deps/json.hpp
-    EXPECTED_MD5 "513357d232a0185a3d8d0f3c665744fb")
+    "https://github.com/nlohmann/json/releases/download/v3.1.1/json.hpp" ${PROJECT_SOURCE_DIR}/deps/json.hpp
+    EXPECTED_MD5 "c746ab33cef68834009bb728899c1924")
 
 file(DOWNLOAD
     "https://github.com/mpark/variant/releases/download/v1.3.0/variant.hpp" ${PROJECT_SOURCE_DIR}/deps/variant.hpp
