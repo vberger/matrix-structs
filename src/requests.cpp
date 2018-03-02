@@ -77,5 +77,13 @@ to_json(json &obj, const Login &request)
         obj["user"] = request.user;
         obj["type"] = request.type;
 }
+
+//Provides a functionality to serialize a request with an empty body
+void
+to_json(json &obj, const Empty&)
+{
+	obj.clear();
+}
+
 }
 }
