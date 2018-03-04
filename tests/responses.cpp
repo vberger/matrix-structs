@@ -669,3 +669,21 @@ TEST(Responses, EphemeralReceipts)
         EXPECT_EQ(ephemeral.receipts["$14935874261161012PaoJD:matrix.org"]["@matthew:matrix.org"],
                   1510440324233);
 }
+
+TEST(Responses, Empty)
+{
+        json data = R"({})"_json;
+
+        ns::Empty e = data;
+        (void)e;
+}
+
+TEST(Responses, Media)
+{
+        json data = R"({
+	  "content_uri": "mxc://example.com/AQwafuaFswefuhsfAFAgsw"
+	})"_json;
+
+        ns::ContentURI res = data;
+        EXPECT_EQ(res.content_uri, "mxc://example.com/AQwafuaFswefuhsfAFAgsw");
+}
