@@ -92,7 +92,7 @@ struct AvatarUrl
 void
 to_json(json &obj, const AvatarUrl &request);
 
-//! Request payload for the `POST /_matrix/client/r0/profile/{userId}/displayname` endpoint.
+//! Request payload for the `PUT /_matrix/client/r0/profile/{userId}/displayname` endpoint.
 struct DisplayName
 {
         std::string displayname;
@@ -100,6 +100,15 @@ struct DisplayName
 
 void
 to_json(json &obj, const DisplayName &request);
+
+//! Request payload for the `POST /_matrix/client/r0/rooms/{roomId}/invite` endpoint.
+struct RoomInvite
+{
+        std::string user_id;
+};
+
+void
+to_json(json &obj, const RoomInvite &request);
 
 struct Empty
 {};
