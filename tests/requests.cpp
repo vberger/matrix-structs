@@ -2,12 +2,11 @@
 
 #include <json.hpp>
 
-#include <mtx.hpp>
+#include <mtx/requests.hpp>
 
 using json = nlohmann::json;
 
 namespace ns = mtx::requests;
-namespace me = mtx::events;
 
 TEST(Requests, Login)
 {
@@ -38,4 +37,20 @@ TEST(Requests, Login)
         ASSERT_EQ(j.dump(),
                   "{\"device_id\":\"ZSDF2RG\",\"password\":\"secret3\",\"type\":\"m.login."
                   "password\",\"user\":\"@carl:matrix.org\"}");
+}
+
+TEST(Requests, Typing)
+{
+        ns::TypingNotification t1, t2;
+
+        t1.timeout = 4000;
+
+        json j = t1;
+        ASSERT_EQ(j.dump(), "{\"timeout\":4000,\"typing\":false}");
+
+        t2.typing  = true;
+        t2.timeout = 4242;
+
+        j = t2;
+        ASSERT_EQ(j.dump(), "{\"timeout\":4242,\"typing\":true}");
 }

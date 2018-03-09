@@ -110,6 +110,18 @@ struct RoomInvite
 void
 to_json(json &obj, const RoomInvite &request);
 
+//! Request payload for the `PUT /_matrix/client/r0/rooms/{roomId}/typing/{userId}` endpoint.
+struct TypingNotification
+{
+        //! Whether the user is typing or not.
+        bool typing = false;
+        //! The length of time in milliseconds to mark this user as typing.
+        uint64_t timeout = 0;
+};
+
+void
+to_json(json &obj, const TypingNotification &request);
+
 struct Empty
 {};
 
@@ -117,5 +129,5 @@ void
 to_json(json &obj, const Empty &);
 
 using Logout = Empty;
-}
-}
+} // namespace requests
+} // namespace mtx

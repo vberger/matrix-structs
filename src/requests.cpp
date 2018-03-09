@@ -96,12 +96,16 @@ to_json(json &obj, const RoomInvite &request)
         obj["user_id"] = request.user_id;
 }
 
-//Provides a functionality to serialize a request with an empty body
 void
-to_json(json &obj, const Empty&)
+to_json(json &obj, const TypingNotification &request)
 {
-	obj.clear();
+        obj["typing"]  = request.typing;
+        obj["timeout"] = request.timeout;
 }
 
+void
+to_json(json &, const Empty &)
+{
 }
-}
+} // namespace requests
+} // namespace mtx
