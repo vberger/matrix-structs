@@ -43,6 +43,9 @@ enum class EventType
         Unsupported,
 };
 
+std::string
+to_string(EventType type);
+
 EventType
 getEventType(const std::string &type);
 

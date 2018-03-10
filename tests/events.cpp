@@ -7,6 +7,24 @@ using json = nlohmann::json;
 
 namespace ns = mtx::events;
 
+TEST(Events, Conversions)
+{
+        EXPECT_EQ("m.room.aliases", ns::to_string(ns::EventType::RoomAliases));
+        EXPECT_EQ("m.room.avatar", ns::to_string(ns::EventType::RoomAvatar));
+        EXPECT_EQ("m.room.canonical_alias", ns::to_string(ns::EventType::RoomCanonicalAlias));
+        EXPECT_EQ("m.room.create", ns::to_string(ns::EventType::RoomCreate));
+        EXPECT_EQ("m.room.guest_access", ns::to_string(ns::EventType::RoomGuestAccess));
+        EXPECT_EQ("m.room.history_visibility", ns::to_string(ns::EventType::RoomHistoryVisibility));
+        EXPECT_EQ("m.room.join_rules", ns::to_string(ns::EventType::RoomJoinRules));
+        EXPECT_EQ("m.room.member", ns::to_string(ns::EventType::RoomMember));
+        EXPECT_EQ("m.room.message", ns::to_string(ns::EventType::RoomMessage));
+        EXPECT_EQ("m.room.name", ns::to_string(ns::EventType::RoomName));
+        EXPECT_EQ("m.room.power_levels", ns::to_string(ns::EventType::RoomPowerLevels));
+        EXPECT_EQ("m.room.topic", ns::to_string(ns::EventType::RoomTopic));
+        EXPECT_EQ("m.room.redaction", ns::to_string(ns::EventType::RoomRedaction));
+        EXPECT_EQ("m.room.pinned_events", ns::to_string(ns::EventType::RoomPinnedEvents));
+}
+
 TEST(StateEvents, Aliases)
 {
         json data = R"({

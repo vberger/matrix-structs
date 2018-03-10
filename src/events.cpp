@@ -40,6 +40,45 @@ getEventType(const std::string &type)
         return EventType::Unsupported;
 }
 
+std::string
+to_string(EventType type)
+{
+        switch (type) {
+        case EventType::RoomAliases:
+                return "m.room.aliases";
+        case EventType::RoomAvatar:
+                return "m.room.avatar";
+        case EventType::RoomCanonicalAlias:
+                return "m.room.canonical_alias";
+        case EventType::RoomCreate:
+                return "m.room.create";
+        case EventType::RoomGuestAccess:
+                return "m.room.guest_access";
+        case EventType::RoomHistoryVisibility:
+                return "m.room.history_visibility";
+        case EventType::RoomJoinRules:
+                return "m.room.join_rules";
+        case EventType::RoomMember:
+                return "m.room.member";
+        case EventType::RoomMessage:
+                return "m.room.message";
+        case EventType::RoomName:
+                return "m.room.name";
+        case EventType::RoomPowerLevels:
+                return "m.room.power_levels";
+        case EventType::RoomTopic:
+                return "m.room.topic";
+        case EventType::RoomRedaction:
+                return "m.room.redaction";
+        case EventType::RoomPinnedEvents:
+                return "m.room.pinned_events";
+        case EventType::Unsupported:
+                return "";
+        }
+
+        return "";
+}
+
 EventType
 getEventType(const json &obj)
 {
