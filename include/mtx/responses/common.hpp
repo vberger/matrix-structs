@@ -11,6 +11,15 @@ using json = nlohmann::json;
 
 namespace mtx {
 namespace responses {
+
+struct EventId
+{
+        mtx::identifiers::Event event_id;
+};
+
+void
+from_json(const nlohmann::json &obj, EventId &response);
+
 namespace utils {
 
 using TimelineEvents = std::vector<mtx::events::collections::TimelineEvents>;

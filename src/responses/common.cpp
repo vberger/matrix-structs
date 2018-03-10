@@ -21,6 +21,14 @@ using json = nlohmann::json;
 
 namespace mtx {
 namespace responses {
+
+void
+from_json(const nlohmann::json &obj, EventId &response)
+{
+        using namespace mtx::identifiers;
+        response.event_id = parse<Event>(obj.at("event_id").get<std::string>());
+}
+
 namespace utils {
 
 inline void
