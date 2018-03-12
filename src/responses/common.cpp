@@ -29,6 +29,12 @@ from_json(const nlohmann::json &obj, EventId &response)
         response.event_id = parse<Event>(obj.at("event_id").get<std::string>());
 }
 
+void
+from_json(const nlohmann::json &obj, FilterId &response)
+{
+        response.filter_id = obj.at("filter_id").get<std::string>();
+}
+
 namespace utils {
 
 inline void

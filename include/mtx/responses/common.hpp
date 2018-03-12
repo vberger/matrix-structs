@@ -20,6 +20,14 @@ struct EventId
 void
 from_json(const nlohmann::json &obj, EventId &response);
 
+struct FilterId
+{
+        std::string filter_id;
+};
+
+void
+from_json(const nlohmann::json &obj, FilterId &response);
+
 namespace utils {
 
 using TimelineEvents = std::vector<mtx::events::collections::TimelineEvents>;
