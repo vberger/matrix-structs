@@ -93,6 +93,7 @@ set(SRC
     src/responses/common.cpp
     src/responses/create_room.cpp
     src/responses/login.cpp
+    src/responses/register.cpp
     src/responses/empty.cpp
     src/responses/media.cpp
     src/responses/messages.cpp
