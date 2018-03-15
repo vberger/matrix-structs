@@ -52,8 +52,8 @@ if(NOT APPLE AND NOT MSVC)
 endif()
 
 file(DOWNLOAD
-    "https://github.com/nlohmann/json/releases/download/v3.1.1/json.hpp" ${PROJECT_SOURCE_DIR}/deps/json.hpp
-    EXPECTED_MD5 "c746ab33cef68834009bb728899c1924")
+    "https://github.com/nlohmann/json/releases/download/v3.1.2/json.hpp" ${PROJECT_SOURCE_DIR}/deps/json.hpp
+    EXPECTED_HASH SHA256=fbdfec4b4cf63b3b565d09f87e6c3c183bdd45c5be1864d3fcb338f6f02c1733)
 
 file(DOWNLOAD
     "https://github.com/mpark/variant/releases/download/v1.3.0/variant.hpp" ${PROJECT_SOURCE_DIR}/deps/variant.hpp
