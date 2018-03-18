@@ -142,6 +142,8 @@ struct UnsignedData
         std::string transaction_id;
         std::string prev_sender;
         std::string replaces_state;
+        //! The event ID that redacted this event.
+        std::string redacted_by;
 
         Content prev_content;
 };
@@ -164,6 +166,9 @@ from_json(const json &obj, UnsignedData<Content> &data)
 
         if (obj.find("prev_content") != obj.end())
                 data.prev_content = obj.at("prev_content").get<Content>();
+
+        if (obj.find("redacted_by") != obj.end())
+                data.redacted_by = obj.at("redacted_by").get<std::string>();
 }
 
 template<class Content>

@@ -7,6 +7,32 @@ using json = nlohmann::json;
 
 namespace ns = mtx::events;
 
+TEST(RoomEvents, Redacted)
+{
+        json data = R"({
+	  "unsigned": {
+            "age": 146,
+	    "redacted_by": "$152135702813129HltcO:matrix.org"
+	  },
+          "content": {},
+          "event_id": "$143273582443PhrSn:localhost",
+          "origin_server_ts": 1432735824653,
+          "room_id": "!jEsUZKDJdhlrceRyVU:localhost",
+          "sender": "@example:localhost",
+          "type": "m.room.message"
+        })"_json;
+
+        ns::RoomEvent<ns::msg::Redacted> event = data;
+
+        EXPECT_EQ(event.type, ns::EventType::RoomMessage);
+        EXPECT_EQ(event.event_id, "$143273582443PhrSn:localhost");
+        EXPECT_EQ(event.room_id, "!jEsUZKDJdhlrceRyVU:localhost");
+        EXPECT_EQ(event.sender, "@example:localhost");
+        EXPECT_EQ(event.origin_server_ts, 1432735824653L);
+        EXPECT_EQ(event.unsigned_data.age, 146);
+        EXPECT_EQ(event.unsigned_data.redacted_by, "$152135702813129HltcO:matrix.org");
+}
+
 TEST(RoomEvents, AudioMessage)
 {
         json data = R"({

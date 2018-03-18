@@ -22,6 +22,16 @@ from_json(const json &obj, Redaction &event);
 void
 to_json(json &obj, const Redaction &event);
 
+//! Stripped out contente for redacted events.
+struct Redacted
+{};
+
+inline void
+from_json(const json &, Redacted &){};
+
+inline void
+to_json(json &, const Redacted &){};
+
 } // namespace msg
 } // namespace events
 } // namespace mtx

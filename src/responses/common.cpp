@@ -195,6 +195,20 @@ parse_timeline_events(const json &events,
                         MsgType msg_type = mtx::events::getMessageType(e.at("content"));
 
                         if (msg_type == events::MessageType::Unknown) {
+                                try {
+                                        auto unsigned_data =
+                                          e.at("unsigned").at("redacted_by").get<std::string>();
+
+                                        if (unsigned_data.empty())
+                                                continue;
+
+                                        events::RoomEvent<events::msg::Redacted> redacted = e;
+                                        container.emplace_back(redacted);
+                                        continue;
+                                } catch (json::exception &err) {
+                                        log_error(err, e);
+                                }
+
                                 log_error("Invalid event type", e);
                                 continue;
                         }
