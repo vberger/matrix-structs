@@ -322,6 +322,42 @@ from_json(const json &obj, StateEvent<Content> &event)
                 event.prev_content = obj.at("prev_content").get<Content>();
 }
 
+//! Extension of the RoomEvent.
+template<class Content>
+struct RedactionEvent : public RoomEvent<Content>
+{
+        //! The event id of the event that was redacted.
+        std::string redacts;
+};
+
+template<class Content>
+void
+to_json(json &obj, const RedactionEvent<Content> &event)
+{
+        RoomEvent<Content> base_event = event;
+        to_json(obj, base_event);
+
+        obj["redacts"] = event.redacts;
+}
+
+template<class Content>
+void
+from_json(const json &obj, RedactionEvent<Content> &event)
+{
+        RoomEvent<Content> base_event = event;
+        from_json(obj, base_event);
+
+        event.content          = base_event.content;
+        event.type             = base_event.type;
+        event.event_id         = base_event.event_id;
+        event.room_id          = base_event.room_id;
+        event.sender           = base_event.sender;
+        event.origin_server_ts = base_event.origin_server_ts;
+        event.unsigned_data    = base_event.unsigned_data;
+
+        event.redacts = obj.at("redacts").get<std::string>();
+}
+
 enum class MessageType
 {
         // m.audio

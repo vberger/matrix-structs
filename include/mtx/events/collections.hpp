@@ -46,7 +46,8 @@ using StateEvents = mpark::variant<events::StateEvent<states::Aliases>,
                                    events::StateEvent<states::Name>,
                                    events::StateEvent<states::PinnedEvents>,
                                    events::StateEvent<states::PowerLevels>,
-                                   events::StateEvent<states::Topic>>;
+                                   events::StateEvent<states::Topic>,
+                                   events::StateEvent<msgs::Redacted>>;
 
 //! Collection of @p StrippedEvent only.
 using StrippedEvents = mpark::variant<events::StrippedEvent<states::Aliases>,
@@ -76,8 +77,8 @@ using TimelineEvents = mpark::variant<events::StateEvent<states::Aliases>,
                                       events::StateEvent<states::PinnedEvents>,
                                       events::StateEvent<states::PowerLevels>,
                                       events::StateEvent<states::Topic>,
+                                      events::RedactionEvent<msgs::Redaction>,
                                       events::RoomEvent<msgs::Redacted>,
-                                      events::RoomEvent<msgs::Redaction>,
                                       events::RoomEvent<msgs::Audio>,
                                       events::RoomEvent<msgs::Emote>,
                                       events::RoomEvent<msgs::File>,

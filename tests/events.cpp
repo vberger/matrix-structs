@@ -7,6 +7,36 @@ using json = nlohmann::json;
 
 namespace ns = mtx::events;
 
+TEST(Events, Redaction)
+{
+        json data = R"({
+	  "unsigned": {
+            "age": 146
+	  },
+          "content": {
+              "reason": "No reason"
+          },
+          "event_id": "$143273582443PhrSn:localhost",
+          "origin_server_ts": 1432735824653,
+          "room_id": "!jEsUZKDJdhlrceRyVU:localhost",
+          "redacts": "$1521361675759563UDexf:matrix.org",
+          "sender": "@example:localhost",
+          "type": "m.room.redaction"
+        })"_json;
+
+        ns::RedactionEvent<ns::msg::Redaction> event = data;
+
+        EXPECT_EQ(event.type, ns::EventType::RoomRedaction);
+        EXPECT_EQ(event.event_id, "$143273582443PhrSn:localhost");
+        EXPECT_EQ(event.room_id, "!jEsUZKDJdhlrceRyVU:localhost");
+        EXPECT_EQ(event.sender, "@example:localhost");
+        EXPECT_EQ(event.origin_server_ts, 1432735824653L);
+        EXPECT_EQ(event.unsigned_data.age, 146);
+        EXPECT_EQ(event.redacts, "$1521361675759563UDexf:matrix.org");
+
+        EXPECT_EQ(event.content.reason, "No reason");
+}
+
 TEST(Events, Conversions)
 {
         EXPECT_EQ("m.room.aliases", ns::to_string(ns::EventType::RoomAliases));

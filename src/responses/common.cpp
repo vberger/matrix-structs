@@ -171,7 +171,7 @@ parse_timeline_events(const json &events,
                 }
                 case events::EventType::RoomRedaction: {
                         try {
-                                events::RoomEvent<mtx::events::msg::Redaction> redaction = e;
+                                events::RedactionEvent<mtx::events::msg::Redaction> redaction = e;
                                 container.emplace_back(redaction);
                         } catch (json::exception &err) {
                                 log_error(err, e);
