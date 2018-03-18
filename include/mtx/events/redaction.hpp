@@ -27,10 +27,12 @@ struct Redacted
 {};
 
 inline void
-from_json(const json &, Redacted &){};
+from_json(const json &, Redacted &)
+{}
 
 inline void
-to_json(json &, const Redacted &){};
+to_json(json &, const Redacted &)
+{}
 
 } // namespace msg
 } // namespace events
