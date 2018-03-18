@@ -147,7 +147,7 @@ TEST(StateEvents, Create)
         EXPECT_EQ(event.unsigned_data.age, 3715756343L);
         EXPECT_EQ(event.origin_server_ts, 1506761923948L);
         EXPECT_EQ(event.state_key, "");
-        EXPECT_EQ(event.content.creator.toString(), "@mujx:matrix.org");
+        EXPECT_EQ(event.content.creator.to_string(), "@mujx:matrix.org");
 }
 
 TEST(StateEvents, GuestAccess)

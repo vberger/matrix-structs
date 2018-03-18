@@ -8,7 +8,7 @@ TEST(MatrixIdentifiers, EventValid)
 {
         Event eventid = parse<Event>("$39hvsi03hlne:example.com");
 
-        EXPECT_EQ(eventid.toString(), "$39hvsi03hlne:example.com");
+        EXPECT_EQ(eventid.to_string(), "$39hvsi03hlne:example.com");
         EXPECT_EQ(eventid.localpart(), "39hvsi03hlne");
         EXPECT_EQ(eventid.hostname(), "example.com");
 }
@@ -17,7 +17,7 @@ TEST(MatrixIdentifiers, Hostname)
 {
         Event eventid = parse<Event>("$39hvsi03hlne:22.23.112.44:8080");
 
-        EXPECT_EQ(eventid.toString(), "$39hvsi03hlne:22.23.112.44:8080");
+        EXPECT_EQ(eventid.to_string(), "$39hvsi03hlne:22.23.112.44:8080");
         EXPECT_EQ(eventid.localpart(), "39hvsi03hlne");
         EXPECT_EQ(eventid.hostname(), "22.23.112.44:8080");
 
@@ -38,13 +38,13 @@ TEST(MatrixIdentifiers, RoomValid)
 {
         Room room1 = parse<Room>("!39fasdsdfsdf:example.com:5000");
 
-        EXPECT_EQ(room1.toString(), "!39fasdsdfsdf:example.com:5000");
+        EXPECT_EQ(room1.to_string(), "!39fasdsdfsdf:example.com:5000");
         EXPECT_EQ(room1.localpart(), "39fasdsdfsdf");
         EXPECT_EQ(room1.hostname(), "example.com:5000");
 
         Room room2 = parse<Room>("!39fasdsdfsdf:example.com");
 
-        EXPECT_EQ(room2.toString(), "!39fasdsdfsdf:example.com");
+        EXPECT_EQ(room2.to_string(), "!39fasdsdfsdf:example.com");
         EXPECT_EQ(room2.localpart(), "39fasdsdfsdf");
         EXPECT_EQ(room2.hostname(), "example.com");
 }

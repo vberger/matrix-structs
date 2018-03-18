@@ -21,7 +21,7 @@ from_json(const json &obj, Create &create)
 void
 to_json(json &obj, const Create &create)
 {
-        obj["creator"]    = create.creator.toString();
+        obj["creator"]    = create.creator.to_string();
         obj["m.federate"] = create.federate;
 }
 

@@ -17,7 +17,7 @@ public:
         //! Returns the name of the originating homeserver.
         std::string hostname() const { return hostname_; }
         //! Returns the whole identifier (localpart + hostname).
-        std::string toString() const { return id_; }
+        std::string to_string() const { return id_; }
 
 protected:
         //! Local part of the identifier.

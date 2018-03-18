@@ -425,7 +425,7 @@ TEST(Responses, CreateRoom)
         json data = R"({"room_id" : "!sefiuhWgwghwWgh:example.com"})"_json;
 
         mtx::responses::CreateRoom create_room = data;
-        EXPECT_EQ(create_room.room_id.toString(), "!sefiuhWgwghwWgh:example.com");
+        EXPECT_EQ(create_room.room_id.to_string(), "!sefiuhWgwghwWgh:example.com");
 
         json error_data = R"({"room_id" : "#akajdkf:example.com"})"_json;
 
@@ -442,7 +442,7 @@ TEST(Responses, Login)
         })"_json;
 
         ns::Login login = data;
-        EXPECT_EQ(login.user_id.toString(), "@cheeky_monkey:matrix.org");
+        EXPECT_EQ(login.user_id.to_string(), "@cheeky_monkey:matrix.org");
         EXPECT_EQ(login.access_token, "abc123");
         EXPECT_EQ(login.home_server, "matrix.org");
         EXPECT_EQ(login.device_id, "GHTYAJCE");
@@ -454,7 +454,7 @@ TEST(Responses, Login)
         })"_json;
 
         ns::Login login2 = data2;
-        EXPECT_EQ(login2.user_id.toString(), "@cheeky_monkey:matrix.org");
+        EXPECT_EQ(login2.user_id.to_string(), "@cheeky_monkey:matrix.org");
         EXPECT_EQ(login2.access_token, "abc123");
         EXPECT_EQ(login2.home_server, "matrix.org");
         EXPECT_EQ(login2.device_id, "");
