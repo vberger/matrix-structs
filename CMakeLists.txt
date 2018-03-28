@@ -5,61 +5,29 @@ project(matrix_structs CXX)
 option(BUILD_TESTS "Build tests" OFF)
 option(BUILD_DOC "Build documentation" OFF)
 
+set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
-set(LIBRARY_NAME matrix_structs)
 
-find_package(Doxygen)
+#
+# Find doxygen & generate API documentation.
+#
+include(Doxygen)
 
-if(DOXYGEN_FOUND AND BUILD_DOC)
-    set(DOXYGEN_IN ${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile)
-    set(DOXYGEN_OUT ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile.out)
-
-    configure_file(${DOXYGEN_IN} ${DOXYGEN_OUT} @ONLY)
-    message("Doxygen build started")
-
-    add_custom_target( doc_doxygen ALL
-        COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_OUT}
-        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-        COMMENT "Generating API documentation with Doxygen"
-        VERBATIM )
-endif()
-
-if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID MATCHES "GNU")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} \
-        -std=c++11 \
-        -Wall \
-        -Wextra \
-        -Werror \
-        -pipe \
-        -pedantic \
-        -Wunreachable-code")
-
-    if(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
-        execute_process(COMMAND ${CMAKE_CXX_COMPILER} -dumpversion OUTPUT_VARIABLE GCC_VERSION)
-
-        if (GCC_VERSION VERSION_GREATER 4.9)
-            set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fdiagnostics-color=always" )
-        endif()
-    endif()
-
-    if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fdiagnostics-color=always" )
-    endif()
-endif()
-
-if(NOT APPLE AND NOT MSVC)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
-endif()
+#
+# Adjust compiler flags.
+#
+include(CompilerFlags)
 
 file(DOWNLOAD
-    "https://github.com/nlohmann/json/releases/download/v3.1.2/json.hpp" ${PROJECT_SOURCE_DIR}/deps/json.hpp
+    "https://github.com/nlohmann/json/releases/download/v3.1.2/json.hpp"
+    ${PROJECT_SOURCE_DIR}/include/json.hpp
     EXPECTED_HASH SHA256=fbdfec4b4cf63b3b565d09f87e6c3c183bdd45c5be1864d3fcb338f6f02c1733)
 
 file(DOWNLOAD
-    "https://github.com/mpark/variant/releases/download/v1.3.0/variant.hpp" ${PROJECT_SOURCE_DIR}/deps/variant.hpp
+    "https://github.com/mpark/variant/releases/download/v1.3.0/variant.hpp"
+    ${PROJECT_SOURCE_DIR}/include/variant.hpp
     EXPECTED_MD5 "be0ce322cdd408e1b347b9f1d59ea67a")
 
-include_directories(deps)
 include_directories(include)
 
 set(SRC
@@ -101,8 +69,8 @@ set(SRC
     src/responses/sync.cpp
     src/responses/version.cpp)
 
-add_library(${LIBRARY_NAME} ${SRC})
-install(TARGETS ${LIBRARY_NAME}
+add_library(${PROJECT_NAME} ${SRC})
+install(TARGETS ${PROJECT_NAME}
     ARCHIVE DESTINATION lib
     LIBRARY DESTINATION lib
     RUNTIME DESTINATION bin)
@@ -122,22 +90,22 @@ if (BUILD_TESTS)
     include_directories(${GTEST_INCLUDE_DIRS})
 
     add_executable(identifiers tests/identifiers.cpp)
-    target_link_libraries(identifiers ${LIBRARY_NAME} ${GTEST_BOTH_LIBRARIES})
+    target_link_libraries(identifiers ${PROJECT_NAME} ${GTEST_BOTH_LIBRARIES})
 
     add_executable(events tests/events.cpp)
-    target_link_libraries(events ${LIBRARY_NAME} ${GTEST_BOTH_LIBRARIES})
+    target_link_libraries(events ${PROJECT_NAME} ${GTEST_BOTH_LIBRARIES})
 
     add_executable(messages tests/messages.cpp)
-    target_link_libraries(messages ${LIBRARY_NAME} ${GTEST_BOTH_LIBRARIES})
+    target_link_libraries(messages ${PROJECT_NAME} ${GTEST_BOTH_LIBRARIES})
 
     add_executable(responses tests/responses.cpp)
-    target_link_libraries(responses ${LIBRARY_NAME} ${GTEST_BOTH_LIBRARIES})
+    target_link_libraries(responses ${PROJECT_NAME} ${GTEST_BOTH_LIBRARIES})
 
     add_executable(requests tests/requests.cpp)
-    target_link_libraries(requests ${LIBRARY_NAME} ${GTEST_BOTH_LIBRARIES})
+    target_link_libraries(requests ${PROJECT_NAME} ${GTEST_BOTH_LIBRARIES})
 
     add_executable(errors tests/errors.cpp)
-    target_link_libraries(errors ${LIBRARY_NAME} ${GTEST_BOTH_LIBRARIES})
+    target_link_libraries(errors ${PROJECT_NAME} ${GTEST_BOTH_LIBRARIES})
 
     if (NOT GTest_FOUND)
         add_dependencies(identifiers GTest)

@@ -31,7 +31,8 @@ build/
 compile_commands.json
 
 # Ignore downloaded files.
-deps/*.hpp
+include/json.hpp
+include/variant.hpp
 .third-party
 
 tags
