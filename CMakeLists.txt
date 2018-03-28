@@ -71,9 +71,13 @@ set(SRC
 
 add_library(${PROJECT_NAME} ${SRC})
 install(TARGETS ${PROJECT_NAME}
-    ARCHIVE DESTINATION lib
+    ARCHIVE DESTINATION lib/static
     LIBRARY DESTINATION lib
     RUNTIME DESTINATION bin)
+install(DIRECTORY include/ 
+    DESTINATION include/${PROJECT_NAME}
+    FILES_MATCHING PATTERN "*.hpp")
+
 
 if (BUILD_TESTS)
     enable_testing()

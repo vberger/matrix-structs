@@ -10,15 +10,6 @@ RUN apk --update add \
     bash \
     ninja
 
-RUN wget https://github.com/google/googletest/archive/release-1.8.0.tar.gz && \
-    tar xf release-1.8.0.tar.gz && \
-    cd googletest-release-1.8.0 && \
-    cmake -DBUILD_SHARED_LIBS=ON . && \
-    make
-
-RUN cd googletest-release-1.8.0 && \
-    cp -a googletest/include/gtest /usr/include
-
 RUN mkdir /build
 
 WORKDIR /build
