@@ -724,3 +724,71 @@ TEST(Responses, Register)
         EXPECT_EQ(s2.stages.at(0), "m.login.email.identity");
         EXPECT_EQ(s2.stages.at(1), "m.login.recaptcha");
 }
+
+TEST(Responses, UploadKeys)
+{
+        json data = R"({
+	  "one_time_key_counts": {
+            "curve25519": 10,
+            "signed_curve25519": 20
+          }
+	})"_json;
+
+        ns::UploadKeys res = data;
+
+        EXPECT_EQ(res.one_time_key_counts.size(), 2);
+        EXPECT_EQ(res.one_time_key_counts["curve25519"], 10);
+        EXPECT_EQ(res.one_time_key_counts["signed_curve25519"], 20);
+}
+
+TEST(Responses, QueryKeys)
+{
+        json data = R"({
+          "failures": {
+	    "noidea": { "what": 0 },
+	    "toput": { "here": 1 }
+	  },
+          "device_keys": {
+            "@alice:example.com": {
+              "JLAFKJWSCS": {
+                "user_id": "@alice:example.com",
+                "device_id": "JLAFKJWSCS",
+                "algorithms": [ "m.olm.curve25519-aes-sha256", "m.megolm.v1.aes-sha" ],
+                "keys": {
+                  "curve25519:JLAFKJWSCS": "3C5BFWi2Y8MaVvjM8M22DBmh24PmgR0nPvJOIArzgyI",
+                  "ed25519:JLAFKJWSCS": "lEuiRJBit0IG6nUf5pUzWTUEsRVVe/HJkoKuEww9ULI"
+                },
+                "signatures": {
+                  "@alice:example.com": {
+                    "ed25519:JLAFKJWSCS": "dSO80A01XiigH3uBiDVx/EjzaoycHcjq9lfQX0uWsqxl2giMIiSPR8a4d291W1ihKJL/a+myXS367WT6NAIcBA"
+                  }
+                },
+                "unsigned": {
+                  "device_display_name": "Alice's mobile phone"
+                }
+              }
+            }
+          }
+        })"_json;
+
+        ns::QueryKeys res = data;
+
+        EXPECT_EQ(res.failures.size(), 2);
+        EXPECT_EQ(res.device_keys.size(), 1);
+
+        auto device_keys = res.device_keys["@alice:example.com"]["JLAFKJWSCS"];
+
+        EXPECT_EQ(device_keys.user_id, "@alice:example.com");
+        EXPECT_EQ(device_keys.device_id, "JLAFKJWSCS");
+        EXPECT_EQ(device_keys.algorithms[0], "m.olm.curve25519-aes-sha256");
+        EXPECT_EQ(device_keys.algorithms[1], "m.megolm.v1.aes-sha");
+        EXPECT_EQ(device_keys.keys.size(), 2);
+        EXPECT_EQ(device_keys.keys["curve25519:JLAFKJWSCS"],
+                  "3C5BFWi2Y8MaVvjM8M22DBmh24PmgR0nPvJOIArzgyI");
+        EXPECT_EQ(device_keys.keys["ed25519:JLAFKJWSCS"],
+                  "lEuiRJBit0IG6nUf5pUzWTUEsRVVe/HJkoKuEww9ULI");
+        EXPECT_EQ(
+          device_keys.signatures["@alice:example.com"]["ed25519:JLAFKJWSCS"],
+          "dSO80A01XiigH3uBiDVx/EjzaoycHcjq9lfQX0uWsqxl2giMIiSPR8a4d291W1ihKJL/a+myXS367WT6NAIcBA");
+        EXPECT_EQ(device_keys.unsigned_info.device_display_name, "Alice's mobile phone");
+}

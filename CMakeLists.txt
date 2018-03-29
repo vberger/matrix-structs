@@ -34,6 +34,7 @@ set(SRC
     src/events.cpp
     src/requests.cpp
     src/errors.cpp
+    src/common.cpp
 
     src/events/aliases.cpp
     src/events/avatar.cpp
@@ -60,6 +61,7 @@ set(SRC
 
     src/responses/common.cpp
     src/responses/create_room.cpp
+    src/responses/crypto.cpp
     src/responses/login.cpp
     src/responses/register.cpp
     src/responses/empty.cpp
@@ -111,6 +113,9 @@ if (BUILD_TESTS)
     add_executable(errors tests/errors.cpp)
     target_link_libraries(errors ${PROJECT_NAME} ${GTEST_BOTH_LIBRARIES})
 
+    add_executable(crypto tests/crypto.cpp)
+    target_link_libraries(crypto ${PROJECT_NAME} ${GTEST_BOTH_LIBRARIES})
+
     if (NOT GTest_FOUND)
         add_dependencies(identifiers GTest)
         add_dependencies(events GTest)
@@ -118,10 +123,12 @@ if (BUILD_TESTS)
         add_dependencies(responses GTest)
         add_dependencies(requests GTest)
         add_dependencies(errors GTest)
+        add_dependencies(crypto GTest)
     endif()
 
     add_test(MatrixIdentifiers identifiers)
     add_test(MatrixErrors errors)
+    add_test(CryptoStructs crypto)
     add_test(StateEvents events)
     add_test(RoomEvents messages)
     add_test(Responses responses)
