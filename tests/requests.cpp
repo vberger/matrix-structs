@@ -5,12 +5,11 @@
 #include <mtx/requests.hpp>
 
 using json = nlohmann::json;
-
-namespace ns = mtx::requests;
+using namespace mtx::requests;
 
 TEST(Requests, Login)
 {
-        ns::Login t1, t2, t3;
+        Login t1, t2, t3;
 
         t1.user                        = "@alice:matrix.org";
         t1.password                    = "secret";
@@ -41,7 +40,7 @@ TEST(Requests, Login)
 
 TEST(Requests, Typing)
 {
-        ns::TypingNotification t1, t2;
+        TypingNotification t1, t2;
 
         t1.timeout = 4000;
 
@@ -53,4 +52,66 @@ TEST(Requests, Typing)
 
         j = t2;
         ASSERT_EQ(j.dump(), "{\"timeout\":4242,\"typing\":true}");
+}
+
+TEST(Requests, UploadKeys)
+{
+        UploadKeys r1, r2, r3;
+
+        json j = r1;
+        ASSERT_EQ(j.dump(), "{}");
+
+        r2.device_keys.user_id   = "@alice:example.com";
+        r2.device_keys.device_id = "JLAFKJWSCS";
+        r2.device_keys.keys.emplace("curve25519:JLAFKJWSCS",
+                                    "3C5BFWi2Y8MaVvjM8M22DBmh24PmgR0nPvJOIArzgyI");
+        std::map<std::string, std::string> tmp = {
+          {"ed25519:JLAFKJWSCS",
+           "dSO80A01XiigH3uBiDVx/EjzaoycHcjq9lfQX0uWsqxl2giMIiSPR8a4d291W1ihKJL/"
+           "a+myXS367WT6NAIcBA"}};
+        r2.device_keys.signatures.emplace("@alice:example.com", tmp);
+
+        // Only device_keys are present
+        j = r2;
+        ASSERT_EQ(j.dump(),
+                  "{\"device_keys\":{\"algorithms\":[\"m.olm.curve25519-aes-sha256\",\"m.megolm.v1."
+                  "aes-sha\"],\"device_id\":\"JLAFKJWSCS\",\"keys\":{\"curve25519:JLAFKJWSCS\":"
+                  "\"3C5BFWi2Y8MaVvjM8M22DBmh24PmgR0nPvJOIArzgyI\"},\"signatures\":{\"@alice:"
+                  "example.com\":{\"ed25519:JLAFKJWSCS\":\"dSO80A01XiigH3uBiDVx/"
+                  "EjzaoycHcjq9lfQX0uWsqxl2giMIiSPR8a4d291W1ihKJL/"
+                  "a+myXS367WT6NAIcBA\"}},\"user_id\":\"@alice:example.com\"}}");
+
+        json k1 = {{"key", "zKbLg+NrIjpnagy+pIY6uPL4ZwEG2v+8F9lmgsnlZzs"},
+                   {"signatures",
+                    {{"@alice:example.com",
+                      {{"ed25519:JLAFKJWSCS",
+                        "IQeCEPb9HFk217cU9kw9EOiusC6kMIkoIRnbnfOh5Oc63S1ghgyjShBGpu34blQomoalCyXWyh"
+                        "aaT3MrLZYQ"
+                        "AA"}}}}}};
+
+        json k2 = {{"key", "j3fR3HemM16M7CWhoI4Sk5ZsdmdfQHsKL1xuSft6MSw"},
+                   {"signatures",
+                    {{"@alice:example.com",
+                      {{"ed25519:JLAFKJWSCS",
+                        "FLWxXqGbwrb8SM3Y795eB6OA8bwBcoMZFXBqnTn58AYWZSqiD45tlBVcDa2L7RwdKXebW/"
+                        "VzDlnfVJ+9jok1Bw"}}}}}};
+
+        r3.one_time_keys.emplace("curve25519:AAAAAQ",
+                                 "/qyvZvwjiTxGdGU0RCguDCLeR+nmsb3FfNG3/Ve4vU8");
+        r3.one_time_keys.emplace("signed_curve25519:AAAAHg", k1);
+        r3.one_time_keys.emplace("signed_curve25519:AAAAHQ", k2);
+
+        j = r3;
+        ASSERT_EQ(
+          j.dump(),
+          "{\"one_time_keys\":{\"curve25519:AAAAAQ\":\"/qyvZvwjiTxGdGU0RCguDCLeR+nmsb3FfNG3/"
+          "Ve4vU8\",\"signed_curve25519:AAAAHQ\":{\"key\":"
+          "\"j3fR3HemM16M7CWhoI4Sk5ZsdmdfQHsKL1xuSft6MSw\",\"signatures\":{\"@alice:example.com\":{"
+          "\"ed25519:JLAFKJWSCS\":"
+          "\"FLWxXqGbwrb8SM3Y795eB6OA8bwBcoMZFXBqnTn58AYWZSqiD45tlBVcDa2L7RwdKXebW/"
+          "VzDlnfVJ+9jok1Bw\"}}},\"signed_curve25519:AAAAHg\":{\"key\":\"zKbLg+NrIjpnagy+"
+          "pIY6uPL4ZwEG2v+8F9lmgsnlZzs\",\"signatures\":{\"@alice:example.com\":{\"ed25519:"
+          "JLAFKJWSCS\":"
+          "\"IQeCEPb9HFk217cU9kw9EOiusC6kMIkoIRnbnfOh5Oc63S1ghgyjShBGpu34blQomoalCyXWyhaaT3MrLZYQAA"
+          "\"}}}}}");
 }

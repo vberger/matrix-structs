@@ -104,8 +104,16 @@ to_json(json &obj, const TypingNotification &request)
 }
 
 void
-to_json(json &, const Empty &)
+to_json(json &obj, const UploadKeys &request)
 {
+        obj = json::object();
+
+        if (!request.device_keys.user_id.empty())
+                obj["device_keys"] = request.device_keys;
+
+        if (!request.one_time_keys.empty())
+                obj["one_time_keys"] = request.one_time_keys;
 }
+
 } // namespace requests
 } // namespace mtx

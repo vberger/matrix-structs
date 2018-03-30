@@ -3,6 +3,7 @@
 #include <string>
 
 #include <json.hpp>
+#include <mtx/common.hpp>
 
 using json = nlohmann::json;
 
@@ -125,9 +126,25 @@ to_json(json &obj, const TypingNotification &request);
 struct Empty
 {};
 
-void
-to_json(json &obj, const Empty &);
+inline void
+to_json(json &, const Empty &)
+{}
 
 using Logout = Empty;
+
+struct UploadKeys
+{
+        //! Identity keys for the device.
+        //! May be absent if no new identity keys are required.
+        mtx::crypto::DeviceKeys device_keys;
+        //! One-time public keys for "pre-key" messages.
+        //! The names of the properties should be in the format <algorithm>:<key_id>.
+        //! The format of the key is determined by the key algorithm.
+        std::map<std::string, json> one_time_keys;
+};
+
+void
+to_json(json &obj, const UploadKeys &);
+
 } // namespace requests
 } // namespace mtx
