@@ -115,3 +115,18 @@ TEST(Requests, UploadKeys)
           "\"IQeCEPb9HFk217cU9kw9EOiusC6kMIkoIRnbnfOh5Oc63S1ghgyjShBGpu34blQomoalCyXWyhaaT3MrLZYQAA"
           "\"}}}}}");
 }
+
+TEST(Requests, QueryKeys)
+{
+        QueryKeys k1;
+
+        std::vector<std::string> empty_vec;
+
+        k1.device_keys.emplace("@alice:localhost", empty_vec);
+        k1.token = "this_is_a_token";
+
+        json j = k1;
+        ASSERT_EQ(j.dump(),
+                  "{\"device_keys\":{\"@alice:localhost\":[]},\"timeout\":10000,\"token\":\"this_"
+                  "is_a_token\"}");
+}

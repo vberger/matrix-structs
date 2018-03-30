@@ -115,5 +115,13 @@ to_json(json &obj, const UploadKeys &request)
                 obj["one_time_keys"] = request.one_time_keys;
 }
 
+void
+to_json(json &obj, const QueryKeys &request)
+{
+        obj["timeout"]     = request.timeout;
+        obj["device_keys"] = request.device_keys;
+        obj["token"]       = request.token;
+}
+
 } // namespace requests
 } // namespace mtx
