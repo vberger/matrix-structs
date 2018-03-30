@@ -130,3 +130,18 @@ TEST(Requests, QueryKeys)
                   "{\"device_keys\":{\"@alice:localhost\":[]},\"timeout\":10000,\"token\":\"this_"
                   "is_a_token\"}");
 }
+
+TEST(Requests, ClaimKeys)
+{
+        ClaimKeys k1;
+
+        std::map<std::string, std::string> devices;
+        devices.emplace("JLAFKJWSCS", "curve25519");
+
+        k1.one_time_keys.emplace("@alice:localhost", devices);
+
+        json j = k1;
+        ASSERT_EQ(j.dump(),
+                  "{\"one_time_keys\":{\"@alice:localhost\":{\"JLAFKJWSCS\":\"curve25519\"}},"
+                  "\"timeout\":10000}");
+}

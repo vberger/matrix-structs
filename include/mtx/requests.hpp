@@ -150,8 +150,7 @@ constexpr uint64_t DEFAULT_DOWNLOAD_TIMEOUT = 10 * 1000; // 10 seconds
 
 struct QueryKeys
 {
-        //! The time (in milliseconds) to wait when downloading keys
-        //! from remote servers. 10 seconds is the recommended default.
+        //! The time (in milliseconds) to wait when downloading keys from remote servers.
         uint64_t timeout = DEFAULT_DOWNLOAD_TIMEOUT;
         //! The keys to be downloaded.
         //! A map from user ID, to a list of device IDs, or to an empty
@@ -167,6 +166,21 @@ struct QueryKeys
 
 void
 to_json(json &obj, const QueryKeys &);
+
+struct ClaimKeys
+{
+        //! The time (in milliseconds) to wait when downloading keys from remote servers.
+        uint64_t timeout = DEFAULT_DOWNLOAD_TIMEOUT;
+        //! The keys to be claimed. A map from user ID, to a map from device ID to algorithm name.
+        std::map<std::string, std::map<std::string, std::string>> one_time_keys;
+};
+
+inline void
+to_json(json &obj, const ClaimKeys &request)
+{
+        obj["timeout"]       = request.timeout;
+        obj["one_time_keys"] = request.one_time_keys;
+}
 
 } // namespace requests
 } // namespace mtx
