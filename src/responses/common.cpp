@@ -26,7 +26,7 @@ void
 from_json(const nlohmann::json &obj, EventId &response)
 {
         using namespace mtx::identifiers;
-        response.event_id = parse<Event>(obj.at("event_id").get<std::string>());
+        response.event_id = obj.at("event_id").get<Event>();
 }
 
 void

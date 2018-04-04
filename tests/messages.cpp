@@ -25,9 +25,9 @@ TEST(RoomEvents, Redacted)
         ns::RoomEvent<ns::msg::Redacted> event = data;
 
         EXPECT_EQ(event.type, ns::EventType::RoomMessage);
-        EXPECT_EQ(event.event_id, "$143273582443PhrSn:localhost");
-        EXPECT_EQ(event.room_id, "!jEsUZKDJdhlrceRyVU:localhost");
-        EXPECT_EQ(event.sender, "@example:localhost");
+        EXPECT_EQ(event.event_id.to_string(), "$143273582443PhrSn:localhost");
+        EXPECT_EQ(event.room_id.to_string(), "!jEsUZKDJdhlrceRyVU:localhost");
+        EXPECT_EQ(event.sender.to_string(), "@example:localhost");
         EXPECT_EQ(event.origin_server_ts, 1432735824653L);
         EXPECT_EQ(event.unsigned_data.age, 146);
         EXPECT_EQ(event.unsigned_data.redacted_by, "$152135702813129HltcO:matrix.org");
@@ -59,9 +59,9 @@ TEST(RoomEvents, AudioMessage)
         ns::RoomEvent<ns::msg::Audio> event = data;
 
         EXPECT_EQ(event.type, ns::EventType::RoomMessage);
-        EXPECT_EQ(event.event_id, "$143273582443PhrSn:localhost");
-        EXPECT_EQ(event.room_id, "!jEsUZKDJdhlrceRyVU:localhost");
-        EXPECT_EQ(event.sender, "@example:localhost");
+        EXPECT_EQ(event.event_id.to_string(), "$143273582443PhrSn:localhost");
+        EXPECT_EQ(event.room_id.to_string(), "!jEsUZKDJdhlrceRyVU:localhost");
+        EXPECT_EQ(event.sender.to_string(), "@example:localhost");
         EXPECT_EQ(event.origin_server_ts, 1432735824653L);
         EXPECT_EQ(event.unsigned_data.age, 146);
 
@@ -93,9 +93,9 @@ TEST(RoomEvents, EmoteMessage)
         ns::RoomEvent<ns::msg::Emote> event = data;
 
         EXPECT_EQ(event.type, ns::EventType::RoomMessage);
-        EXPECT_EQ(event.event_id, "$15098786822025533uttji:matrix.org");
-        EXPECT_EQ(event.room_id, "!VaMCVKSVcyPtXbcMXh:matrix.org");
-        EXPECT_EQ(event.sender, "@mujx:matrix.org");
+        EXPECT_EQ(event.event_id.to_string(), "$15098786822025533uttji:matrix.org");
+        EXPECT_EQ(event.room_id.to_string(), "!VaMCVKSVcyPtXbcMXh:matrix.org");
+        EXPECT_EQ(event.sender.to_string(), "@mujx:matrix.org");
         EXPECT_EQ(event.origin_server_ts, 1509878682149L);
         EXPECT_EQ(event.unsigned_data.age, 626351821);
         EXPECT_EQ(event.content.body, "tests");
@@ -128,9 +128,9 @@ TEST(RoomEvents, FileMessage)
         ns::RoomEvent<ns::msg::File> event = data;
 
         EXPECT_EQ(event.type, ns::EventType::RoomMessage);
-        EXPECT_EQ(event.event_id, "$15104856072749611ERqhw:matrix.org");
-        EXPECT_EQ(event.room_id, "!lfoDRlNFWlvOnvkBwQ:matrix.org");
-        EXPECT_EQ(event.sender, "@nheko_test:matrix.org");
+        EXPECT_EQ(event.event_id.to_string(), "$15104856072749611ERqhw:matrix.org");
+        EXPECT_EQ(event.room_id.to_string(), "!lfoDRlNFWlvOnvkBwQ:matrix.org");
+        EXPECT_EQ(event.sender.to_string(), "@nheko_test:matrix.org");
         EXPECT_EQ(event.origin_server_ts, 1510485607737L);
         EXPECT_EQ(event.unsigned_data.age, 31);
         EXPECT_EQ(event.unsigned_data.transaction_id, "m1510485607454.1");
@@ -176,9 +176,9 @@ TEST(RoomEvents, ImageMessage)
         ns::RoomEvent<ns::msg::Image> event = data;
 
         EXPECT_EQ(event.type, ns::EventType::RoomMessage);
-        EXPECT_EQ(event.event_id, "$15105042942524OGmZm:kamax.io");
-        EXPECT_EQ(event.room_id, "!cURbafjkfsMDVwdRDQ:matrix.org");
-        EXPECT_EQ(event.sender, "@max:kamax.io");
+        EXPECT_EQ(event.event_id.to_string(), "$15105042942524OGmZm:kamax.io");
+        EXPECT_EQ(event.room_id.to_string(), "!cURbafjkfsMDVwdRDQ:matrix.org");
+        EXPECT_EQ(event.sender.to_string(), "@max:kamax.io");
         EXPECT_EQ(event.origin_server_ts, 1510504294993L);
         EXPECT_EQ(event.unsigned_data.age, 738977);
 
@@ -216,9 +216,9 @@ TEST(RoomEvents, NoticeMessage)
         ns::RoomEvent<ns::msg::Notice> event = data;
 
         EXPECT_EQ(event.type, ns::EventType::RoomMessage);
-        EXPECT_EQ(event.event_id, "$15104358652239178iCnZy:matrix.org");
-        EXPECT_EQ(event.room_id, "!BPvgRcBVHzyFSlYkrg:matrix.org");
-        EXPECT_EQ(event.sender, "@_neb_github:matrix.org");
+        EXPECT_EQ(event.event_id.to_string(), "$15104358652239178iCnZy:matrix.org");
+        EXPECT_EQ(event.room_id.to_string(), "!BPvgRcBVHzyFSlYkrg:matrix.org");
+        EXPECT_EQ(event.sender.to_string(), "@_neb_github:matrix.org");
         EXPECT_EQ(event.origin_server_ts, 1510435865515L);
         EXPECT_EQ(event.unsigned_data.age, 69168455);
         EXPECT_EQ(event.content.body,
@@ -247,9 +247,9 @@ TEST(RoomEvents, TextMessage)
         ns::RoomEvent<ns::msg::Text> event = data;
 
         EXPECT_EQ(event.type, ns::EventType::RoomMessage);
-        EXPECT_EQ(event.event_id, "$15104893562785758wEgEU:matrix.org");
-        EXPECT_EQ(event.room_id, "!lfoDRlNFWlvOnvkBwQ:matrix.org");
-        EXPECT_EQ(event.sender, "@nheko_test:matrix.org");
+        EXPECT_EQ(event.event_id.to_string(), "$15104893562785758wEgEU:matrix.org");
+        EXPECT_EQ(event.room_id.to_string(), "!lfoDRlNFWlvOnvkBwQ:matrix.org");
+        EXPECT_EQ(event.sender.to_string(), "@nheko_test:matrix.org");
         EXPECT_EQ(event.origin_server_ts, 1510489356530L);
         EXPECT_EQ(event.unsigned_data.age, 2225);
         EXPECT_EQ(event.unsigned_data.transaction_id, "m1510489356267.2");
@@ -293,9 +293,9 @@ TEST(RoomEvents, VideoMessage)
         ns::RoomEvent<ns::msg::Video> event = data;
 
         EXPECT_EQ(event.type, ns::EventType::RoomMessage);
-        EXPECT_EQ(event.event_id, "$143273582443PhrSn:localhost");
-        EXPECT_EQ(event.room_id, "!jEsUZKDJdhlrceRyVU:localhost");
-        EXPECT_EQ(event.sender, "@example:localhost");
+        EXPECT_EQ(event.event_id.to_string(), "$143273582443PhrSn:localhost");
+        EXPECT_EQ(event.room_id.to_string(), "!jEsUZKDJdhlrceRyVU:localhost");
+        EXPECT_EQ(event.sender.to_string(), "@example:localhost");
         EXPECT_EQ(event.origin_server_ts, 1432735824653L);
         EXPECT_EQ(event.unsigned_data.age, 146);
 

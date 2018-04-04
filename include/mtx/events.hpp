@@ -4,6 +4,8 @@
 
 #include <iostream>
 
+#include "mtx/identifiers.hpp"
+
 using json = nlohmann::json;
 
 namespace mtx {
@@ -227,11 +229,11 @@ template<class Content>
 struct RoomEvent : public Event<Content>
 {
         //! The globally unique event identifier.
-        std::string event_id;
+        mtx::identifiers::Event event_id;
         //! The ID of the room associated with this event.
-        std::string room_id;
+        mtx::identifiers::Room room_id;
         //! Contains the fully-qualified ID of the user who sent this event.
-        std::string sender;
+        mtx::identifiers::User sender;
         //! Timestamp in milliseconds on originating homeserver
         //! when this event was sent.
         uint64_t origin_server_ts;
@@ -250,13 +252,13 @@ from_json(const json &obj, RoomEvent<Content> &event)
         event.content = base_event.content;
         event.type    = base_event.type;
 
-        event.event_id         = obj.at("event_id").get<std::string>();
-        event.sender           = obj.at("sender").get<std::string>();
+        event.event_id         = obj.at("event_id").get<mtx::identifiers::Event>();
+        event.sender           = obj.at("sender").get<mtx::identifiers::User>();
         event.origin_server_ts = obj.at("origin_server_ts").get<double>();
 
         // SPEC_BUG: Not present in the state array returned by /sync.
         if (obj.find("room_id") != obj.end())
-                event.room_id = obj.at("room_id").get<std::string>();
+                event.room_id = obj.at("room_id").get<mtx::identifiers::Room>();
 
         if (obj.find("unsigned") != obj.end())
                 event.unsigned_data = obj.at("unsigned").get<UnsignedData<Content>>();

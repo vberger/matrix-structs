@@ -185,11 +185,30 @@ from_json(const json &obj, Rooms &rooms)
 }
 
 void
+from_json(const json &obj, DeviceLists &device_lists)
+{
+        using namespace mtx::identifiers;
+
+        if (obj.count("changed") != 0)
+                device_lists.changed = obj.at("changed").get<std::vector<User>>();
+
+        if (obj.count("left") != 0)
+                device_lists.left = obj.at("left").get<std::vector<User>>();
+}
+
+void
 from_json(const json &obj, Sync &response)
 {
-        if (obj.count("rooms") != 0) {
+        if (obj.count("rooms") != 0)
                 response.rooms = obj.at("rooms").get<Rooms>();
-        }
+
+        if (obj.count("device_lists") != 0)
+                response.device_lists = obj.at("device_lists").get<DeviceLists>();
+
+        if (obj.count("device_one_time_keys_count") != 0)
+                response.device_one_time_keys_count =
+                  obj.at("device_one_time_keys_count").get<std::map<std::string, uint16_t>>();
+
         response.next_batch = obj.at("next_batch").get<std::string>();
 }
 }

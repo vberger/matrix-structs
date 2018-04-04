@@ -57,16 +57,16 @@ TEST(Responses, State)
         EXPECT_EQ(state.events.size(), 2);
 
         auto aliases = mpark::get<StateEvent<state::Aliases>>(state.events[0]);
-        EXPECT_EQ(aliases.event_id, "$WLGTSEFSEF:localhost");
+        EXPECT_EQ(aliases.event_id.to_string(), "$WLGTSEFSEF:localhost");
         EXPECT_EQ(aliases.type, EventType::RoomAliases);
-        EXPECT_EQ(aliases.sender, "@example:localhost");
+        EXPECT_EQ(aliases.sender.to_string(), "@example:localhost");
         EXPECT_EQ(aliases.content.aliases.size(), 2);
         EXPECT_EQ(aliases.content.aliases[0], "#somewhere:localhost");
 
         auto name = mpark::get<StateEvent<state::Name>>(state.events[1]);
-        EXPECT_EQ(name.event_id, "$WLGTSEFSEF2:localhost");
+        EXPECT_EQ(name.event_id.to_string(), "$WLGTSEFSEF2:localhost");
         EXPECT_EQ(name.type, EventType::RoomName);
-        EXPECT_EQ(name.sender, "@example2:localhost");
+        EXPECT_EQ(name.sender.to_string(), "@example2:localhost");
         EXPECT_EQ(name.content.name, "Random name");
 
         // The first event is malformed (has null as the user id)
@@ -114,9 +114,9 @@ TEST(Responses, State)
         EXPECT_EQ(malformed_state.events.size(), 1);
 
         name = mpark::get<StateEvent<state::Name>>(malformed_state.events[0]);
-        EXPECT_EQ(name.event_id, "$WLGTSEFSEF2:localhost");
+        EXPECT_EQ(name.event_id.to_string(), "$WLGTSEFSEF2:localhost");
         EXPECT_EQ(name.type, EventType::RoomName);
-        EXPECT_EQ(name.sender, "@example2:localhost");
+        EXPECT_EQ(name.sender.to_string(), "@example2:localhost");
         EXPECT_EQ(name.content.name, "Random name");
 }
 
@@ -358,6 +358,27 @@ TEST(Responses, Sync)
         EXPECT_EQ(sync2.rooms.invite.size(), 0);
 }
 
+TEST(Responses, SyncWithEncryption)
+{
+        std::ifstream file("./fixtures/responses/sync_with_crypto.json");
+
+        json data;
+        file >> data;
+
+        Sync sync = data;
+
+        EXPECT_EQ(sync.device_lists.changed.size(), 1);
+        EXPECT_EQ(sync.device_lists.changed.at(0).to_string(), "@carl:matrix.org");
+
+        EXPECT_EQ(sync.device_lists.left.size(), 2);
+        EXPECT_EQ(sync.device_lists.left.at(0).to_string(), "@alice:matrix.org");
+        EXPECT_EQ(sync.device_lists.left.at(1).to_string(), "@bob:matrix.org");
+
+        EXPECT_EQ(sync.device_one_time_keys_count.size(), 2);
+        EXPECT_EQ(sync.device_one_time_keys_count["curve25519"], 10);
+        EXPECT_EQ(sync.device_one_time_keys_count["signed_curve25519"], 50);
+}
+
 TEST(Responses, Rooms) {}
 
 TEST(Responses, Profile)
@@ -518,20 +539,20 @@ TEST(Responses, Messages)
         EXPECT_EQ(first_event.content.body, "hello world");
         EXPECT_EQ(first_event.content.msgtype, "m.text");
         EXPECT_EQ(first_event.type, mtx::events::EventType::RoomMessage);
-        EXPECT_EQ(first_event.event_id, "$1444812213350496Caaaa:example.com");
+        EXPECT_EQ(first_event.event_id.to_string(), "$1444812213350496Caaaa:example.com");
 
         auto second_event = mpark::get<RoomEvent<Text>>(messages.chunk[1]);
         EXPECT_EQ(second_event.content.body, "the world is big");
         EXPECT_EQ(second_event.content.msgtype, "m.text");
         EXPECT_EQ(second_event.type, mtx::events::EventType::RoomMessage);
-        EXPECT_EQ(second_event.event_id, "$1444812213350496Cbbbb:example.com");
+        EXPECT_EQ(second_event.event_id.to_string(), "$1444812213350496Cbbbb:example.com");
 
         auto third_event = mpark::get<StateEvent<Name>>(messages.chunk[2]);
         EXPECT_EQ(third_event.content.name, "New room name");
         EXPECT_EQ(third_event.prev_content.name, "Old room name");
         EXPECT_EQ(third_event.type, mtx::events::EventType::RoomName);
-        EXPECT_EQ(third_event.event_id, "$1444812213350496Ccccc:example.com");
-        EXPECT_EQ(third_event.sender, "@bob:example.com");
+        EXPECT_EQ(third_event.event_id.to_string(), "$1444812213350496Ccccc:example.com");
+        EXPECT_EQ(third_event.sender.to_string(), "@bob:example.com");
 
         // Two of the events are malformed and should be dropped.
         // 1. Missing "type" key.
@@ -583,8 +604,8 @@ TEST(Responses, Messages)
         EXPECT_EQ(third_event.content.name, "New room name");
         EXPECT_EQ(third_event.prev_content.name, "Old room name");
         EXPECT_EQ(third_event.type, mtx::events::EventType::RoomName);
-        EXPECT_EQ(third_event.event_id, "$1444812213350496Ccccc:example.com");
-        EXPECT_EQ(third_event.sender, "@bob:example.com");
+        EXPECT_EQ(third_event.event_id.to_string(), "$1444812213350496Ccccc:example.com");
+        EXPECT_EQ(third_event.sender.to_string(), "@bob:example.com");
 }
 
 TEST(Responses, EphemeralTyping)

@@ -9,7 +9,7 @@ void
 from_json(const json &obj, Register &response)
 {
         using namespace mtx::identifiers;
-        response.user_id      = parse<User>(obj.at("user_id").get<std::string>());
+        response.user_id      = obj.at("user_id").get<User>();
         response.access_token = obj.at("access_token").get<std::string>();
         response.device_id    = obj.at("device_id").get<std::string>();
 }

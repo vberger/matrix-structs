@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 
+#include "mtx/identifiers.hpp"
 #include <json.hpp>
 
 using json = nlohmann::json;
@@ -126,6 +127,20 @@ struct Rooms
 void
 from_json(const json &obj, Rooms &rooms);
 
+//! Information on e2e device updates.
+struct DeviceLists
+{
+        //! List of users who have updated their device identity keys
+        //! since the previous sync response.
+        std::vector<mtx::identifiers::User> changed;
+        //! List of users who may have left all the end-to-end encrypted
+        //! rooms they previously shared with the user.
+        std::vector<mtx::identifiers::User> left;
+};
+
+void
+from_json(const json &obj, DeviceLists &device_lists);
+
 //! Response from the `GET /_matrix/client/r0/sync` endpoint.
 struct Sync
 {
@@ -136,7 +151,11 @@ struct Sync
         /* ToDevice to_device; */
         /* Presence presence; */
         /* Groups groups; */
-        /* DeviceList device_list; */
+        //! Information on end-to-end device updates,
+        DeviceLists device_lists;
+        //! A mapping from algorithm to the number of one time keys
+        //! the server has for the current device.
+        std::map<std::string, uint16_t> device_one_time_keys_count;
         /* AccountData account_data; */
 };
 

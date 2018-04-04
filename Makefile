@@ -1,11 +1,10 @@
 FILES=`find include tests -type f -type f \( -iname "*.cpp" -o -iname "*.hpp" \)`
 
-build-debug:
+debug:
 	@cmake -GNinja -DBUILD_TESTS=ON -H. -Bbuild -DCMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=1
-	@cp build/compile_commands.json .
 	@cmake --build build
 
-build-release-debug:
+release-debug:
 	@cmake -DBUILD_TESTS=ON -H. -Bbuild -DCMAKE_BUILD_TYPE=RelWithDebInfo
 	@cmake --build build
 
@@ -13,7 +12,7 @@ docs:
 	@cmake -DBUILD_DOC=ON -H. -Bbuild
 	@cmake --build build
 
-build-release:
+release:
 	@cmake -DBUILD_TESTS=ON -H. -Bbuild -DCMAKE_BUILD_TYPE=Release
 	@cmake --build build
 

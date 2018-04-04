@@ -12,7 +12,7 @@ void
 from_json(const json &obj, CreateRoom &response)
 {
         using namespace mtx::identifiers;
-        response.room_id = parse<Room>(obj.at("room_id").get<std::string>());
+        response.room_id = obj.at("room_id").get<Room>();
 }
 }
 }

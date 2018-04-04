@@ -12,7 +12,7 @@ void
 from_json(const json &obj, Create &create)
 {
         using namespace mtx::identifiers;
-        create.creator = parse<User>(obj.at("creator").get<std::string>());
+        create.creator = obj.at("creator").get<User>();
 
         if (obj.find("m.federate") != obj.end())
                 create.federate = obj.at("m.federate").get<bool>();
