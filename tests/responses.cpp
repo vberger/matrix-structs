@@ -377,6 +377,21 @@ TEST(Responses, SyncWithEncryption)
         EXPECT_EQ(sync.device_one_time_keys_count.size(), 2);
         EXPECT_EQ(sync.device_one_time_keys_count["curve25519"], 10);
         EXPECT_EQ(sync.device_one_time_keys_count["signed_curve25519"], 50);
+
+        auto timeline_events = sync.rooms.join.begin()->second.timeline.events;
+
+        std::string algorithm_found;
+        std::string event_id;
+        for (const auto &e : timeline_events) {
+                if (mpark::holds_alternative<StateEvent<mtx::events::state::Encryption>>(e)) {
+                        auto enc_event  = mpark::get<StateEvent<mtx::events::state::Encryption>>(e);
+                        algorithm_found = enc_event.content.algorithm;
+                        event_id        = enc_event.event_id.to_string();
+                }
+        }
+
+        EXPECT_EQ(algorithm_found, "m.megolm.v1.aes-sha2");
+        EXPECT_EQ(event_id, "$1522842442112652dsEBQ:matrix.org");
 }
 
 TEST(Responses, Rooms) {}

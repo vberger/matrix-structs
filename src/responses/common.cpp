@@ -109,6 +109,16 @@ parse_timeline_events(const json &events,
 
                         break;
                 }
+                case events::EventType::RoomEncryption: {
+                        try {
+                                events::StateEvent<ns::Encryption> encryption = e;
+                                container.emplace_back(encryption);
+                        } catch (json::exception &err) {
+                                log_error(err, e);
+                        }
+
+                        break;
+                }
                 case events::EventType::RoomGuestAccess: {
                         try {
                                 events::StateEvent<ns::GuestAccess> guest_access = e;
@@ -289,12 +299,13 @@ parse_timeline_events(const json &events,
 
                                 break;
                         }
-                        default:
+                        case MsgType::Unknown:
                                 continue;
                         }
                         break;
                 }
-                default:
+                case events::EventType::RoomPinnedEvents:
+                case events::EventType::Unsupported:
                         continue;
                 }
         }
@@ -351,6 +362,16 @@ parse_state_events(const json &events,
                         try {
                                 events::StateEvent<ns::Create> create = e;
                                 container.emplace_back(create);
+                        } catch (json::exception &err) {
+                                log_error(err, e);
+                        }
+
+                        break;
+                }
+                case events::EventType::RoomEncryption: {
+                        try {
+                                events::StateEvent<ns::Encryption> encryption = e;
+                                container.emplace_back(encryption);
                         } catch (json::exception &err) {
                                 log_error(err, e);
                         }
@@ -427,7 +448,10 @@ parse_state_events(const json &events,
 
                         break;
                 }
-                default:
+                case events::EventType::RoomMessage:
+                case events::EventType::RoomPinnedEvents:
+                case events::EventType::RoomRedaction:
+                case events::EventType::Unsupported:
                         continue;
                 }
         }
@@ -560,7 +584,11 @@ parse_stripped_events(const json &events,
 
                         break;
                 }
-                default:
+                case events::EventType::RoomEncryption:
+                case events::EventType::RoomMessage:
+                case events::EventType::RoomRedaction:
+                case events::EventType::RoomPinnedEvents:
+                case events::EventType::Unsupported:
                         continue;
                 }
         }

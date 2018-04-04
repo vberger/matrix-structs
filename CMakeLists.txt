@@ -41,6 +41,7 @@ set(SRC
     src/events/canonical_alias.cpp
     src/events/common.cpp
     src/events/create.cpp
+    src/events/encryption.cpp
     src/events/guest_access.cpp
     src/events/history_visibility.cpp
     src/events/join_rules.cpp
@@ -89,7 +90,6 @@ if (BUILD_TESTS)
     find_package(GTest)
 
     if (NOT GTest_FOUND)
-        message(STATUS "Fetching and building GTest 1.8")
         include(${CMAKE_SOURCE_DIR}/cmake/GoogleTest.cmake)
     endif()
 

@@ -7,6 +7,7 @@
 #include "mtx/events/avatar.hpp"
 #include "mtx/events/canonical_alias.hpp"
 #include "mtx/events/create.hpp"
+#include "mtx/events/encryption.hpp"
 #include "mtx/events/guest_access.hpp"
 #include "mtx/events/history_visibility.hpp"
 #include "mtx/events/join_rules.hpp"
@@ -39,6 +40,7 @@ using StateEvents = mpark::variant<events::StateEvent<states::Aliases>,
                                    events::StateEvent<states::Avatar>,
                                    events::StateEvent<states::CanonicalAlias>,
                                    events::StateEvent<states::Create>,
+                                   events::StateEvent<states::Encryption>,
                                    events::StateEvent<states::GuestAccess>,
                                    events::StateEvent<states::HistoryVisibility>,
                                    events::StateEvent<states::JoinRules>,
@@ -69,6 +71,7 @@ using TimelineEvents = mpark::variant<events::StateEvent<states::Aliases>,
                                       events::StateEvent<states::Avatar>,
                                       events::StateEvent<states::CanonicalAlias>,
                                       events::StateEvent<states::Create>,
+                                      events::StateEvent<states::Encryption>,
                                       events::StateEvent<states::GuestAccess>,
                                       events::StateEvent<states::HistoryVisibility>,
                                       events::StateEvent<states::JoinRules>,

@@ -21,6 +21,8 @@ enum class EventType
         RoomCanonicalAlias,
         /// m.room.create
         RoomCreate,
+        /// m.room.encryption.
+        RoomEncryption,
         /// m.room.guest_access
         RoomGuestAccess,
         /// m.room.history_visibility
@@ -85,6 +87,9 @@ to_json(json &obj, const Event<Content> &event)
                 break;
         case EventType::RoomCreate:
                 obj["type"] = "m.room.create";
+                break;
+        case EventType::RoomEncryption:
+                obj["type"] = "m.room.encryption";
                 break;
         case EventType::RoomGuestAccess:
                 obj["type"] = "m.room.guest_access";
