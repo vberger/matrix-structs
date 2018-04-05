@@ -27,9 +27,9 @@ TEST(Events, Redaction)
         ns::RedactionEvent<ns::msg::Redaction> event = data;
 
         EXPECT_EQ(event.type, ns::EventType::RoomRedaction);
-        EXPECT_EQ(event.event_id.to_string(), "$143273582443PhrSn:localhost");
-        EXPECT_EQ(event.room_id.to_string(), "!jEsUZKDJdhlrceRyVU:localhost");
-        EXPECT_EQ(event.sender.to_string(), "@example:localhost");
+        EXPECT_EQ(event.event_id, "$143273582443PhrSn:localhost");
+        EXPECT_EQ(event.room_id, "!jEsUZKDJdhlrceRyVU:localhost");
+        EXPECT_EQ(event.sender, "@example:localhost");
         EXPECT_EQ(event.origin_server_ts, 1432735824653L);
         EXPECT_EQ(event.unsigned_data.age, 146);
         EXPECT_EQ(event.redacts, "$1521361675759563UDexf:matrix.org");
@@ -79,9 +79,9 @@ TEST(StateEvents, Aliases)
         ns::StateEvent<ns::state::Aliases> aliases = data;
 
         EXPECT_EQ(aliases.type, ns::EventType::RoomAliases);
-        EXPECT_EQ(aliases.event_id.to_string(), "$WLGTSEFSEF:localhost");
-        EXPECT_EQ(aliases.room_id.to_string(), "!Cuyf34gef24t:localhost");
-        EXPECT_EQ(aliases.sender.to_string(), "@example:localhost");
+        EXPECT_EQ(aliases.event_id, "$WLGTSEFSEF:localhost");
+        EXPECT_EQ(aliases.room_id, "!Cuyf34gef24t:localhost");
+        EXPECT_EQ(aliases.sender, "@example:localhost");
         EXPECT_EQ(aliases.unsigned_data.age, 242352);
         EXPECT_EQ(aliases.unsigned_data.transaction_id, "txnid");
         EXPECT_EQ(aliases.origin_server_ts, 1431961217939L);
@@ -113,9 +113,9 @@ TEST(StateEvents, Avatar)
         ns::StateEvent<ns::state::Avatar> event = data;
 
         EXPECT_EQ(event.type, ns::EventType::RoomAvatar);
-        EXPECT_EQ(event.event_id.to_string(), "$15067620711415511reUFC:matrix.org");
-        EXPECT_EQ(event.room_id.to_string(), "!VaMCVKSVcyPtXbcMXh:matrix.org");
-        EXPECT_EQ(event.sender.to_string(), "@mujx:matrix.org");
+        EXPECT_EQ(event.event_id, "$15067620711415511reUFC:matrix.org");
+        EXPECT_EQ(event.room_id, "!VaMCVKSVcyPtXbcMXh:matrix.org");
+        EXPECT_EQ(event.sender, "@mujx:matrix.org");
         EXPECT_EQ(event.unsigned_data.age, 3717700323);
         EXPECT_EQ(event.origin_server_ts, 1506762071625L);
         EXPECT_EQ(event.state_key, "");
@@ -144,9 +144,9 @@ TEST(StateEvents, CanonicalAlias)
         ns::StateEvent<ns::state::CanonicalAlias> event = data;
 
         EXPECT_EQ(event.type, ns::EventType::RoomCanonicalAlias);
-        EXPECT_EQ(event.event_id.to_string(), "$15067620711415511reUFC:matrix.org");
-        EXPECT_EQ(event.room_id.to_string(), "!VaMCVKSVcyPtXbcMXh:matrix.org");
-        EXPECT_EQ(event.sender.to_string(), "@mujx:matrix.org");
+        EXPECT_EQ(event.event_id, "$15067620711415511reUFC:matrix.org");
+        EXPECT_EQ(event.room_id, "!VaMCVKSVcyPtXbcMXh:matrix.org");
+        EXPECT_EQ(event.sender, "@mujx:matrix.org");
         EXPECT_EQ(event.unsigned_data.age, 3717700323);
         EXPECT_EQ(event.origin_server_ts, 1506762071625L);
         EXPECT_EQ(event.state_key, "");
@@ -172,8 +172,8 @@ TEST(StateEvents, Create)
         ns::StateEvent<ns::state::Create> event = data;
 
         EXPECT_EQ(event.type, ns::EventType::RoomCreate);
-        EXPECT_EQ(event.event_id.to_string(), "$15067619231414398jhvQC:matrix.org");
-        EXPECT_EQ(event.sender.to_string(), "@mujx:matrix.org");
+        EXPECT_EQ(event.event_id, "$15067619231414398jhvQC:matrix.org");
+        EXPECT_EQ(event.sender, "@mujx:matrix.org");
         EXPECT_EQ(event.unsigned_data.age, 3715756343L);
         EXPECT_EQ(event.origin_server_ts, 1506761923948L);
         EXPECT_EQ(event.state_key, "");
@@ -199,8 +199,8 @@ TEST(StateEvents, GuestAccess)
         ns::StateEvent<ns::state::GuestAccess> event = data;
 
         EXPECT_EQ(event.type, ns::EventType::RoomGuestAccess);
-        EXPECT_EQ(event.event_id.to_string(), "$15067619231414398jhvQC:matrix.org");
-        EXPECT_EQ(event.sender.to_string(), "@mujx:matrix.org");
+        EXPECT_EQ(event.event_id, "$15067619231414398jhvQC:matrix.org");
+        EXPECT_EQ(event.sender, "@mujx:matrix.org");
         EXPECT_EQ(event.unsigned_data.age, 3715756343L);
         EXPECT_EQ(event.origin_server_ts, 1506761923948L);
         EXPECT_EQ(event.state_key, "");
@@ -227,9 +227,9 @@ TEST(StateEvents, HistoryVisibility)
         ns::StateEvent<ns::state::HistoryVisibility> event = data;
 
         EXPECT_EQ(event.type, ns::EventType::RoomHistoryVisibility);
-        EXPECT_EQ(event.event_id.to_string(), "$15104731332646268uOFJp:matrix.org");
-        EXPECT_EQ(event.room_id.to_string(), "!lfoDRlNFWlvOnvkBwQ:matrix.org");
-        EXPECT_EQ(event.sender.to_string(), "@nheko_test:matrix.org");
+        EXPECT_EQ(event.event_id, "$15104731332646268uOFJp:matrix.org");
+        EXPECT_EQ(event.room_id, "!lfoDRlNFWlvOnvkBwQ:matrix.org");
+        EXPECT_EQ(event.sender, "@nheko_test:matrix.org");
         EXPECT_EQ(event.origin_server_ts, 1510473133072L);
         EXPECT_EQ(event.unsigned_data.age, 140);
         EXPECT_EQ(event.state_key, "");
@@ -258,9 +258,9 @@ TEST(StateEvents, HistoryVisibility)
         ns::StateEvent<ns::state::HistoryVisibility> event2 = data2;
 
         EXPECT_EQ(event2.type, ns::EventType::RoomHistoryVisibility);
-        EXPECT_EQ(event2.event_id.to_string(), "$15104767782674661tXoeB:matrix.org");
-        EXPECT_EQ(event2.room_id.to_string(), "!lfoDRlNFWlvOnvkBwQ:matrix.org");
-        EXPECT_EQ(event2.sender.to_string(), "@nheko_test:matrix.org");
+        EXPECT_EQ(event2.event_id, "$15104767782674661tXoeB:matrix.org");
+        EXPECT_EQ(event2.room_id, "!lfoDRlNFWlvOnvkBwQ:matrix.org");
+        EXPECT_EQ(event2.sender, "@nheko_test:matrix.org");
         EXPECT_EQ(event2.origin_server_ts, 1510476778190L);
         EXPECT_EQ(event2.unsigned_data.age, 48);
         EXPECT_EQ(event2.unsigned_data.replaces_state, "$15104731332646268uOFJp:matrix.org");
@@ -287,8 +287,8 @@ TEST(StateEvents, JoinRules)
         ns::StateEvent<ns::state::JoinRules> event = data;
 
         EXPECT_EQ(event.type, ns::EventType::RoomJoinRules);
-        EXPECT_EQ(event.event_id.to_string(), "$15067619241414401ASocy:matrix.org");
-        EXPECT_EQ(event.sender.to_string(), "@mujx:matrix.org");
+        EXPECT_EQ(event.event_id, "$15067619241414401ASocy:matrix.org");
+        EXPECT_EQ(event.sender, "@mujx:matrix.org");
         EXPECT_EQ(event.unsigned_data.age, 3715756273);
         EXPECT_EQ(event.origin_server_ts, 1506761924018L);
         EXPECT_EQ(event.state_key, "");
@@ -318,9 +318,9 @@ TEST(StateEvents, Member)
         ns::StateEvent<ns::state::Member> event = data;
 
         EXPECT_EQ(event.type, ns::EventType::RoomMember);
-        EXPECT_EQ(event.event_id.to_string(), "$15104731322646264oUPqj:matrix.org");
-        EXPECT_EQ(event.room_id.to_string(), "!lfoDRlNFWlvOnvkBwQ:matrix.org");
-        EXPECT_EQ(event.sender.to_string(), "@nheko_test:matrix.org");
+        EXPECT_EQ(event.event_id, "$15104731322646264oUPqj:matrix.org");
+        EXPECT_EQ(event.room_id, "!lfoDRlNFWlvOnvkBwQ:matrix.org");
+        EXPECT_EQ(event.sender, "@nheko_test:matrix.org");
         EXPECT_EQ(event.origin_server_ts, 1510473132947L);
         EXPECT_EQ(event.unsigned_data.age, 72);
         EXPECT_EQ(event.state_key, "@nheko_test:matrix.org");
@@ -364,9 +364,9 @@ TEST(StateEvents, Member)
         ns::StateEvent<ns::state::Member> event2 = data2;
 
         EXPECT_EQ(event2.type, ns::EventType::RoomMember);
-        EXPECT_EQ(event2.event_id.to_string(), "$15092141005099019aHvYG:matrix.org");
-        EXPECT_EQ(event2.room_id.to_string(), "!VaMCVKSVcyPtXbcMXh:matrix.org");
-        EXPECT_EQ(event2.sender.to_string(), "@nheko_test:matrix.org");
+        EXPECT_EQ(event2.event_id, "$15092141005099019aHvYG:matrix.org");
+        EXPECT_EQ(event2.room_id, "!VaMCVKSVcyPtXbcMXh:matrix.org");
+        EXPECT_EQ(event2.sender, "@nheko_test:matrix.org");
         EXPECT_EQ(event2.origin_server_ts, 1509214100884L);
         EXPECT_EQ(event2.unsigned_data.replaces_state, "$15092124385075888YpYOh:matrix.org");
         EXPECT_EQ(event2.unsigned_data.prev_content.avatar_url, event2.prev_content.avatar_url);
@@ -403,9 +403,9 @@ TEST(StateEvents, Name)
         ns::StateEvent<ns::state::Name> event = data;
 
         EXPECT_EQ(event.type, ns::EventType::RoomName);
-        EXPECT_EQ(event.event_id.to_string(), "$15104731332646270uaKBS:matrix.org");
-        EXPECT_EQ(event.room_id.to_string(), "!lfoDRlNFWlvOnvkBwQ:matrix.org");
-        EXPECT_EQ(event.sender.to_string(), "@nheko_test:matrix.org");
+        EXPECT_EQ(event.event_id, "$15104731332646270uaKBS:matrix.org");
+        EXPECT_EQ(event.room_id, "!lfoDRlNFWlvOnvkBwQ:matrix.org");
+        EXPECT_EQ(event.sender, "@nheko_test:matrix.org");
         EXPECT_EQ(event.origin_server_ts, 1510473133142L);
         EXPECT_EQ(event.unsigned_data.age, 70);
         EXPECT_EQ(event.state_key, "");
@@ -435,8 +435,8 @@ TEST(StateEvents, PinnedEvents)
         ns::StateEvent<ns::state::PinnedEvents> event = data;
 
         EXPECT_EQ(event.type, ns::EventType::RoomPinnedEvents);
-        EXPECT_EQ(event.event_id.to_string(), "$WLGTSEFSEF:localhost");
-        EXPECT_EQ(event.sender.to_string(), "@example:localhost");
+        EXPECT_EQ(event.event_id, "$WLGTSEFSEF:localhost");
+        EXPECT_EQ(event.sender, "@example:localhost");
         EXPECT_EQ(event.origin_server_ts, 1431961217939L);
         EXPECT_EQ(event.unsigned_data.age, 242352);
         EXPECT_EQ(event.state_key, "");
@@ -482,8 +482,8 @@ TEST(StateEvents, PowerLevels)
         ns::StateEvent<ns::state::PowerLevels> event = data;
 
         EXPECT_EQ(event.type, ns::EventType::RoomPowerLevels);
-        EXPECT_EQ(event.event_id.to_string(), "$15067619231414400iQDgf:matrix.org");
-        EXPECT_EQ(event.sender.to_string(), "@mujx:matrix.org");
+        EXPECT_EQ(event.event_id, "$15067619231414400iQDgf:matrix.org");
+        EXPECT_EQ(event.sender, "@mujx:matrix.org");
         EXPECT_EQ(event.origin_server_ts, 1506761923995);
         EXPECT_EQ(event.unsigned_data.age, 3715756296);
         EXPECT_EQ(event.state_key, "");
@@ -527,9 +527,9 @@ TEST(StateEvents, Topic)
         ns::StateEvent<ns::state::Topic> event = data;
 
         EXPECT_EQ(event.type, ns::EventType::RoomTopic);
-        EXPECT_EQ(event.event_id.to_string(), "$15104760642668662QICBu:matrix.org");
-        EXPECT_EQ(event.room_id.to_string(), "!lfoDRlNFWlvOnvkBwQ:matrix.org");
-        EXPECT_EQ(event.sender.to_string(), "@nheko_test:matrix.org");
+        EXPECT_EQ(event.event_id, "$15104760642668662QICBu:matrix.org");
+        EXPECT_EQ(event.room_id, "!lfoDRlNFWlvOnvkBwQ:matrix.org");
+        EXPECT_EQ(event.sender, "@nheko_test:matrix.org");
         EXPECT_EQ(event.origin_server_ts, 1510476064445);
         EXPECT_EQ(event.unsigned_data.age, 37);
         EXPECT_EQ(event.state_key, "");

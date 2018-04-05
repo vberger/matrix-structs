@@ -132,10 +132,10 @@ struct DeviceLists
 {
         //! List of users who have updated their device identity keys
         //! since the previous sync response.
-        std::vector<mtx::identifiers::User> changed;
+        std::vector<std::string> changed;
         //! List of users who may have left all the end-to-end encrypted
         //! rooms they previously shared with the user.
-        std::vector<mtx::identifiers::User> left;
+        std::vector<std::string> left;
 };
 
 void

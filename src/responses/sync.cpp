@@ -187,13 +187,11 @@ from_json(const json &obj, Rooms &rooms)
 void
 from_json(const json &obj, DeviceLists &device_lists)
 {
-        using namespace mtx::identifiers;
-
         if (obj.count("changed") != 0)
-                device_lists.changed = obj.at("changed").get<std::vector<User>>();
+                device_lists.changed = obj.at("changed").get<std::vector<std::string>>();
 
         if (obj.count("left") != 0)
-                device_lists.left = obj.at("left").get<std::vector<User>>();
+                device_lists.left = obj.at("left").get<std::vector<std::string>>();
 }
 
 void

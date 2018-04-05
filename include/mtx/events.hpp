@@ -234,11 +234,11 @@ template<class Content>
 struct RoomEvent : public Event<Content>
 {
         //! The globally unique event identifier.
-        mtx::identifiers::Event event_id;
+        std::string event_id;
         //! The ID of the room associated with this event.
-        mtx::identifiers::Room room_id;
+        std::string room_id;
         //! Contains the fully-qualified ID of the user who sent this event.
-        mtx::identifiers::User sender;
+        std::string sender;
         //! Timestamp in milliseconds on originating homeserver
         //! when this event was sent.
         uint64_t origin_server_ts;
@@ -257,16 +257,16 @@ from_json(const json &obj, RoomEvent<Content> &event)
         event.content = base_event.content;
         event.type    = base_event.type;
 
-        event.event_id         = obj.at("event_id").get<mtx::identifiers::Event>();
-        event.sender           = obj.at("sender").get<mtx::identifiers::User>();
-        event.origin_server_ts = obj.at("origin_server_ts").get<double>();
+        event.event_id         = obj.at("event_id");
+        event.sender           = obj.at("sender");
+        event.origin_server_ts = obj.at("origin_server_ts");
 
         // SPEC_BUG: Not present in the state array returned by /sync.
         if (obj.find("room_id") != obj.end())
-                event.room_id = obj.at("room_id").get<mtx::identifiers::Room>();
+                event.room_id = obj.at("room_id");
 
         if (obj.find("unsigned") != obj.end())
-                event.unsigned_data = obj.at("unsigned").get<UnsignedData<Content>>();
+                event.unsigned_data = obj.at("unsigned");
 }
 
 template<class Content>
