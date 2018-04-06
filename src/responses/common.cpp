@@ -18,6 +18,7 @@
 #include <iostream>
 
 using json = nlohmann::json;
+using namespace mtx::events::state;
 
 namespace mtx {
 namespace responses {
@@ -25,14 +26,13 @@ namespace responses {
 void
 from_json(const nlohmann::json &obj, EventId &response)
 {
-        using namespace mtx::identifiers;
-        response.event_id = obj.at("event_id").get<Event>();
+        response.event_id = obj.at("event_id");
 }
 
 void
 from_json(const nlohmann::json &obj, FilterId &response)
 {
-        response.filter_id = obj.at("filter_id").get<std::string>();
+        response.filter_id = obj.at("filter_id");
 }
 
 namespace utils {
@@ -56,23 +56,15 @@ parse_timeline_events(const json &events,
                       std::vector<mtx::events::collections::TimelineEvents> &container)
 {
         container.clear();
+        container.reserve(events.size());
 
         for (const auto &e : events) {
-                namespace ns = mtx::events::state;
-
-                events::EventType type = mtx::events::getEventType(e);
-
-                if (type == events::EventType::Unsupported) {
-                        // TODO enable on debug builds
-                        /* log_error("Invalid event type", e); */
-                        continue;
-                }
+                const auto type = mtx::events::getEventType(e);
 
                 switch (type) {
                 case events::EventType::RoomAliases: {
                         try {
-                                events::StateEvent<ns::Aliases> alias = e;
-                                container.emplace_back(alias);
+                                container.emplace_back(events::StateEvent<Aliases>(e));
                         } catch (json::exception &err) {
                                 log_error(err, e);
                         }
@@ -81,8 +73,7 @@ parse_timeline_events(const json &events,
                 }
                 case events::EventType::RoomAvatar: {
                         try {
-                                events::StateEvent<ns::Avatar> avatar = e;
-                                container.emplace_back(avatar);
+                                container.emplace_back(events::StateEvent<Avatar>(e));
                         } catch (json::exception &err) {
                                 log_error(err, e);
                         }
@@ -91,8 +82,7 @@ parse_timeline_events(const json &events,
                 }
                 case events::EventType::RoomCanonicalAlias: {
                         try {
-                                events::StateEvent<ns::CanonicalAlias> canonical_alias = e;
-                                container.emplace_back(canonical_alias);
+                                container.emplace_back(events::StateEvent<CanonicalAlias>(e));
                         } catch (json::exception &err) {
                                 log_error(err, e);
                         }
@@ -101,8 +91,7 @@ parse_timeline_events(const json &events,
                 }
                 case events::EventType::RoomCreate: {
                         try {
-                                events::StateEvent<ns::Create> create = e;
-                                container.emplace_back(create);
+                                container.emplace_back(events::StateEvent<Create>(e));
                         } catch (json::exception &err) {
                                 log_error(err, e);
                         }
@@ -111,8 +100,7 @@ parse_timeline_events(const json &events,
                 }
                 case events::EventType::RoomEncryption: {
                         try {
-                                events::StateEvent<ns::Encryption> encryption = e;
-                                container.emplace_back(encryption);
+                                container.emplace_back(events::StateEvent<Encryption>(e));
                         } catch (json::exception &err) {
                                 log_error(err, e);
                         }
@@ -121,8 +109,7 @@ parse_timeline_events(const json &events,
                 }
                 case events::EventType::RoomGuestAccess: {
                         try {
-                                events::StateEvent<ns::GuestAccess> guest_access = e;
-                                container.emplace_back(guest_access);
+                                container.emplace_back(events::StateEvent<GuestAccess>(e));
                         } catch (json::exception &err) {
                                 log_error(err, e);
                         }
@@ -131,8 +118,7 @@ parse_timeline_events(const json &events,
                 }
                 case events::EventType::RoomHistoryVisibility: {
                         try {
-                                events::StateEvent<ns::HistoryVisibility> history_visibility = e;
-                                container.emplace_back(history_visibility);
+                                container.emplace_back(events::StateEvent<HistoryVisibility>(e));
                         } catch (json::exception &err) {
                                 log_error(err, e);
                         }
@@ -141,8 +127,7 @@ parse_timeline_events(const json &events,
                 }
                 case events::EventType::RoomJoinRules: {
                         try {
-                                events::StateEvent<ns::JoinRules> join_rules = e;
-                                container.emplace_back(join_rules);
+                                container.emplace_back(events::StateEvent<JoinRules>(e));
                         } catch (json::exception &err) {
                                 log_error(err, e);
                         }
@@ -151,8 +136,7 @@ parse_timeline_events(const json &events,
                 }
                 case events::EventType::RoomMember: {
                         try {
-                                events::StateEvent<ns::Member> member = e;
-                                container.emplace_back(member);
+                                container.emplace_back(events::StateEvent<Member>(e));
                         } catch (json::exception &err) {
                                 log_error(err, e);
                         }
@@ -161,8 +145,7 @@ parse_timeline_events(const json &events,
                 }
                 case events::EventType::RoomName: {
                         try {
-                                events::StateEvent<ns::Name> name = e;
-                                container.emplace_back(name);
+                                container.emplace_back(events::StateEvent<Name>(e));
                         } catch (json::exception &err) {
                                 log_error(err, e);
                         }
@@ -171,8 +154,7 @@ parse_timeline_events(const json &events,
                 }
                 case events::EventType::RoomPowerLevels: {
                         try {
-                                events::StateEvent<ns::PowerLevels> power_levels = e;
-                                container.emplace_back(power_levels);
+                                container.emplace_back(events::StateEvent<PowerLevels>(e));
                         } catch (json::exception &err) {
                                 log_error(err, e);
                         }
@@ -181,8 +163,8 @@ parse_timeline_events(const json &events,
                 }
                 case events::EventType::RoomRedaction: {
                         try {
-                                events::RedactionEvent<mtx::events::msg::Redaction> redaction = e;
-                                container.emplace_back(redaction);
+                                container.emplace_back(
+                                  events::RedactionEvent<mtx::events::msg::Redaction>(e));
                         } catch (json::exception &err) {
                                 log_error(err, e);
                         }
@@ -191,8 +173,7 @@ parse_timeline_events(const json &events,
                 }
                 case events::EventType::RoomTopic: {
                         try {
-                                events::StateEvent<ns::Topic> topic = e;
-                                container.emplace_back(topic);
+                                container.emplace_back(events::StateEvent<Topic>(e));
                         } catch (json::exception &err) {
                                 log_error(err, e);
                         }
@@ -200,9 +181,8 @@ parse_timeline_events(const json &events,
                         break;
                 }
                 case events::EventType::RoomMessage: {
-                        using MsgType = mtx::events::MessageType;
-
-                        MsgType msg_type = mtx::events::getMessageType(e.at("content"));
+                        using MsgType       = mtx::events::MessageType;
+                        const auto msg_type = mtx::events::getMessageType(e.at("content"));
 
                         if (msg_type == events::MessageType::Unknown) {
                                 try {
@@ -212,8 +192,8 @@ parse_timeline_events(const json &events,
                                         if (unsigned_data.empty())
                                                 continue;
 
-                                        events::RoomEvent<events::msg::Redacted> redacted = e;
-                                        container.emplace_back(redacted);
+                                        container.emplace_back(
+                                          events::RoomEvent<events::msg::Redacted>(e));
                                         continue;
                                 } catch (json::exception &err) {
                                         log_error(err, e);
@@ -226,8 +206,8 @@ parse_timeline_events(const json &events,
                         switch (msg_type) {
                         case MsgType::Audio: {
                                 try {
-                                        events::RoomEvent<events::msg::Audio> audio = e;
-                                        container.emplace_back(audio);
+                                        container.emplace_back(
+                                          events::RoomEvent<events::msg::Audio>(e));
                                 } catch (json::exception &err) {
                                         log_error(err, e);
                                 }
@@ -236,8 +216,8 @@ parse_timeline_events(const json &events,
                         }
                         case MsgType::Emote: {
                                 try {
-                                        events::RoomEvent<events::msg::Emote> emote = e;
-                                        container.emplace_back(emote);
+                                        container.emplace_back(
+                                          events::RoomEvent<events::msg::Emote>(e));
                                 } catch (json::exception &err) {
                                         log_error(err, e);
                                 }
@@ -246,8 +226,8 @@ parse_timeline_events(const json &events,
                         }
                         case MsgType::File: {
                                 try {
-                                        events::RoomEvent<events::msg::File> file = e;
-                                        container.emplace_back(file);
+                                        container.emplace_back(
+                                          events::RoomEvent<events::msg::File>(e));
                                 } catch (json::exception &err) {
                                         log_error(err, e);
                                 }
@@ -256,8 +236,8 @@ parse_timeline_events(const json &events,
                         }
                         case MsgType::Image: {
                                 try {
-                                        events::RoomEvent<events::msg::Image> image = e;
-                                        container.emplace_back(image);
+                                        container.emplace_back(
+                                          events::RoomEvent<events::msg::Image>(e));
                                 } catch (json::exception &err) {
                                         log_error(err, e);
                                 }
@@ -271,8 +251,8 @@ parse_timeline_events(const json &events,
                         }
                         case MsgType::Notice: {
                                 try {
-                                        events::RoomEvent<events::msg::Notice> notice = e;
-                                        container.emplace_back(notice);
+                                        container.emplace_back(
+                                          events::RoomEvent<events::msg::Notice>(e));
                                 } catch (json::exception &err) {
                                         log_error(err, e);
                                 }
@@ -281,8 +261,8 @@ parse_timeline_events(const json &events,
                         }
                         case MsgType::Text: {
                                 try {
-                                        events::RoomEvent<events::msg::Text> text = e;
-                                        container.emplace_back(text);
+                                        container.emplace_back(
+                                          events::RoomEvent<events::msg::Text>(e));
                                 } catch (json::exception &err) {
                                         log_error(err, e);
                                 }
@@ -291,8 +271,8 @@ parse_timeline_events(const json &events,
                         }
                         case MsgType::Video: {
                                 try {
-                                        events::RoomEvent<events::msg::Video> video = e;
-                                        container.emplace_back(video);
+                                        container.emplace_back(
+                                          events::RoomEvent<events::msg::Video>(e));
                                 } catch (json::exception &err) {
                                         log_error(err, e);
                                 }
@@ -316,22 +296,15 @@ parse_state_events(const json &events,
                    std::vector<mtx::events::collections::StateEvents> &container)
 {
         container.clear();
+        container.reserve(events.size());
 
         for (const auto &e : events) {
-                namespace ns           = mtx::events::state;
-                events::EventType type = mtx::events::getEventType(e);
-
-                if (type == events::EventType::Unsupported) {
-                        // TODO enable on debug build
-                        /* log_error("Invalid event type", e); */
-                        continue;
-                }
+                const auto type = mtx::events::getEventType(e);
 
                 switch (type) {
                 case events::EventType::RoomAliases: {
                         try {
-                                events::StateEvent<ns::Aliases> alias = e;
-                                container.emplace_back(alias);
+                                container.emplace_back(events::StateEvent<Aliases>(e));
                         } catch (json::exception &err) {
                                 log_error(err, e);
                         }
@@ -340,8 +313,7 @@ parse_state_events(const json &events,
                 }
                 case events::EventType::RoomAvatar: {
                         try {
-                                events::StateEvent<ns::Avatar> avatar = e;
-                                container.emplace_back(avatar);
+                                container.emplace_back(events::StateEvent<Avatar>(e));
                         } catch (json::exception &err) {
                                 log_error(err, e);
                         }
@@ -350,8 +322,7 @@ parse_state_events(const json &events,
                 }
                 case events::EventType::RoomCanonicalAlias: {
                         try {
-                                events::StateEvent<ns::CanonicalAlias> canonical_alias = e;
-                                container.emplace_back(canonical_alias);
+                                container.emplace_back(events::StateEvent<CanonicalAlias>(e));
                         } catch (json::exception &err) {
                                 log_error(err, e);
                         }
@@ -360,8 +331,7 @@ parse_state_events(const json &events,
                 }
                 case events::EventType::RoomCreate: {
                         try {
-                                events::StateEvent<ns::Create> create = e;
-                                container.emplace_back(create);
+                                container.emplace_back(events::StateEvent<Create>(e));
                         } catch (json::exception &err) {
                                 log_error(err, e);
                         }
@@ -370,8 +340,7 @@ parse_state_events(const json &events,
                 }
                 case events::EventType::RoomEncryption: {
                         try {
-                                events::StateEvent<ns::Encryption> encryption = e;
-                                container.emplace_back(encryption);
+                                container.emplace_back(events::StateEvent<Encryption>(e));
                         } catch (json::exception &err) {
                                 log_error(err, e);
                         }
@@ -380,8 +349,7 @@ parse_state_events(const json &events,
                 }
                 case events::EventType::RoomGuestAccess: {
                         try {
-                                events::StateEvent<ns::GuestAccess> guest_access = e;
-                                container.emplace_back(guest_access);
+                                container.emplace_back(events::StateEvent<GuestAccess>(e));
                         } catch (json::exception &err) {
                                 log_error(err, e);
                         }
@@ -390,8 +358,7 @@ parse_state_events(const json &events,
                 }
                 case events::EventType::RoomHistoryVisibility: {
                         try {
-                                events::StateEvent<ns::HistoryVisibility> history_visibility = e;
-                                container.emplace_back(history_visibility);
+                                container.emplace_back(events::StateEvent<HistoryVisibility>(e));
                         } catch (json::exception &err) {
                                 log_error(err, e);
                         }
@@ -400,8 +367,7 @@ parse_state_events(const json &events,
                 }
                 case events::EventType::RoomJoinRules: {
                         try {
-                                events::StateEvent<ns::JoinRules> join_rules = e;
-                                container.emplace_back(join_rules);
+                                container.emplace_back(events::StateEvent<JoinRules>(e));
                         } catch (json::exception &err) {
                                 log_error(err, e);
                         }
@@ -410,8 +376,7 @@ parse_state_events(const json &events,
                 }
                 case events::EventType::RoomMember: {
                         try {
-                                events::StateEvent<ns::Member> member = e;
-                                container.emplace_back(member);
+                                container.emplace_back(events::StateEvent<Member>(e));
                         } catch (json::exception &err) {
                                 log_error(err, e);
                         }
@@ -420,8 +385,7 @@ parse_state_events(const json &events,
                 }
                 case events::EventType::RoomName: {
                         try {
-                                events::StateEvent<ns::Name> name = e;
-                                container.emplace_back(name);
+                                container.emplace_back(events::StateEvent<Name>(e));
                         } catch (json::exception &err) {
                                 log_error(err, e);
                         }
@@ -430,8 +394,7 @@ parse_state_events(const json &events,
                 }
                 case events::EventType::RoomPowerLevels: {
                         try {
-                                events::StateEvent<ns::PowerLevels> power_levels = e;
-                                container.emplace_back(power_levels);
+                                container.emplace_back(events::StateEvent<PowerLevels>(e));
                         } catch (json::exception &err) {
                                 log_error(err, e);
                         }
@@ -440,8 +403,7 @@ parse_state_events(const json &events,
                 }
                 case events::EventType::RoomTopic: {
                         try {
-                                events::StateEvent<ns::Topic> topic = e;
-                                container.emplace_back(topic);
+                                container.emplace_back(events::StateEvent<Topic>(e));
                         } catch (json::exception &err) {
                                 log_error(err, e);
                         }
@@ -462,22 +424,15 @@ parse_stripped_events(const json &events,
                       std::vector<mtx::events::collections::StrippedEvents> &container)
 {
         container.clear();
+        container.reserve(events.size());
 
         for (const auto &e : events) {
-                namespace ns           = mtx::events::state;
-                events::EventType type = mtx::events::getEventType(e);
-
-                if (type == events::EventType::Unsupported) {
-                        // TODO enable on debug builds
-                        /* log_error("Invalid event type", e); */
-                        continue;
-                }
+                const auto type = mtx::events::getEventType(e);
 
                 switch (type) {
                 case events::EventType::RoomAliases: {
                         try {
-                                events::StrippedEvent<ns::Aliases> alias = e;
-                                container.emplace_back(alias);
+                                container.emplace_back(events::StrippedEvent<Aliases>(e));
                         } catch (json::exception &err) {
                                 log_error(err, e);
                         }
@@ -486,8 +441,7 @@ parse_stripped_events(const json &events,
                 }
                 case events::EventType::RoomAvatar: {
                         try {
-                                events::StrippedEvent<ns::Avatar> avatar = e;
-                                container.emplace_back(avatar);
+                                container.emplace_back(events::StrippedEvent<Avatar>(e));
                         } catch (json::exception &err) {
                                 log_error(err, e);
                         }
@@ -496,8 +450,7 @@ parse_stripped_events(const json &events,
                 }
                 case events::EventType::RoomCanonicalAlias: {
                         try {
-                                events::StrippedEvent<ns::CanonicalAlias> canonical_alias = e;
-                                container.emplace_back(canonical_alias);
+                                container.emplace_back(events::StrippedEvent<CanonicalAlias>(e));
                         } catch (json::exception &err) {
                                 log_error(err, e);
                         }
@@ -506,8 +459,7 @@ parse_stripped_events(const json &events,
                 }
                 case events::EventType::RoomCreate: {
                         try {
-                                events::StrippedEvent<ns::Create> create = e;
-                                container.emplace_back(create);
+                                container.emplace_back(events::StrippedEvent<Create>(e));
                         } catch (json::exception &err) {
                                 log_error(err, e);
                         }
@@ -516,8 +468,7 @@ parse_stripped_events(const json &events,
                 }
                 case events::EventType::RoomGuestAccess: {
                         try {
-                                events::StrippedEvent<ns::GuestAccess> guest_access = e;
-                                container.emplace_back(guest_access);
+                                container.emplace_back(events::StrippedEvent<GuestAccess>(e));
                         } catch (json::exception &err) {
                                 log_error(err, e);
                         }
@@ -526,8 +477,7 @@ parse_stripped_events(const json &events,
                 }
                 case events::EventType::RoomHistoryVisibility: {
                         try {
-                                events::StrippedEvent<ns::HistoryVisibility> history_visibility = e;
-                                container.emplace_back(history_visibility);
+                                container.emplace_back(events::StrippedEvent<HistoryVisibility>(e));
                         } catch (json::exception &err) {
                                 log_error(err, e);
                         }
@@ -536,8 +486,7 @@ parse_stripped_events(const json &events,
                 }
                 case events::EventType::RoomJoinRules: {
                         try {
-                                events::StrippedEvent<ns::JoinRules> join_rules = e;
-                                container.emplace_back(join_rules);
+                                container.emplace_back(events::StrippedEvent<JoinRules>(e));
                         } catch (json::exception &err) {
                                 log_error(err, e);
                         }
@@ -546,8 +495,7 @@ parse_stripped_events(const json &events,
                 }
                 case events::EventType::RoomMember: {
                         try {
-                                events::StrippedEvent<ns::Member> member = e;
-                                container.emplace_back(member);
+                                container.emplace_back(events::StrippedEvent<Member>(e));
                         } catch (json::exception &err) {
                                 log_error(err, e);
                         }
@@ -556,8 +504,7 @@ parse_stripped_events(const json &events,
                 }
                 case events::EventType::RoomName: {
                         try {
-                                events::StrippedEvent<ns::Name> name = e;
-                                container.emplace_back(name);
+                                container.emplace_back(events::StrippedEvent<Name>(e));
                         } catch (json::exception &err) {
                                 log_error(err, e);
                         }
@@ -566,8 +513,7 @@ parse_stripped_events(const json &events,
                 }
                 case events::EventType::RoomPowerLevels: {
                         try {
-                                events::StrippedEvent<ns::PowerLevels> power_levels = e;
-                                container.emplace_back(power_levels);
+                                container.emplace_back(events::StrippedEvent<PowerLevels>(e));
                         } catch (json::exception &err) {
                                 log_error(err, e);
                         }
@@ -576,8 +522,7 @@ parse_stripped_events(const json &events,
                 }
                 case events::EventType::RoomTopic: {
                         try {
-                                events::StrippedEvent<ns::Topic> topic = e;
-                                container.emplace_back(topic);
+                                container.emplace_back(events::StrippedEvent<Topic>(e));
                         } catch (json::exception &err) {
                                 log_error(err, e);
                         }

@@ -208,14 +208,10 @@ template<class Content>
 void
 from_json(const json &obj, StrippedEvent<Content> &event)
 {
-        Event<Content> base_event = event;
-        from_json(obj, base_event);
-
-        event.content = base_event.content;
-        event.type    = base_event.type;
-
-        event.sender    = obj.at("sender").get<std::string>();
-        event.state_key = obj.at("state_key").get<std::string>();
+        event.content   = obj.at("content").get<Content>();
+        event.type      = getEventType(obj.at("type").get<std::string>());
+        event.sender    = obj.at("sender");
+        event.state_key = obj.at("state_key");
 }
 
 template<class Content>
@@ -251,11 +247,8 @@ template<class Content>
 void
 from_json(const json &obj, RoomEvent<Content> &event)
 {
-        Event<Content> base_event = event;
-        from_json(obj, base_event);
-
-        event.content = base_event.content;
-        event.type    = base_event.type;
+        event.content = obj.at("content").get<Content>();
+        event.type    = getEventType(obj.at("type").get<std::string>());
 
         event.event_id         = obj.at("event_id");
         event.sender           = obj.at("sender");
@@ -312,21 +305,22 @@ template<class Content>
 void
 from_json(const json &obj, StateEvent<Content> &event)
 {
-        RoomEvent<Content> base_event = event;
-        from_json(obj, base_event);
+        event.content          = obj.at("content").get<Content>();
+        event.event_id         = obj.at("event_id");
+        event.origin_server_ts = obj.at("origin_server_ts");
+        event.sender           = obj.at("sender");
+        event.type             = getEventType(obj.at("type").get<std::string>());
 
-        event.content          = base_event.content;
-        event.type             = base_event.type;
-        event.event_id         = base_event.event_id;
-        event.room_id          = base_event.room_id;
-        event.sender           = base_event.sender;
-        event.origin_server_ts = base_event.origin_server_ts;
-        event.unsigned_data    = base_event.unsigned_data;
+        if (obj.find("room_id") != obj.end())
+                event.room_id = obj.at("room_id");
 
-        event.state_key = obj.at("state_key").get<std::string>();
+        if (obj.find("unsigned") != obj.end())
+                event.unsigned_data = obj.at("unsigned");
 
         if (obj.find("prev_content") != obj.end())
                 event.prev_content = obj.at("prev_content").get<Content>();
+
+        event.state_key = obj.at("state_key").get<std::string>();
 }
 
 //! Extension of the RoomEvent.
@@ -351,16 +345,17 @@ template<class Content>
 void
 from_json(const json &obj, RedactionEvent<Content> &event)
 {
-        RoomEvent<Content> base_event = event;
-        from_json(obj, base_event);
+        event.content          = obj.at("content").get<Content>();
+        event.event_id         = obj.at("event_id");
+        event.origin_server_ts = obj.at("origin_server_ts");
+        event.sender           = obj.at("sender");
+        event.type             = getEventType(obj.at("type").get<std::string>());
 
-        event.content          = base_event.content;
-        event.type             = base_event.type;
-        event.event_id         = base_event.event_id;
-        event.room_id          = base_event.room_id;
-        event.sender           = base_event.sender;
-        event.origin_server_ts = base_event.origin_server_ts;
-        event.unsigned_data    = base_event.unsigned_data;
+        if (obj.find("unsigned") != obj.end())
+                event.unsigned_data = obj.at("unsigned");
+
+        if (obj.find("room_id") != obj.end())
+                event.room_id = obj.at("room_id");
 
         event.redacts = obj.at("redacts").get<std::string>();
 }

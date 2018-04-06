@@ -16,8 +16,8 @@ from_json(const json &obj, State &state)
 void
 from_json(const json &obj, Timeline &timeline)
 {
-        timeline.prev_batch = obj.at("prev_batch").get<std::string>();
-        timeline.limited    = obj.at("limited").get<bool>();
+        timeline.prev_batch = obj.at("prev_batch");
+        timeline.limited    = obj.at("limited");
 
         utils::parse_timeline_events(obj.at("events"), timeline.events);
 }
@@ -26,10 +26,10 @@ void
 from_json(const json &obj, UnreadNotifications &notifications)
 {
         if (obj.find("highlight_count") != obj.end())
-                notifications.highlight_count = obj.at("highlight_count").get<uint16_t>();
+                notifications.highlight_count = obj.at("highlight_count");
 
         if (obj.find("notification_count") != obj.end())
-                notifications.notification_count = obj.at("notification_count").get<uint16_t>();
+                notifications.notification_count = obj.at("notification_count");
 }
 
 void
@@ -41,7 +41,7 @@ from_json(const json &obj, Ephemeral &ephemeral)
         auto events = obj.at("events");
 
         for (auto event : events) {
-                auto type = event.at("type").get<std::string>();
+                auto type = event.at("type");
 
                 if (type == "m.typing") {
                         auto content     = event.at("content");
@@ -61,8 +61,7 @@ from_json(const json &obj, Ephemeral &ephemeral)
                                 auto users    = it.value().at("m.read");
 
                                 for (auto uit = users.begin(); uit != users.end(); ++uit)
-                                        user_times.emplace(uit.key(),
-                                                           uit.value().at("ts").get<uint64_t>());
+                                        user_times.emplace(uit.key(), uit.value().at("ts"));
 
                                 receipts.emplace(event_id, user_times);
                         }
@@ -75,12 +74,11 @@ from_json(const json &obj, Ephemeral &ephemeral)
 void
 from_json(const json &obj, JoinedRoom &room)
 {
-        if (obj.count("state") != 0) {
+        if (obj.count("state") != 0)
                 room.state = obj.at("state").get<State>();
-        }
-        if (obj.count("timeline") != 0) {
+
+        if (obj.count("timeline") != 0)
                 room.timeline = obj.at("timeline").get<Timeline>();
-        }
 
         if (obj.find("unread_notifications") != obj.end())
                 room.unread_notifications =
@@ -93,12 +91,11 @@ from_json(const json &obj, JoinedRoom &room)
 void
 from_json(const json &obj, LeftRoom &room)
 {
-        if (obj.count("state") != 0) {
+        if (obj.count("state") != 0)
                 room.state = obj.at("state").get<State>();
-        }
-        if (obj.count("timeline") != 0) {
+
+        if (obj.count("timeline") != 0)
                 room.timeline = obj.at("timeline").get<Timeline>();
-        }
 }
 
 std::string
@@ -166,21 +163,21 @@ from_json(const json &obj, Rooms &rooms)
                 auto joined = obj.at("join");
 
                 for (auto it = joined.begin(); it != joined.end(); ++it)
-                        rooms.join[it.key()] = it.value().get<JoinedRoom>();
+                        rooms.join.emplace(it.key(), it.value());
         }
 
         if (obj.count("leave") != 0) {
                 auto leave = obj.at("leave");
 
                 for (auto it = leave.begin(); it != leave.end(); ++it)
-                        rooms.leave[it.key()] = it.value().get<LeftRoom>();
+                        rooms.leave.emplace(it.key(), it.value());
         }
 
         if (obj.count("invite") != 0) {
                 auto invite = obj.at("invite");
 
                 for (auto it = invite.begin(); it != invite.end(); ++it)
-                        rooms.invite[it.key()] = it.value().get<InvitedRoom>();
+                        rooms.invite.emplace(it.key(), it.value());
         }
 }
 
