@@ -148,7 +148,8 @@ struct Sync
         std::string next_batch;
         //! Updates to rooms.
         Rooms rooms;
-        /* ToDevice to_device; */
+        //! Information on the send-to-device messages for the client device.
+        std::vector<nlohmann::json> to_device;
         /* Presence presence; */
         /* Groups groups; */
         //! Information on end-to-end device updates,

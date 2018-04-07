@@ -200,6 +200,12 @@ from_json(const json &obj, Sync &response)
         if (obj.count("device_lists") != 0)
                 response.device_lists = obj.at("device_lists").get<DeviceLists>();
 
+        if (obj.count("to_device") != 0) {
+                if (obj.at("to_device").count("events") != 0)
+                        response.to_device =
+                          obj.at("to_device").at("events").get<std::vector<json>>();
+        }
+
         if (obj.count("device_one_time_keys_count") != 0)
                 response.device_one_time_keys_count =
                   obj.at("device_one_time_keys_count").get<std::map<std::string, uint16_t>>();
