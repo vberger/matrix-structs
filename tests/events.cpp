@@ -369,13 +369,7 @@ TEST(StateEvents, Member)
         EXPECT_EQ(event2.sender, "@nheko_test:matrix.org");
         EXPECT_EQ(event2.origin_server_ts, 1509214100884L);
         EXPECT_EQ(event2.unsigned_data.replaces_state, "$15092124385075888YpYOh:matrix.org");
-        EXPECT_EQ(event2.unsigned_data.prev_content.avatar_url, event2.prev_content.avatar_url);
-        EXPECT_EQ(event2.unsigned_data.prev_content.membership, event2.prev_content.membership);
-        EXPECT_EQ(event2.unsigned_data.prev_content.display_name, event2.prev_content.display_name);
         EXPECT_EQ(event2.unsigned_data.age, 1259000688);
-        EXPECT_EQ(event2.unsigned_data.prev_content.membership, ns::state::Membership::Join);
-        EXPECT_EQ(event2.unsigned_data.prev_content.avatar_url,
-                  "mxc://matrix.org/IvqcnGakfvwwKeZxbJWhblFp");
         EXPECT_EQ(event2.unsigned_data.age, 1259000688);
         EXPECT_EQ(event2.state_key, "@nheko_test:matrix.org");
         EXPECT_EQ(event2.content.membership, ns::state::Membership::Join);

@@ -135,7 +135,6 @@ from_json(const json &obj, Event<Content> &event)
         event.type    = getEventType(obj.at("type").get<std::string>());
 }
 
-template<class Content>
 struct UnsignedData
 {
         //! The time in milliseconds that has elapsed since the event was sent.
@@ -151,13 +150,10 @@ struct UnsignedData
         std::string replaces_state;
         //! The event ID that redacted this event.
         std::string redacted_by;
-
-        Content prev_content;
 };
 
-template<class Content>
-void
-from_json(const json &obj, UnsignedData<Content> &data)
+inline void
+from_json(const json &obj, UnsignedData &data)
 {
         if (obj.find("age") != obj.end())
                 data.age = obj.at("age").get<uint64_t>();
@@ -171,16 +167,12 @@ from_json(const json &obj, UnsignedData<Content> &data)
         if (obj.find("replaces_state") != obj.end())
                 data.replaces_state = obj.at("replaces_state").get<std::string>();
 
-        if (obj.find("prev_content") != obj.end())
-                data.prev_content = obj.at("prev_content").get<Content>();
-
         if (obj.find("redacted_by") != obj.end())
                 data.redacted_by = obj.at("redacted_by").get<std::string>();
 }
 
-template<class Content>
-void
-to_json(json &obj, const UnsignedData<Content> &event)
+inline void
+to_json(json &obj, const UnsignedData &event)
 {
         if (!event.prev_sender.empty())
                 obj["prev_sender"] = event.prev_sender;
@@ -193,8 +185,6 @@ to_json(json &obj, const UnsignedData<Content> &event)
 
         if (event.age != 0)
                 obj["age"] = event.age;
-
-        obj["prev_content"] = event.prev_content;
 }
 
 template<class Content>
@@ -240,7 +230,7 @@ struct RoomEvent : public Event<Content>
         uint64_t origin_server_ts;
         // SPEC_BUG: The contents of unsigned_data are also present as top level keys.
         //! Contains optional extra information about the event.
-        UnsignedData<Content> unsigned_data;
+        UnsignedData unsigned_data;
 };
 
 template<class Content>
@@ -285,9 +275,6 @@ struct StateEvent : public RoomEvent<Content>
         //! A unique key which defines the overwriting semantics
         //! for this piece of room state.
         std::string state_key;
-        //! Optional. The previous content for this event.
-        //! If there is no previous content, this key will be missing.
-        Content prev_content;
 };
 
 template<class Content>
@@ -297,8 +284,7 @@ to_json(json &obj, const StateEvent<Content> &event)
         RoomEvent<Content> base_event = event;
         to_json(obj, base_event);
 
-        obj["state_key"]    = event.state_key;
-        obj["prev_content"] = event.prev_content;
+        obj["state_key"] = event.state_key;
 }
 
 template<class Content>
@@ -316,9 +302,6 @@ from_json(const json &obj, StateEvent<Content> &event)
 
         if (obj.find("unsigned") != obj.end())
                 event.unsigned_data = obj.at("unsigned");
-
-        if (obj.find("prev_content") != obj.end())
-                event.prev_content = obj.at("prev_content").get<Content>();
 
         event.state_key = obj.at("state_key").get<std::string>();
 }

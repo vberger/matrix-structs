@@ -564,7 +564,6 @@ TEST(Responses, Messages)
 
         auto third_event = mpark::get<StateEvent<Name>>(messages.chunk[2]);
         EXPECT_EQ(third_event.content.name, "New room name");
-        EXPECT_EQ(third_event.prev_content.name, "Old room name");
         EXPECT_EQ(third_event.type, mtx::events::EventType::RoomName);
         EXPECT_EQ(third_event.event_id, "$1444812213350496Ccccc:example.com");
         EXPECT_EQ(third_event.sender, "@bob:example.com");
@@ -617,7 +616,6 @@ TEST(Responses, Messages)
 
         third_event = mpark::get<StateEvent<Name>>(messages.chunk[0]);
         EXPECT_EQ(third_event.content.name, "New room name");
-        EXPECT_EQ(third_event.prev_content.name, "Old room name");
         EXPECT_EQ(third_event.type, mtx::events::EventType::RoomName);
         EXPECT_EQ(third_event.event_id, "$1444812213350496Ccccc:example.com");
         EXPECT_EQ(third_event.sender, "@bob:example.com");
