@@ -284,6 +284,15 @@ parse_timeline_events(const json &events,
                         }
                         break;
                 }
+                case events::EventType::Sticker: {
+                        try {
+                                container.emplace_back(events::Sticker(e));
+                        } catch (json::exception &err) {
+                                log_error(err, e);
+                        }
+
+                        break;
+                }
                 case events::EventType::RoomPinnedEvents:
                 case events::EventType::Unsupported:
                         continue;
@@ -410,6 +419,7 @@ parse_state_events(const json &events,
 
                         break;
                 }
+                case events::EventType::Sticker:
                 case events::EventType::RoomMessage:
                 case events::EventType::RoomPinnedEvents:
                 case events::EventType::RoomRedaction:
@@ -529,6 +539,7 @@ parse_stripped_events(const json &events,
 
                         break;
                 }
+                case events::EventType::Sticker:
                 case events::EventType::RoomEncryption:
                 case events::EventType::RoomMessage:
                 case events::EventType::RoomRedaction:

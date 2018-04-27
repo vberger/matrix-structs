@@ -5,7 +5,7 @@
 
 using json = nlohmann::json;
 
-namespace ns = mtx::events;
+using namespace mtx::events;
 
 TEST(RoomEvents, Redacted)
 {
@@ -22,9 +22,9 @@ TEST(RoomEvents, Redacted)
           "type": "m.room.message"
         })"_json;
 
-        ns::RoomEvent<ns::msg::Redacted> event = data;
+        RoomEvent<msg::Redacted> event = data;
 
-        EXPECT_EQ(event.type, ns::EventType::RoomMessage);
+        EXPECT_EQ(event.type, EventType::RoomMessage);
         EXPECT_EQ(event.event_id, "$143273582443PhrSn:localhost");
         EXPECT_EQ(event.room_id, "!jEsUZKDJdhlrceRyVU:localhost");
         EXPECT_EQ(event.sender, "@example:localhost");
@@ -56,9 +56,9 @@ TEST(RoomEvents, AudioMessage)
           "type": "m.room.message"
         })"_json;
 
-        ns::RoomEvent<ns::msg::Audio> event = data;
+        RoomEvent<msg::Audio> event = data;
 
-        EXPECT_EQ(event.type, ns::EventType::RoomMessage);
+        EXPECT_EQ(event.type, EventType::RoomMessage);
         EXPECT_EQ(event.event_id, "$143273582443PhrSn:localhost");
         EXPECT_EQ(event.room_id, "!jEsUZKDJdhlrceRyVU:localhost");
         EXPECT_EQ(event.sender, "@example:localhost");
@@ -90,9 +90,9 @@ TEST(RoomEvents, EmoteMessage)
           "room_id": "!VaMCVKSVcyPtXbcMXh:matrix.org"
         })"_json;
 
-        ns::RoomEvent<ns::msg::Emote> event = data;
+        RoomEvent<msg::Emote> event = data;
 
-        EXPECT_EQ(event.type, ns::EventType::RoomMessage);
+        EXPECT_EQ(event.type, EventType::RoomMessage);
         EXPECT_EQ(event.event_id, "$15098786822025533uttji:matrix.org");
         EXPECT_EQ(event.room_id, "!VaMCVKSVcyPtXbcMXh:matrix.org");
         EXPECT_EQ(event.sender, "@mujx:matrix.org");
@@ -125,9 +125,9 @@ TEST(RoomEvents, FileMessage)
           "room_id": "!lfoDRlNFWlvOnvkBwQ:matrix.org"
         })"_json;
 
-        ns::RoomEvent<ns::msg::File> event = data;
+        RoomEvent<msg::File> event = data;
 
-        EXPECT_EQ(event.type, ns::EventType::RoomMessage);
+        EXPECT_EQ(event.type, EventType::RoomMessage);
         EXPECT_EQ(event.event_id, "$15104856072749611ERqhw:matrix.org");
         EXPECT_EQ(event.room_id, "!lfoDRlNFWlvOnvkBwQ:matrix.org");
         EXPECT_EQ(event.sender, "@nheko_test:matrix.org");
@@ -173,9 +173,9 @@ TEST(RoomEvents, ImageMessage)
           "room_id": "!cURbafjkfsMDVwdRDQ:matrix.org"
         })"_json;
 
-        ns::RoomEvent<ns::msg::Image> event = data;
+        RoomEvent<msg::Image> event = data;
 
-        EXPECT_EQ(event.type, ns::EventType::RoomMessage);
+        EXPECT_EQ(event.type, EventType::RoomMessage);
         EXPECT_EQ(event.event_id, "$15105042942524OGmZm:kamax.io");
         EXPECT_EQ(event.room_id, "!cURbafjkfsMDVwdRDQ:matrix.org");
         EXPECT_EQ(event.sender, "@max:kamax.io");
@@ -213,9 +213,9 @@ TEST(RoomEvents, NoticeMessage)
           "room_id": "!BPvgRcBVHzyFSlYkrg:matrix.org"
         })"_json;
 
-        ns::RoomEvent<ns::msg::Notice> event = data;
+        RoomEvent<msg::Notice> event = data;
 
-        EXPECT_EQ(event.type, ns::EventType::RoomMessage);
+        EXPECT_EQ(event.type, EventType::RoomMessage);
         EXPECT_EQ(event.event_id, "$15104358652239178iCnZy:matrix.org");
         EXPECT_EQ(event.room_id, "!BPvgRcBVHzyFSlYkrg:matrix.org");
         EXPECT_EQ(event.sender, "@_neb_github:matrix.org");
@@ -244,9 +244,9 @@ TEST(RoomEvents, TextMessage)
           "room_id": "!lfoDRlNFWlvOnvkBwQ:matrix.org"
          })"_json;
 
-        ns::RoomEvent<ns::msg::Text> event = data;
+        RoomEvent<msg::Text> event = data;
 
-        EXPECT_EQ(event.type, ns::EventType::RoomMessage);
+        EXPECT_EQ(event.type, EventType::RoomMessage);
         EXPECT_EQ(event.event_id, "$15104893562785758wEgEU:matrix.org");
         EXPECT_EQ(event.room_id, "!lfoDRlNFWlvOnvkBwQ:matrix.org");
         EXPECT_EQ(event.sender, "@nheko_test:matrix.org");
@@ -290,9 +290,9 @@ TEST(RoomEvents, VideoMessage)
           "type": "m.room.message"
         })"_json;
 
-        ns::RoomEvent<ns::msg::Video> event = data;
+        RoomEvent<msg::Video> event = data;
 
-        EXPECT_EQ(event.type, ns::EventType::RoomMessage);
+        EXPECT_EQ(event.type, EventType::RoomMessage);
         EXPECT_EQ(event.event_id, "$143273582443PhrSn:localhost");
         EXPECT_EQ(event.room_id, "!jEsUZKDJdhlrceRyVU:localhost");
         EXPECT_EQ(event.sender, "@example:localhost");
@@ -310,4 +310,43 @@ TEST(RoomEvents, VideoMessage)
         EXPECT_EQ(event.content.info.thumbnail_info.h, 300);
         EXPECT_EQ(event.content.info.thumbnail_info.w, 310);
         EXPECT_EQ(event.content.info.thumbnail_info.size, 46144);
+}
+
+TEST(RoomEvents, Sticker)
+{
+        json data = R"({
+          "age": 242352,
+          "content": {
+            "body": "Landing",
+            "info": {
+              "h": 200,
+              "mimetype": "image/png",
+	      "size": 73602,
+	      "thumbnail_info": {
+                "h": 200,
+                "mimetype": "image/png",
+                "size": 73602,
+                "w": 140
+              },
+              "thumbnail_url": "mxc://matrix.org/sHhqkFCvSkFwtmvtETOtKnLP",
+              "w": 140
+            },
+            "url": "mxc://matrix.org/sHhqkFCvSkFwtmvtETOtKnLP"
+          },
+          "event_id": "$WLGTSEFSEF:localhost",
+          "origin_server_ts": 1431961217939,
+          "room_id": "!Cuyf34gef24t:localhost",
+          "sender": "@example:localhost",
+          "type": "m.sticker"
+	})"_json;
+
+        Sticker event = data;
+
+        EXPECT_EQ(event.type, EventType::Sticker);
+        EXPECT_EQ(event.event_id, "$WLGTSEFSEF:localhost");
+        EXPECT_EQ(event.content.body, "Landing");
+        EXPECT_EQ(event.content.url, "mxc://matrix.org/sHhqkFCvSkFwtmvtETOtKnLP");
+        EXPECT_EQ(event.content.info.w, 140);
+        EXPECT_EQ(event.content.info.h, 200);
+        EXPECT_EQ(event.content.info.size, 73602);
 }

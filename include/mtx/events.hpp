@@ -4,6 +4,7 @@
 
 #include <iostream>
 
+#include "mtx/events/messages/image.hpp"
 #include "mtx/identifiers.hpp"
 
 using json = nlohmann::json;
@@ -43,6 +44,8 @@ enum class EventType
         RoomRedaction,
         /// m.room.pinned_events
         RoomPinnedEvents,
+        // m.sticker
+        Sticker,
         // Unsupported event
         Unsupported,
 };
@@ -370,6 +373,9 @@ getMessageType(const std::string &type);
 
 MessageType
 getMessageType(const json &obj);
+
+struct Sticker : public RoomEvent<mtx::events::msg::StickerImage>
+{};
 
 } // namespace events
 } // namespace mtx
