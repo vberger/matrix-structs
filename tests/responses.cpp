@@ -879,3 +879,46 @@ TEST(Crypto, ClaimKeys)
         EXPECT_EQ(device["signed_curve25519:AAAAHg"]["key"],
                   "zKbLg+NrIjpnagy+pIY6uPL4ZwEG2v+8F9lmgsnlZzs");
 }
+
+TEST(Responses, Notifications)
+{
+        json data = R"({
+          "next_token": "abcdef",
+          "notifications": [{
+            "actions": [
+              "notify"
+            ],
+          "profile_tag": "hcbvkzxhcvb",
+          "read": true,
+          "room_id": "!abcdefg:example.com",
+          "ts": 1475508881945,
+          "event": {
+            "sender": "@alice:example.com",
+            "type": "m.room.message",
+            "age": 124524,
+            "txn_id": "1234",
+            "content": {
+              "body": "I am a fish",
+              "msgtype": "m.text"
+            },
+            "origin_server_ts": 1417731086797,
+            "event_id": "$74686972643033:example.com"
+           }
+         }]
+	})"_json;
+
+        mtx::responses::Notifications notif = data;
+
+        EXPECT_EQ(notif.next_token, "abcdef");
+        EXPECT_EQ(notif.notifications.size(), 1);
+        EXPECT_EQ(notif.notifications.at(0).profile_tag, "hcbvkzxhcvb");
+        EXPECT_EQ(notif.notifications.at(0).read, true);
+        EXPECT_EQ(notif.notifications.at(0).ts, 1475508881945L);
+        EXPECT_EQ(notif.notifications.at(0).room_id, "!abcdefg:example.com");
+
+        using TextEvent = mtx::events::RoomEvent<msg::Text>;
+        auto event      = mpark::get<TextEvent>(notif.notifications.at(0).event);
+
+        EXPECT_EQ(event.content.body, "I am a fish");
+        EXPECT_EQ(event.sender, "@alice:example.com");
+}

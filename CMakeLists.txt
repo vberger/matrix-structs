@@ -69,6 +69,7 @@ set(SRC
     src/responses/empty.cpp
     src/responses/media.cpp
     src/responses/messages.cpp
+    src/responses/notifications.cpp
     src/responses/profile.cpp
     src/responses/sync.cpp
     src/responses/version.cpp)

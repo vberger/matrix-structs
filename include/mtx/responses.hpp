@@ -8,6 +8,7 @@
 #include "responses/login.hpp"
 #include "responses/media.hpp"
 #include "responses/messages.hpp"
+#include "responses/notifications.hpp"
 #include "responses/profile.hpp"
 #include "responses/register.hpp"
 #include "responses/sync.hpp"
