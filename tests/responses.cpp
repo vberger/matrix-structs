@@ -888,7 +888,7 @@ TEST(Responses, Notifications)
             "actions": [
               "notify"
             ],
-          "profile_tag": "hcbvkzxhcvb",
+          "profile_tag": null,
           "read": true,
           "room_id": "!abcdefg:example.com",
           "ts": 1475508881945,
@@ -911,7 +911,7 @@ TEST(Responses, Notifications)
 
         // EXPECT_EQ(notif.next_token, "abcdef");
         EXPECT_EQ(notif.notifications.size(), 1);
-        EXPECT_EQ(notif.notifications.at(0).profile_tag, "hcbvkzxhcvb");
+        EXPECT_EQ(notif.notifications.at(0).profile_tag, "");
         EXPECT_EQ(notif.notifications.at(0).read, true);
         EXPECT_EQ(notif.notifications.at(0).ts, 1475508881945L);
         EXPECT_EQ(notif.notifications.at(0).room_id, "!abcdefg:example.com");

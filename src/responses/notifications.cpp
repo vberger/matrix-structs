@@ -9,11 +9,13 @@ namespace responses {
 void
 from_json(const json &obj, Notification &res)
 {
-        res.actions     = obj.at("actions");
-        res.read        = obj.at("read");
-        res.room_id     = obj.at("room_id");
-        res.profile_tag = obj.at("profile_tag");
-        res.ts          = obj.at("ts");
+        res.actions = obj.at("actions");
+        res.read    = obj.at("read");
+        res.room_id = obj.at("room_id");
+        res.ts      = obj.at("ts");
+
+        if (!obj.at("profile_tag").is_null())
+                res.profile_tag = obj.at("profile_tag");
 
         // HACK to work around the fact that there isn't
         // a method to parse a timeline event from a json object.
