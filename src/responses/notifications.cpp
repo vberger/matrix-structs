@@ -35,7 +35,7 @@ from_json(const json &obj, Notification &res)
 void
 from_json(const json &obj, Notifications &res)
 {
-        res.next_token    = obj.at("next_token").get<std::string>();
+        // res.next_token    = obj.at("next_token").get<std::string>();
         res.notifications = obj.at("notifications").get<std::vector<Notification>>();
 }
 } // namespace responses

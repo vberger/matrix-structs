@@ -36,7 +36,8 @@ struct Notifications
         //! The token to supply in the from param of the next /notifications
         //! request in order to request more events. If this is absent,
         //! there are no more results.
-        std::string next_token;
+        //! TODO: https://github.com/matrix-org/synapse/pull/3190
+        // std::string next_token;
         //! The list of events that triggered notifications.
         std::vector<Notification> notifications;
 };
