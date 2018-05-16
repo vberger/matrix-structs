@@ -33,6 +33,15 @@ struct PowerLevels
                 return events.at(event_type);
         }
 
+        //! Returns the power_level for a given event type.
+        inline uint16_t state_level(const std::string &event_type) const
+        {
+                if (events.find(event_type) == events.end())
+                        return state_default;
+
+                return events.at(event_type);
+        }
+
         //! Returns the power_level for a given user id.
         inline uint16_t user_level(const std::string &user_id) const
         {
