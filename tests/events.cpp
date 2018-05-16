@@ -460,14 +460,14 @@ TEST(StateEvents, PowerLevels)
             "users_default": 0,
             "kick": 50,
             "events": {
-              "m.room.avatar": 50,
+              "m.room.avatar": 29,
               "m.room.name": 50,
               "m.room.canonical_alias":	50,
-              "m.room.history_visibility": 100,
-              "m.room.power_levels": 100
+              "m.room.history_visibility": 120,
+              "m.room.power_levels": 109
 	    },
             "users": {
-              "@mujx:matrix.org": 100
+              "@mujx:matrix.org": 30
 	    }
 	  },
           "type": "m.room.power_levels"
@@ -492,13 +492,23 @@ TEST(StateEvents, PowerLevels)
 
         EXPECT_EQ(event.content.events.size(), 5);
         EXPECT_EQ(event.content.events["m.room.name"], 50);
-        EXPECT_EQ(event.content.events["m.room.avatar"], 50);
+        EXPECT_EQ(event.content.events["m.room.avatar"], 29);
         EXPECT_EQ(event.content.events["m.room.canonical_alias"], 50);
-        EXPECT_EQ(event.content.events["m.room.history_visibility"], 100);
-        EXPECT_EQ(event.content.events["m.room.power_levels"], 100);
+        EXPECT_EQ(event.content.events["m.room.history_visibility"], 120);
+        EXPECT_EQ(event.content.events["m.room.power_levels"], 109);
 
         EXPECT_EQ(event.content.users.size(), 1);
-        EXPECT_EQ(event.content.users["@mujx:matrix.org"], 100);
+        EXPECT_EQ(event.content.users["@mujx:matrix.org"], 30);
+
+        EXPECT_EQ(event.content.event_level("m.room.name"), 50);
+        EXPECT_EQ(event.content.event_level("m.room.avatar"), 29);
+        EXPECT_EQ(event.content.event_level("m.room.canonical_alias"), 50);
+        EXPECT_EQ(event.content.event_level("m.room.history_visibility"), 120);
+        EXPECT_EQ(event.content.event_level("m.room.power_levels"), 109);
+        EXPECT_EQ(event.content.event_level("m.custom.event"), event.content.events_default);
+
+        EXPECT_EQ(event.content.user_level("@mujx:matrix.org"), 30);
+        EXPECT_EQ(event.content.user_level("@not:matrix.org"), event.content.users_default);
 }
 
 TEST(StateEvents, Topic)

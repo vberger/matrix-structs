@@ -25,9 +25,22 @@ constexpr uint16_t Admin     = 100;
 struct PowerLevels
 {
         //! Returns the power_level for a given event type.
-        int eventLevel(std::string event_type) const;
+        inline uint16_t event_level(const std::string &event_type) const
+        {
+                if (events.find(event_type) == events.end())
+                        return events_default;
+
+                return events.at(event_type);
+        }
+
         //! Returns the power_level for a given user id.
-        int userLevel(std::string user_id) const;
+        inline uint16_t user_level(const std::string &user_id) const
+        {
+                if (users.find(user_id) == users.end())
+                        return users_default;
+
+                return users.at(user_id);
+        }
 
         //! The level required to ban a user. Defaults to **50** if unspecified.
         uint16_t ban = Moderator;
