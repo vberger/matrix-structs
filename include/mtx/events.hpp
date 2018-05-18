@@ -129,6 +129,9 @@ to_json(json &obj, const Event<Content> &event)
         case EventType::RoomPinnedEvents:
                 obj["type"] = "m.room.pinned_events";
                 break;
+        case EventType::Sticker:
+                obj["type"] = "m.sticker";
+                break;
         case EventType::Unsupported:
                 std::cout << "Unsupported type to serialize" << std::endl;
                 break;
