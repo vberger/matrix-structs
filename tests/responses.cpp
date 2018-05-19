@@ -787,7 +787,7 @@ TEST(Responses, QueryKeys)
               "JLAFKJWSCS": {
                 "user_id": "@alice:example.com",
                 "device_id": "JLAFKJWSCS",
-                "algorithms": [ "m.olm.curve25519-aes-sha256", "m.megolm.v1.aes-sha" ],
+                "algorithms": [ "m.olm.v1.curve25519-aes-sha2", "m.megolm.v1.aes-sha2" ],
                 "keys": {
                   "curve25519:JLAFKJWSCS": "3C5BFWi2Y8MaVvjM8M22DBmh24PmgR0nPvJOIArzgyI",
                   "ed25519:JLAFKJWSCS": "lEuiRJBit0IG6nUf5pUzWTUEsRVVe/HJkoKuEww9ULI"
@@ -814,8 +814,8 @@ TEST(Responses, QueryKeys)
 
         EXPECT_EQ(device_keys.user_id, "@alice:example.com");
         EXPECT_EQ(device_keys.device_id, "JLAFKJWSCS");
-        EXPECT_EQ(device_keys.algorithms[0], "m.olm.curve25519-aes-sha256");
-        EXPECT_EQ(device_keys.algorithms[1], "m.megolm.v1.aes-sha");
+        EXPECT_EQ(device_keys.algorithms[0], "m.olm.v1.curve25519-aes-sha2");
+        EXPECT_EQ(device_keys.algorithms[1], "m.megolm.v1.aes-sha2");
         EXPECT_EQ(device_keys.keys.size(), 2);
         EXPECT_EQ(device_keys.keys["curve25519:JLAFKJWSCS"],
                   "3C5BFWi2Y8MaVvjM8M22DBmh24PmgR0nPvJOIArzgyI");

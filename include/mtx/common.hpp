@@ -34,8 +34,8 @@ struct DeviceKeys
         //! The ID of the device these keys belong to.
         std::string device_id;
         //! The encryption algorithms supported by this device.
-        std::vector<std::string> algorithms = {"m.olm.curve25519-aes-sha256",
-                                               "m.megolm.v1.aes-sha"};
+        std::vector<std::string> algorithms = {"m.olm.v1.curve25519-aes-sha2",
+                                               "m.megolm.v1.aes-sha2"};
         //! Public identity keys.
         //! The names of the properties should be in the format <algorithm>:<device_id>.
         //! The keys themselves should be encoded as specified by the key algorithm.

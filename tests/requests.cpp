@@ -73,13 +73,14 @@ TEST(Requests, UploadKeys)
 
         // Only device_keys are present
         j = r2;
-        ASSERT_EQ(j.dump(),
-                  "{\"device_keys\":{\"algorithms\":[\"m.olm.curve25519-aes-sha256\",\"m.megolm.v1."
-                  "aes-sha\"],\"device_id\":\"JLAFKJWSCS\",\"keys\":{\"curve25519:JLAFKJWSCS\":"
-                  "\"3C5BFWi2Y8MaVvjM8M22DBmh24PmgR0nPvJOIArzgyI\"},\"signatures\":{\"@alice:"
-                  "example.com\":{\"ed25519:JLAFKJWSCS\":\"dSO80A01XiigH3uBiDVx/"
-                  "EjzaoycHcjq9lfQX0uWsqxl2giMIiSPR8a4d291W1ihKJL/"
-                  "a+myXS367WT6NAIcBA\"}},\"user_id\":\"@alice:example.com\"}}");
+        ASSERT_EQ(
+          j.dump(),
+          "{\"device_keys\":{\"algorithms\":[\"m.olm.v1.curve25519-aes-sha2\",\"m.megolm.v1."
+          "aes-sha2\"],\"device_id\":\"JLAFKJWSCS\",\"keys\":{\"curve25519:JLAFKJWSCS\":"
+          "\"3C5BFWi2Y8MaVvjM8M22DBmh24PmgR0nPvJOIArzgyI\"},\"signatures\":{\"@alice:"
+          "example.com\":{\"ed25519:JLAFKJWSCS\":\"dSO80A01XiigH3uBiDVx/"
+          "EjzaoycHcjq9lfQX0uWsqxl2giMIiSPR8a4d291W1ihKJL/"
+          "a+myXS367WT6NAIcBA\"}},\"user_id\":\"@alice:example.com\"}}");
 
         json k1 = {{"key", "zKbLg+NrIjpnagy+pIY6uPL4ZwEG2v+8F9lmgsnlZzs"},
                    {"signatures",
