@@ -9,11 +9,10 @@ namespace events {
 namespace msg {
 
 //! Content of the `m.room.encrypted` event.
-//! Endpoint is `PUT /_matrix/client/r0/rooms/{roomId}/send/m.room.encrypted/{txnId}`.
 struct Encrypted
 {
         //! Used for one-on-one exchanges.
-        std::string algorithm = "m.megolm.v1.aes-sha2";
+        std::string algorithm;
         //! The actual encrypted payload.
         std::string ciphertext;
         //! Sender's device id.

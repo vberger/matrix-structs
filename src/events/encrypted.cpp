@@ -19,7 +19,7 @@ from_json(const json &obj, Encrypted &content)
 void
 to_json(json &obj, const Encrypted &content)
 {
-        obj["algorithm"]  = "m.megolm.v1.aes-sha2";
+        obj["algorithm"]  = content.algorithm;
         obj["ciphertext"] = content.ciphertext;
         obj["device_id"]  = content.device_id;
         obj["sender_key"] = content.sender_key;
