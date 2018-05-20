@@ -8,6 +8,34 @@ namespace mtx {
 namespace events {
 namespace msg {
 
+struct OlmCipherContent
+{
+        std::string body;
+        uint8_t type;
+};
+
+void
+from_json(const json &obj, OlmCipherContent &event);
+
+void
+to_json(json &obj, const OlmCipherContent &event);
+
+//! Content of the `m.room.encrypted` Olm event.
+struct OlmEncrypted
+{
+        std::string algorithm;
+        std::string sender_key;
+
+        using RecipientKey = std::string;
+        std::map<RecipientKey, OlmCipherContent> ciphertext;
+};
+
+void
+from_json(const json &obj, OlmEncrypted &event);
+
+void
+to_json(json &obj, const OlmEncrypted &event);
+
 //! Content of the `m.room.encrypted` event.
 struct Encrypted
 {
@@ -24,10 +52,10 @@ struct Encrypted
 };
 
 void
-to_json(json &obj, const Encrypted &event);
+from_json(const json &obj, Encrypted &event);
 
 void
-from_json(const json &obj, Encrypted &event);
+to_json(json &obj, const Encrypted &event);
 
 } // namespace msg
 } // namespace events
