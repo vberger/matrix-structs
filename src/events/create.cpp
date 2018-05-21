@@ -11,8 +11,7 @@ namespace state {
 void
 from_json(const json &obj, Create &create)
 {
-        using namespace mtx::identifiers;
-        create.creator = obj.at("creator").get<User>();
+        create.creator = obj.at("creator");
 
         if (obj.find("m.federate") != obj.end())
                 create.federate = obj.at("m.federate").get<bool>();
@@ -21,7 +20,7 @@ from_json(const json &obj, Create &create)
 void
 to_json(json &obj, const Create &create)
 {
-        obj["creator"]    = create.creator.to_string();
+        obj["creator"]    = create.creator;
         obj["m.federate"] = create.federate;
 }
 

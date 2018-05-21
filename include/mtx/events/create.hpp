@@ -4,8 +4,6 @@
 
 using json = nlohmann::json;
 
-#include "mtx/identifiers.hpp"
-
 namespace mtx {
 namespace events {
 namespace state {
@@ -17,7 +15,7 @@ namespace state {
 struct Create
 {
         //! The `user_id` of the room creator. This is set by the homeserver.
-        mtx::identifiers::User creator;
+        std::string creator;
         //! Whether users on other servers can join this room.
         //! Defaults to **true** if key does not exist.
         bool federate = true;
