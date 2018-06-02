@@ -7,6 +7,8 @@ option(BUILD_DOC "Build documentation" OFF)
 
 list(INSERT CMAKE_MODULE_PATH 0 ${CMAKE_SOURCE_DIR}/cmake)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 #
 # Find doxygen & generate API documentation.
@@ -68,9 +70,6 @@ set(SRC
     src/responses/version.cpp)
 
 add_library(matrix_structs ${SRC})
-set_target_properties(
-  matrix_structs PROPERTIES CXX_STANDARD 11 CXX_STANDARD_REQUIRED YES)
-
 if(NOT MSVC)
   target_compile_options(matrix_structs
                          PRIVATE
