@@ -68,7 +68,8 @@ set(SRC
     src/responses/version.cpp)
 
 add_library(matrix_structs ${SRC})
-target_compile_features(matrix_structs PUBLIC cxx_std_11)
+set_target_properties(
+  matrix_structs PROPERTIES CXX_STANDARD 11 CXX_STANDARD_REQUIRED YES)
 
 if(NOT MSVC)
   target_compile_options(matrix_structs
