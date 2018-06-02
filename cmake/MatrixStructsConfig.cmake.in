@@ -1,0 +1,11 @@
+get_filename_component(MatrixStructs_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
+include(CMakeFindDependencyMacro)
+
+list(APPEND CMAKE_MODULE_PATH ${MatrixStructs_CMAKE_DIR})
+list(REMOVE_AT CMAKE_MODULE_PATH -1)
+
+if(NOT TARGET MatrixStructs::MatrixStructs)
+    include("${MatrixStructs_CMAKE_DIR}/MatrixStructsTargets.cmake")
+endif()
+
+set(MatrixStructs_LIBRARIES MatrixStructs::MatrixStructs)

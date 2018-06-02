@@ -1,7 +1,7 @@
 FILES=`find include tests -type f -type f \( -iname "*.cpp" -o -iname "*.hpp" \)`
 
 debug:
-	@cmake -GNinja -DBUILD_TESTS=ON -H. -Bbuild -DCMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=1
+	@cmake -GNinja -DBUILD_TESTS=ON -H. -Bbuild -DCMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=1 -DCMAKE_INSTALL_PREFIX=build/
 	@cmake --build build
 
 release-debug:
