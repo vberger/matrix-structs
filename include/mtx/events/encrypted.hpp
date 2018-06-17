@@ -57,6 +57,21 @@ from_json(const json &obj, Encrypted &event);
 void
 to_json(json &obj, const Encrypted &event);
 
+//! Content of the `m.room_key` event.
+struct RoomKey
+{
+        std::string algorithm;
+        std::string room_id;
+        std::string session_id;
+        std::string session_key;
+};
+
+void
+from_json(const json &obj, RoomKey &event);
+
+void
+to_json(json &obj, const RoomKey &event);
+
 } // namespace msg
 } // namespace events
 } // namespace mtx
