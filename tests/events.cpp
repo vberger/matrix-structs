@@ -540,6 +540,61 @@ TEST(StateEvents, Topic)
         EXPECT_EQ(event.content.topic, "Test topic");
 }
 
+TEST(RoomEvents, OlmEncrypted)
+{
+        json data = R"({
+          "content": {
+            "algorithm": "m.olm.v1.curve25519-aes-sha2",
+            "ciphertext": {
+              "1OaiUJ7OfIEGAtnMQyTPFi9Ou6LD5UjSZ4eMk6WzI3E": {
+                "body": "AwogkcAq9+r4YNvCwvBXmipeM30ZVhVDYBWPZ.......69/rEhCK38SIILvCA5NvEH",
+                "type": 0
+              }
+            },
+            "sender_key": "IlRMeOPX2e0MurIyfWEucYBRVOEEUMrOHqn/8mLqMjA"
+          },
+          "event_id": "$143273582443PhrSn:localhost",
+          "origin_server_ts": 1432735824653,
+          "room_id": "!jEsUZKDJdhlrceRyVU:localhost",
+          "sender": "@example:localhost",
+          "type": "m.room.encrypted",
+          "unsigned": {
+            "age": 146,
+            "transaction_id": "m1476648745605.19"
+          }
+        })"_json;
+
+        ns::EncryptedEvent<ns::msg::OlmEncrypted> event = data;
+        const auto key                                  = event.content.ciphertext.begin()->first;
+
+        EXPECT_EQ(event.type, ns::EventType::RoomEncrypted);
+        EXPECT_EQ(event.event_id, "$143273582443PhrSn:localhost");
+        EXPECT_EQ(event.room_id, "!jEsUZKDJdhlrceRyVU:localhost");
+        EXPECT_EQ(event.sender, "@example:localhost");
+        EXPECT_EQ(event.origin_server_ts, 1432735824653L);
+        EXPECT_EQ(event.unsigned_data.age, 146);
+        EXPECT_EQ(event.content.algorithm, "m.olm.v1.curve25519-aes-sha2");
+        EXPECT_EQ(event.content.ciphertext.at(key).type, 0);
+        EXPECT_EQ(event.content.ciphertext.at(key).body,
+                  "AwogkcAq9+r4YNvCwvBXmipeM30ZVhVDYBWPZ.......69/rEhCK38SIILvCA5NvEH");
+        EXPECT_EQ(event.content.sender_key, "IlRMeOPX2e0MurIyfWEucYBRVOEEUMrOHqn/8mLqMjA");
+
+        ns::msg::OlmEncrypted e1;
+        e1.algorithm  = "m.olm.v1.curve25519-aes-sha2";
+        e1.ciphertext = {
+          {"1OaiUJ7OfIEGAtnMQyTPFi9Ou6LD5UjSZ4eMk6WzI3E",
+           {"AwogkcAq9+r4YNvCwvBXmipeM30ZVhVDYBWPZ.......69/rEhCK38SIILvCA5NvEH", 0}}};
+        e1.sender_key = "IlRMeOPX2e0MurIyfWEucYBRVOEEUMrOHqn/8mLqMjA";
+
+        json j = e1;
+        ASSERT_EQ(
+          j.dump(),
+          "{\"algorithm\":\"m.olm.v1.curve25519-aes-sha2\","
+          "\"ciphertext\":{\"1OaiUJ7OfIEGAtnMQyTPFi9Ou6LD5UjSZ4eMk6WzI3E\":{\"body\":\"AwogkcAq9+"
+          "r4YNvCwvBXmipeM30ZVhVDYBWPZ.......69/rEhCK38SIILvCA5NvEH\",\"type\":0}},"
+          "\"sender_key\":\"IlRMeOPX2e0MurIyfWEucYBRVOEEUMrOHqn/8mLqMjA\"}");
+}
+
 TEST(RoomEvents, Encrypted)
 {
         json data = R"({
@@ -581,7 +636,7 @@ TEST(RoomEvents, Encrypted)
         EXPECT_EQ(event.content.session_id, "X3lUlvLELLYxeTx4yOVu6UDpasGEVO0Jbu+QFnm0cKQ");
 
         ns::msg::Encrypted e1;
-        // e1.algorithm  = "m.megolm.v1.aes-sha2";
+        e1.algorithm  = "m.megolm.v1.aes-sha2";
         e1.ciphertext = "AwgAEoABgw1DG6mgKwvrAJU+V7jPu3poEaujNWPnMtIO6+1kFHzEcK6vbYpbg/WlPq/"
                         "B23wqKWJ3DIaBsV305VdpisGK7dMN5WgnnTp9JhtztxpCuXnX92rWFBUFM9+"
                         "PC5xVJExVBm1qwv8xgWjD5NFqfcVsZ3jLGbGiftPHairq8bxPxTsjrblMHLpXyXLhK6A7YGTey"
