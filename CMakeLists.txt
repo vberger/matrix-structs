@@ -194,3 +194,5 @@ if(BUILD_TESTS)
   add_test(Responses responses)
   add_test(Requests requests)
 endif()
+
+set_property(TARGET matrix_structs PROPERTY SOVERSION ${PROJECT_VERSION})
