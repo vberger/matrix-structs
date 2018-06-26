@@ -2,6 +2,8 @@
 
 #include <json.hpp>
 
+#include "mtx/events.hpp"
+
 using json = nlohmann::json;
 
 namespace mtx {
@@ -71,6 +73,48 @@ from_json(const json &obj, RoomKey &event);
 
 void
 to_json(json &obj, const RoomKey &event);
+
+enum class RequestAction
+{
+        // request
+        Request,
+        // request_cancellation
+        Cancellation,
+        // not handled
+        Unknown,
+};
+
+struct KeyRequest
+{
+        //! The type of request.
+        RequestAction action;
+
+        //! The encryption algorithm of the session we want keys for.
+        //! Always m.megolm.v1.aes-sha2.
+        std::string algorithm;
+        //! The room in which the session was created.
+        std::string room_id;
+        //! The curve25519 key of the session creator.
+        std::string sender_key;
+        //! The session_id of the outbound megolm session.
+        std::string session_id;
+
+        //! A unique identifier for this request.
+        std::string request_id;
+        //! The device requesting the keys.
+        std::string requesting_device_id;
+
+        //! The user that send this event.
+        std::string sender;
+        //! The type of the event.
+        mtx::events::EventType type;
+};
+
+void
+from_json(const json &obj, KeyRequest &event);
+
+void
+to_json(json &obj, const KeyRequest &event);
 
 } // namespace msg
 } // namespace events

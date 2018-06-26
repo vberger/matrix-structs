@@ -304,6 +304,7 @@ parse_timeline_events(const json &events,
                         break;
                 }
                 case events::EventType::RoomPinnedEvents:
+                case events::EventType::RoomKeyRequest: // Not part of the timeline
                 case events::EventType::Unsupported:
                         continue;
                 }
@@ -430,7 +431,8 @@ parse_state_events(const json &events,
                         break;
                 }
                 case events::EventType::Sticker:
-                case events::EventType::RoomEncrypted: /* Does this need to be here? */
+                case events::EventType::RoomEncrypted:  /* Does this need to be here? */
+                case events::EventType::RoomKeyRequest: // Not part of the timeline or state
                 case events::EventType::RoomMessage:
                 case events::EventType::RoomPinnedEvents:
                 case events::EventType::RoomRedaction:
@@ -555,6 +557,7 @@ parse_stripped_events(const json &events,
                 case events::EventType::RoomEncryption:
                 case events::EventType::RoomMessage:
                 case events::EventType::RoomRedaction:
+                case events::EventType::RoomKeyRequest: // Not part of the timeline or state
                 case events::EventType::RoomPinnedEvents:
                 case events::EventType::Unsupported:
                         continue;

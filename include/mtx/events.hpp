@@ -14,6 +14,8 @@ namespace events {
 
 enum class EventType
 {
+        /// m.room_key_request
+        RoomKeyRequest,
         /// m.room.aliases
         RoomAliases,
         /// m.room.avatar
@@ -81,6 +83,9 @@ to_json(json &obj, const Event<Content> &event)
         obj["content"] = event.content;
 
         switch (event.type) {
+        case EventType::RoomKeyRequest:
+                obj["type"] = "m.room_key_request";
+                break;
         case EventType::RoomAliases:
                 obj["type"] = "m.room.aliases";
                 break;

@@ -8,7 +8,9 @@ namespace events {
 EventType
 getEventType(const std::string &type)
 {
-        if (type == "m.room.aliases")
+        if (type == "m.room_key_request")
+                return EventType::RoomKeyRequest;
+        else if (type == "m.room.aliases")
                 return EventType::RoomAliases;
         else if (type == "m.room.avatar")
                 return EventType::RoomAvatar;
@@ -50,6 +52,8 @@ std::string
 to_string(EventType type)
 {
         switch (type) {
+        case EventType::RoomKeyRequest:
+                return "m.room_key_request";
         case EventType::RoomAliases:
                 return "m.room.aliases";
         case EventType::RoomAvatar:

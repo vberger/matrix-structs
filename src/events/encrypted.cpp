@@ -77,6 +77,61 @@ to_json(json &obj, const RoomKey &event)
         obj["session_key"] = event.session_key;
 }
 
+void
+from_json(const json &obj, KeyRequest &event)
+{
+        event.sender = obj.at("sender");
+        event.type   = mtx::events::getEventType(obj.at("type").get<std::string>());
+
+        event.request_id           = obj.at("content").at("request_id");
+        event.requesting_device_id = obj.at("content").at("requesting_device_id");
+
+        auto action = obj.at("content").at("action").get<std::string>();
+        if (action == "request") {
+                event.action     = RequestAction::Request;
+                event.room_id    = obj.at("content").at("body").at("room_id");
+                event.sender_key = obj.at("content").at("body").at("sender_key");
+                event.session_id = obj.at("content").at("body").at("session_id");
+                event.algorithm  = obj.at("content").at("body").at("algorithm");
+        } else if (action == "request_cancellation") {
+                event.action = RequestAction::Cancellation;
+        }
+}
+
+void
+to_json(json &obj, const KeyRequest &event)
+{
+        obj = json::object();
+
+        obj["sender"] = event.sender;
+        obj["type"]   = to_string(event.type);
+
+        obj["content"] = json::object();
+
+        obj["content"]["request_id"]           = event.request_id;
+        obj["content"]["requesting_device_id"] = event.requesting_device_id;
+
+        switch (event.action) {
+        case RequestAction::Request: {
+                obj["content"]["body"] = json::object();
+
+                obj["content"]["body"]["room_id"]    = event.room_id;
+                obj["content"]["body"]["sender_key"] = event.sender_key;
+                obj["content"]["body"]["session_id"] = event.session_id;
+                obj["content"]["body"]["algorithm"]  = "m.megolm.v1.aes-sha2";
+
+                obj["content"]["action"] = "request";
+                break;
+        }
+        case RequestAction::Cancellation: {
+                obj["content"]["action"] = "request_cancellation";
+                break;
+        }
+        default:
+                break;
+        }
+}
+
 } // namespace msg
 } // namespace events
 } // namespace mtx
