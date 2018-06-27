@@ -93,6 +93,143 @@ using TimelineEvents = mpark::variant<events::StateEvent<states::Aliases>,
                                       events::RoomEvent<msgs::Notice>,
                                       events::RoomEvent<msgs::Text>,
                                       events::RoomEvent<msgs::Video>>;
+inline void
+from_json(const json &obj, TimelineEvents &e)
+{
+        const auto type = mtx::events::getEventType(obj);
+        using namespace mtx::events::state;
+        using namespace mtx::events::msg;
+
+        switch (type) {
+        case events::EventType::RoomAliases: {
+                e = events::StateEvent<Aliases>(obj);
+                break;
+        }
+        case events::EventType::RoomAvatar: {
+                e = events::StateEvent<Avatar>(obj);
+                break;
+        }
+        case events::EventType::RoomCanonicalAlias: {
+                e = events::StateEvent<CanonicalAlias>(obj);
+                break;
+        }
+        case events::EventType::RoomCreate: {
+                e = events::StateEvent<Create>(obj);
+                break;
+        }
+        case events::EventType::RoomEncrypted: {
+                e = events::EncryptedEvent<mtx::events::msg::Encrypted>(obj);
+                break;
+        }
+        case events::EventType::RoomEncryption: {
+                e = events::StateEvent<Encryption>(obj);
+                break;
+        }
+        case events::EventType::RoomGuestAccess: {
+                e = events::StateEvent<GuestAccess>(obj);
+                break;
+        }
+        case events::EventType::RoomHistoryVisibility: {
+                e = events::StateEvent<HistoryVisibility>(obj);
+                break;
+        }
+        case events::EventType::RoomJoinRules: {
+                e = events::StateEvent<JoinRules>(obj);
+                break;
+        }
+        case events::EventType::RoomMember: {
+                e = events::StateEvent<Member>(obj);
+                break;
+        }
+        case events::EventType::RoomName: {
+                e = events::StateEvent<Name>(obj);
+                break;
+        }
+        case events::EventType::RoomPowerLevels: {
+                e = events::StateEvent<PowerLevels>(obj);
+                break;
+        }
+        case events::EventType::RoomRedaction: {
+                e = events::RedactionEvent<mtx::events::msg::Redaction>(obj);
+                break;
+        }
+        case events::EventType::RoomTopic: {
+                e = events::StateEvent<Topic>(obj);
+                break;
+        }
+        case events::EventType::RoomMessage: {
+                using MsgType       = mtx::events::MessageType;
+                const auto msg_type = mtx::events::getMessageType(obj.at("content"));
+
+                if (msg_type == events::MessageType::Unknown) {
+                        try {
+                                auto unsigned_data =
+                                  obj.at("unsigned").at("redacted_by").get<std::string>();
+
+                                if (unsigned_data.empty())
+                                        return;
+
+                                e = events::RoomEvent<events::msg::Redacted>(obj);
+                                return;
+                        } catch (json::exception &err) {
+                                std::cout << "Invalid event type: " << err.what() << " "
+                                          << obj.dump(2) << '\n';
+                                return;
+                        }
+
+                        std::cout << "Invalid event type: " << obj.dump(2) << '\n';
+                        break;
+                }
+
+                switch (msg_type) {
+                case MsgType::Audio: {
+                        e = events::RoomEvent<events::msg::Audio>(obj);
+                        break;
+                }
+                case MsgType::Emote: {
+                        e = events::RoomEvent<events::msg::Emote>(obj);
+                        break;
+                }
+                case MsgType::File: {
+                        e = events::RoomEvent<events::msg::File>(obj);
+                        break;
+                }
+                case MsgType::Image: {
+                        e = events::RoomEvent<events::msg::Image>(obj);
+                        break;
+                }
+                case MsgType::Location: {
+                        /* events::RoomEvent<events::msg::Location> location = e; */
+                        /* container.emplace_back(location); */
+                        break;
+                }
+                case MsgType::Notice: {
+                        e = events::RoomEvent<events::msg::Notice>(obj);
+                        break;
+                }
+                case MsgType::Text: {
+                        e = events::RoomEvent<events::msg::Text>(obj);
+                        break;
+                }
+                case MsgType::Video: {
+                        e = events::RoomEvent<events::msg::Video>(obj);
+                        break;
+                }
+                case MsgType::Unknown:
+                        return;
+                }
+                break;
+        }
+        case events::EventType::Sticker: {
+                e = events::Sticker(obj);
+                break;
+        }
+        case events::EventType::RoomPinnedEvents:
+        case events::EventType::RoomKeyRequest: // Not part of the timeline
+        case events::EventType::Unsupported:
+                return;
+        }
 }
-}
-}
+} // namespace collections
+} // namespace events
+} // namespace mtx

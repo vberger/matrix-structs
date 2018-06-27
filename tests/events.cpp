@@ -711,3 +711,31 @@ TEST(ToDevice, KeyCancellation)
 
         EXPECT_EQ(cancellation_data.dump(), json(event).dump());
 }
+
+TEST(Collection, Events)
+{
+        json data = R"({
+	  "unsigned": {
+	    "age": 242352,
+	    "transaction_id": "txnid"
+	  },
+	  "content": {
+	    "aliases": [
+	      "#somewhere:localhost",
+	      "#another:localhost"
+	    ]
+	  },
+	  "event_id": "$WLGTSEFSEF:localhost",
+	  "origin_server_ts": 1431961217939,
+          "room_id": "!Cuyf34gef24t:localhost",
+	  "sender": "@example:localhost",
+	  "state_key": "localhost",
+	  "type": "m.room.aliases"
+	})"_json;
+
+        mtx::events::collections::TimelineEvents event;
+
+        mtx::events::collections::from_json(data, event);
+
+        ASSERT_TRUE(mpark::holds_alternative<ns::StateEvent<ns::state::Aliases>>(event));
+}
