@@ -733,9 +733,7 @@ TEST(Collection, Events)
 	  "type": "m.room.aliases"
 	})"_json;
 
-        mtx::events::collections::TimelineEvents event;
+        mtx::events::collections::TimelineEvent event = data;
 
-        mtx::events::collections::from_json(data, event);
-
-        ASSERT_TRUE(mpark::holds_alternative<ns::StateEvent<ns::state::Aliases>>(event));
+        ASSERT_TRUE(mpark::holds_alternative<ns::StateEvent<ns::state::Aliases>>(event.data));
 }

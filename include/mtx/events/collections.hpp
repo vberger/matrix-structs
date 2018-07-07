@@ -93,8 +93,14 @@ using TimelineEvents = mpark::variant<events::StateEvent<states::Aliases>,
                                       events::RoomEvent<msgs::Notice>,
                                       events::RoomEvent<msgs::Text>,
                                       events::RoomEvent<msgs::Video>>;
+
+struct TimelineEvent
+{
+        TimelineEvents data;
+};
+
 inline void
-from_json(const json &obj, TimelineEvents &e)
+from_json(const json &obj, TimelineEvent &e)
 {
         const auto type = mtx::events::getEventType(obj);
         using namespace mtx::events::state;
@@ -102,59 +108,59 @@ from_json(const json &obj, TimelineEvents &e)
 
         switch (type) {
         case events::EventType::RoomAliases: {
-                e = events::StateEvent<Aliases>(obj);
+                e.data = events::StateEvent<Aliases>(obj);
                 break;
         }
         case events::EventType::RoomAvatar: {
-                e = events::StateEvent<Avatar>(obj);
+                e.data = events::StateEvent<Avatar>(obj);
                 break;
         }
         case events::EventType::RoomCanonicalAlias: {
-                e = events::StateEvent<CanonicalAlias>(obj);
+                e.data = events::StateEvent<CanonicalAlias>(obj);
                 break;
         }
         case events::EventType::RoomCreate: {
-                e = events::StateEvent<Create>(obj);
+                e.data = events::StateEvent<Create>(obj);
                 break;
         }
         case events::EventType::RoomEncrypted: {
-                e = events::EncryptedEvent<mtx::events::msg::Encrypted>(obj);
+                e.data = events::EncryptedEvent<mtx::events::msg::Encrypted>(obj);
                 break;
         }
         case events::EventType::RoomEncryption: {
-                e = events::StateEvent<Encryption>(obj);
+                e.data = events::StateEvent<Encryption>(obj);
                 break;
         }
         case events::EventType::RoomGuestAccess: {
-                e = events::StateEvent<GuestAccess>(obj);
+                e.data = events::StateEvent<GuestAccess>(obj);
                 break;
         }
         case events::EventType::RoomHistoryVisibility: {
-                e = events::StateEvent<HistoryVisibility>(obj);
+                e.data = events::StateEvent<HistoryVisibility>(obj);
                 break;
         }
         case events::EventType::RoomJoinRules: {
-                e = events::StateEvent<JoinRules>(obj);
+                e.data = events::StateEvent<JoinRules>(obj);
                 break;
         }
         case events::EventType::RoomMember: {
-                e = events::StateEvent<Member>(obj);
+                e.data = events::StateEvent<Member>(obj);
                 break;
         }
         case events::EventType::RoomName: {
-                e = events::StateEvent<Name>(obj);
+                e.data = events::StateEvent<Name>(obj);
                 break;
         }
         case events::EventType::RoomPowerLevels: {
-                e = events::StateEvent<PowerLevels>(obj);
+                e.data = events::StateEvent<PowerLevels>(obj);
                 break;
         }
         case events::EventType::RoomRedaction: {
-                e = events::RedactionEvent<mtx::events::msg::Redaction>(obj);
+                e.data = events::RedactionEvent<mtx::events::msg::Redaction>(obj);
                 break;
         }
         case events::EventType::RoomTopic: {
-                e = events::StateEvent<Topic>(obj);
+                e.data = events::StateEvent<Topic>(obj);
                 break;
         }
         case events::EventType::RoomMessage: {
@@ -169,7 +175,7 @@ from_json(const json &obj, TimelineEvents &e)
                                 if (unsigned_data.empty())
                                         return;
 
-                                e = events::RoomEvent<events::msg::Redacted>(obj);
+                                e.data = events::RoomEvent<events::msg::Redacted>(obj);
                                 return;
                         } catch (json::exception &err) {
                                 std::cout << "Invalid event type: " << err.what() << " "
@@ -183,19 +189,19 @@ from_json(const json &obj, TimelineEvents &e)
 
                 switch (msg_type) {
                 case MsgType::Audio: {
-                        e = events::RoomEvent<events::msg::Audio>(obj);
+                        e.data = events::RoomEvent<events::msg::Audio>(obj);
                         break;
                 }
                 case MsgType::Emote: {
-                        e = events::RoomEvent<events::msg::Emote>(obj);
+                        e.data = events::RoomEvent<events::msg::Emote>(obj);
                         break;
                 }
                 case MsgType::File: {
-                        e = events::RoomEvent<events::msg::File>(obj);
+                        e.data = events::RoomEvent<events::msg::File>(obj);
                         break;
                 }
                 case MsgType::Image: {
-                        e = events::RoomEvent<events::msg::Image>(obj);
+                        e.data = events::RoomEvent<events::msg::Image>(obj);
                         break;
                 }
                 case MsgType::Location: {
@@ -204,15 +210,15 @@ from_json(const json &obj, TimelineEvents &e)
                         break;
                 }
                 case MsgType::Notice: {
-                        e = events::RoomEvent<events::msg::Notice>(obj);
+                        e.data = events::RoomEvent<events::msg::Notice>(obj);
                         break;
                 }
                 case MsgType::Text: {
-                        e = events::RoomEvent<events::msg::Text>(obj);
+                        e.data = events::RoomEvent<events::msg::Text>(obj);
                         break;
                 }
                 case MsgType::Video: {
-                        e = events::RoomEvent<events::msg::Video>(obj);
+                        e.data = events::RoomEvent<events::msg::Video>(obj);
                         break;
                 }
                 case MsgType::Unknown:
@@ -221,7 +227,7 @@ from_json(const json &obj, TimelineEvents &e)
                 break;
         }
         case events::EventType::Sticker: {
-                e = events::Sticker(obj);
+                e.data = events::Sticker(obj);
                 break;
         }
         case events::EventType::RoomPinnedEvents:
