@@ -20,6 +20,14 @@ struct EventId
 void
 from_json(const nlohmann::json &obj, EventId &response);
 
+struct GroupId
+{
+        std::string group_id;
+};
+
+void
+from_json(const nlohmann::json &obj, GroupId &response);
+
 struct FilterId
 {
         std::string filter_id;

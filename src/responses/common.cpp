@@ -24,6 +24,12 @@ namespace mtx {
 namespace responses {
 
 void
+from_json(const nlohmann::json &obj, GroupId &response)
+{
+        response.group_id = obj.at("group_id");
+}
+
+void
 from_json(const nlohmann::json &obj, EventId &response)
 {
         response.event_id = obj.at("event_id");
