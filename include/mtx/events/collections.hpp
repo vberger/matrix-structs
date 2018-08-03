@@ -35,8 +35,8 @@ namespace events {
 namespace collections {
 
 namespace account_data = mtx::events::account_data;
-namespace states = mtx::events::state;
-namespace msgs   = mtx::events::msg;
+namespace states       = mtx::events::state;
+namespace msgs         = mtx::events::msg;
 
 //! Collection of room specific account data
 using RoomAccountDataEvents = mpark::variant<events::Event<account_data::Tag>>;
@@ -237,7 +237,7 @@ from_json(const json &obj, TimelineEvent &e)
         }
         case events::EventType::RoomPinnedEvents:
         case events::EventType::RoomKeyRequest: // Not part of the timeline
-        case events::EventType::Tag: // Not part of the timeline
+        case events::EventType::Tag:            // Not part of the timeline
         case events::EventType::Unsupported:
                 return;
         }
