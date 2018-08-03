@@ -15,6 +15,7 @@
 #include "mtx/events/pinned_events.hpp"
 #include "mtx/events/power_levels.hpp"
 #include "mtx/events/redaction.hpp"
+#include "mtx/events/tag.hpp"
 #include "mtx/events/topic.hpp"
 
 #include "mtx/events/messages/audio.hpp"

@@ -50,6 +50,8 @@ enum class EventType
         RoomPinnedEvents,
         // m.sticker
         Sticker,
+        // m.tag
+        Tag,
         // Unsupported event
         Unsupported,
 };
@@ -137,6 +139,8 @@ to_json(json &obj, const Event<Content> &event)
         case EventType::Sticker:
                 obj["type"] = "m.sticker";
                 break;
+        case EventType::Tag:
+                obj["type"] = "m.tag";
         case EventType::Unsupported:
                 std::cout << "Unsupported type to serialize" << std::endl;
                 break;

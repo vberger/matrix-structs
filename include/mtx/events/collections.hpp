@@ -17,6 +17,7 @@
 #include "mtx/events/pinned_events.hpp"
 #include "mtx/events/power_levels.hpp"
 #include "mtx/events/redaction.hpp"
+#include "mtx/events/tag.hpp"
 #include "mtx/events/topic.hpp"
 
 #include "mtx/events/messages/audio.hpp"
@@ -33,8 +34,12 @@ namespace events {
 //! Contains heterogeneous collections of events using std::variant.
 namespace collections {
 
+namespace account_data = mtx::events::account_data;
 namespace states = mtx::events::state;
 namespace msgs   = mtx::events::msg;
+
+//! Collection of room specific account data
+using RoomAccountDataEvents = mpark::variant<events::Event<account_data::Tag>>;
 
 //! Collection of @p StateEvent only.
 using StateEvents = mpark::variant<events::StateEvent<states::Aliases>,
@@ -232,6 +237,7 @@ from_json(const json &obj, TimelineEvent &e)
         }
         case events::EventType::RoomPinnedEvents:
         case events::EventType::RoomKeyRequest: // Not part of the timeline
+        case events::EventType::Tag: // Not part of the timeline
         case events::EventType::Unsupported:
                 return;
         }

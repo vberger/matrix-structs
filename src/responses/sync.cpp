@@ -8,6 +8,12 @@ namespace mtx {
 namespace responses {
 
 void
+from_json(const json &obj, RoomAccountData &account_data)
+{
+        utils::parse_room_account_data_events(obj.at("events"), account_data.events);
+}
+
+void
 from_json(const json &obj, State &state)
 {
         utils::parse_state_events(obj.at("events"), state.events);
@@ -86,6 +92,11 @@ from_json(const json &obj, JoinedRoom &room)
 
         if (obj.find("ephemeral") != obj.end())
                 room.ephemeral = obj.at("ephemeral").get<Ephemeral>();
+
+        if (obj.count("account_data") != 0) {
+                if (obj.at("account_data").count("events") != 0)
+                        room.account_data = obj.at("account_data").get<RoomAccountData>();
+        }
 }
 
 void

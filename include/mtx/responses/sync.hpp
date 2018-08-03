@@ -12,6 +12,16 @@ using json = nlohmann::json;
 namespace mtx {
 namespace responses {
 
+//! Room specific Account Data events.
+struct RoomAccountData
+{
+        //! List of events.
+        std::vector<events::collections::RoomAccountDataEvents> events;
+};
+
+void
+from_json(const json &obj, RoomAccountData &account_data);
+
 //! State events.
 struct State
 {
@@ -78,7 +88,8 @@ struct JoinedRoom
         //! The ephemeral events in the room that aren't recorded in the
         //! timeline or state of the room. e.g. typing.
         Ephemeral ephemeral;
-        /* AccountData account_data; */
+        //! The account_data events associated with this room.
+        RoomAccountData account_data;
 };
 
 void

@@ -49,6 +49,7 @@ set(SRC
     src/events/pinned_events.cpp
     src/events/power_levels.cpp
     src/events/redaction.cpp
+    src/events/tag.cpp
     src/events/topic.cpp
     src/events/messages/audio.cpp
     src/events/messages/emote.cpp

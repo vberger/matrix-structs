@@ -14,10 +14,12 @@
 #include "mtx/events/power_levels.hpp"
 #include "mtx/events/redaction.hpp"
 #include "mtx/events/topic.hpp"
+#include "mtx/events/tag.hpp"
 
 #include <iostream>
 
 using json = nlohmann::json;
+using namespace mtx::events::account_data;
 using namespace mtx::events::state;
 
 namespace mtx {
@@ -55,6 +57,49 @@ log_error(std::string err, const json &event)
 {
         std::cout << err << std::endl;
         std::cout << event.dump(2) << std::endl;
+}
+
+void
+parse_room_account_data_events(const json &events,
+                               std::vector<mtx::events::collections::RoomAccountDataEvents> &container)
+{
+        container.clear();
+        container.reserve(events.size());
+
+        for (const auto &e : events) {
+                const auto type = mtx::events::getEventType(e);
+
+                switch (type) {
+                case events::EventType::Tag: {
+                        try {
+                                container.emplace_back(events::Event<Tag>(e));
+                        } catch (json::exception &err) {
+                                log_error(err, e);
+                        }
+                        break;
+                }
+                case events::EventType::RoomKeyRequest:
+                case events::EventType::RoomAliases:
+                case events::EventType::RoomAvatar:
+                case events::EventType::RoomCanonicalAlias:
+                case events::EventType::RoomCreate:
+                case events::EventType::RoomEncrypted:
+                case events::EventType::RoomEncryption:
+                case events::EventType::RoomGuestAccess:
+                case events::EventType::RoomHistoryVisibility:
+                case events::EventType::RoomJoinRules:
+                case events::EventType::RoomMember:
+                case events::EventType::RoomMessage:
+                case events::EventType::RoomName:
+                case events::EventType::RoomPowerLevels:
+                case events::EventType::RoomTopic:
+                case events::EventType::RoomRedaction:
+                case events::EventType::RoomPinnedEvents:
+                case events::EventType::Sticker:
+                case events::EventType::Unsupported:
+                        continue;
+                }
+        }
 }
 
 void
@@ -311,6 +356,7 @@ parse_timeline_events(const json &events,
                 }
                 case events::EventType::RoomPinnedEvents:
                 case events::EventType::RoomKeyRequest: // Not part of the timeline
+                case events::EventType::Tag: // Not part of the timeline or state
                 case events::EventType::Unsupported:
                         continue;
                 }
@@ -442,6 +488,7 @@ parse_state_events(const json &events,
                 case events::EventType::RoomMessage:
                 case events::EventType::RoomPinnedEvents:
                 case events::EventType::RoomRedaction:
+                case events::EventType::Tag: // Not part of the timeline or state
                 case events::EventType::Unsupported:
                         continue;
                 }
@@ -565,6 +612,7 @@ parse_stripped_events(const json &events,
                 case events::EventType::RoomRedaction:
                 case events::EventType::RoomKeyRequest: // Not part of the timeline or state
                 case events::EventType::RoomPinnedEvents:
+                case events::EventType::Tag: // Not part of the timeline or state
                 case events::EventType::Unsupported:
                         continue;
                 }
