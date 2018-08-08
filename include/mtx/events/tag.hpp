@@ -10,7 +10,7 @@ namespace events {
 namespace account_data {
 
 //! Content for the `m.tag` room account_data event.
-//! A tag is a hort string a client can attach to a room for sorting or advanced functionality.
+//! A tag is a short string a client can attach to a room for sorting or advanced functionality.
 struct Tag
 {
         //! The tag list.
