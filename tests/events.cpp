@@ -53,6 +53,7 @@ TEST(Events, Conversions)
         EXPECT_EQ("m.room.topic", ns::to_string(ns::EventType::RoomTopic));
         EXPECT_EQ("m.room.redaction", ns::to_string(ns::EventType::RoomRedaction));
         EXPECT_EQ("m.room.pinned_events", ns::to_string(ns::EventType::RoomPinnedEvents));
+        EXPECT_EQ("m.tag", ns::to_string(ns::EventType::Tag));
 }
 
 TEST(StateEvents, Aliases)
@@ -736,4 +737,32 @@ TEST(Collection, Events)
         mtx::events::collections::TimelineEvent event = data;
 
         ASSERT_TRUE(mpark::holds_alternative<ns::StateEvent<ns::state::Aliases>>(event.data));
+}
+
+TEST(RoomAccountData, Tag)
+{
+        json data = R"({
+          "content": {
+              "tags": {
+                "m.favourite": {
+                  "order": 1
+                },
+                "u.Project1": {
+                  "order": 0
+                },
+                "com.example.nheko.text": {
+                  "associated_data": ["some", "json", "list"]
+                }
+              }
+          },
+          "type": "m.tag"
+        })"_json;
+
+        ns::Event<ns::account_data::Tag> event = data;
+
+        EXPECT_EQ(event.type, ns::EventType::Tag);
+        EXPECT_EQ(event.content.tags.size(), 3);
+        EXPECT_EQ(event.content.tags.at("m.favourite").at("order"), 1);
+        EXPECT_EQ(event.content.tags.at("u.Project1").at("order"), 0);
+        EXPECT_EQ(event.content.tags.at("com.example.nheko.text").at("associated_data").size(), 3);
 }
